@@ -1,53 +1,85 @@
-<t-tabs bind:change="onBankTypeChange" value="{{calcForm.bankType}}" theme="card">
+<t-tabs bind:change="onBankTypeChange" value="{{calcForm.bankType}}">
   <t-tab-panel wx:for="{{tabs}}" wx:key="index" label="{{item.label}}" value="{{index}}" />
 </t-tabs>
 <!-- 基本信息 -->
-<view class="section-title">
-  <t-icon name="info-circle" color="#c6c6c6"></t-icon>
-  <text>基本信息</text>
-</view>
+<t-cell-group theme="card" title="基本信息">
+  <l-cell title="计算单位">
+    <l-tabs slot="note" current-index="{{calcForm.unitIndex}}" bind:change="onTypesChange" list="{{unitTypes}}">
+    </l-tabs>
+  </l-cell>
+  <l-cell title="购房形式">
+    <l-tabs slot="note" current-index="{{calcForm.buyIndex}}" bind:change="onBuyTypesChange" list="{{buyTypes}}">
+    </l-tabs>
+  </l-cell>
+  <t-input align="right" bind:change="onTotalPriceChange" value="{{calcForm.totalPrice}}" label="交易总价" placeholder="请输入交易总价" suffix="{{calcForm.unit}}" type="number"></t-input>
+  <l-cell title="建筑面积">
+    <l-tabs slot="note" current-index="{{2}}" bind:change="onAreaTypesChange" list="{{areaTypes}}">
+    </l-tabs>
+  </l-cell>
+  <block wx:if="{{calcForm.buyIndex===0}}">
+    <l-cell title="产权情况">
+      <l-tabs slot="note" current-index="{{2}}" bind:change="onAreaTypesChange" list="{{chanquanTypes}}">
+      </l-tabs>
+    </l-cell>
+    <t-input align="right" type="number" bind:change="onHouseAgeChange" suffix="年" value="{{calcForm.houseAge}}" label="房屋年龄" placeholder="请输入房屋年龄"></t-input>
+    <t-cell title="房屋建成年份" hover arrow bind:tap="showYearPicker">
+      <view slot="note" class="flex f-col-center">
+        <text>{{calcForm.houseYear}}年</text>
+      </view>
+    </t-cell>
 
-<l-cell title="计算单位">
-  <l-tabs slot="note" current-index="{{calcForm.unitIndex}}" bind:change="onTypesChange" list="{{unitTypes}}">
-  </l-tabs>
-</l-cell>
-<l-cell title="购房形式">
-  <l-tabs slot="note" current-index="{{calcForm.buyIndex}}" bind:change="onBuyTypesChange" list="{{buyTypes}}">
-  </l-tabs>
-</l-cell>
-<t-input align="right" label="交易总价" placeholder="请输入交易总价" suffix="{{calcForm.unit}}" type="number"></t-input>
+  </block>
+</t-cell-group>
 
-<l-cell title="产证面积">
-  <l-tabs slot="note" current-index="{{2}}" bind:change="onAreaTypesChange" list="{{areaTypes}}">
-  </l-tabs>
-</l-cell>
-<l-cell title="产权情况">
-  <l-tabs slot="note" current-index="{{2}}" bind:change="onAreaTypesChange" list="{{chanquanTypes}}">
-  </l-tabs>
-</l-cell>
 <!-- 买方信息 -->
-<view class="section-title">
-  <t-icon name="user" color="#c6c6c6"></t-icon>
-  <text>买方信息</text>
-</view>
-<l-cell title="名下房产">
+
+<t-cell-group theme="card" title="买方信息">
+  <t-input value="{{calcForm.paymentRate}}" bindchange="onPriceInput" label="首付比例" tips="{{priceError ? '请输入正确的比例0%~100%' : ''}}" type="number" placeholder="请输入首付比例" suffix="%" align="right"></t-input>
+  <t-input borderless bind:change="onPaymentPriceChange" value="{{calcForm.paymentPrice}}" label="首付金额" type="number" align="right" suffix="{{calcForm.unit}}" placeholder="请输入首付金额"></t-input>
+</t-cell-group>
+<!-- <l-cell title="名下房产">
   <l-tabs slot="note" current-index="{{2}}" bind:change="onAreaTypesChange" list="{{selfHouseTypes}}">
   </l-tabs>
-</l-cell>
-<t-input bindchange="onPriceInput" label="首付比例" tips="{{priceError ? '请输入正确的比例0%~100%' : ''}}" type="number" placeholder="请输入首付比例" suffix="%" align="right"></t-input>
+</l-cell> -->
 
 <!-- 居间机构 -->
-<view class="section-title">
-  <t-icon name="info-circle" color="#c6c6c6"></t-icon>
-  <text>居间机构</text>
-</view>
-<l-cell title="居间服务费(%)">
-  <t-stepper slot="note" step="0.5" max="10" defaultValue="1.5" theme="filled" />
-</l-cell>
-<t-input label="贷款服务费" value="{{calcForm.bankPrice}}" suffix="{{calcForm.unit}}" wx:if="{{calcForm.bankType!==3}}">
-</t-input>
+<t-cell-group wx:if="{{calcForm.buyIndex===0}}" theme="card" title="居间机构">
+  <t-cell title="居间服务费比例">
+    <view slot="note">
+      <t-stepper bind:change="onServiceFeeRateChange" value="{{calcForm.serviceFeeRate}}" step="0.5" theme="filled" />
+
+    </view>
+  </t-cell>
+  <t-input bind:change="onServiceFeeChange" label="居间服务费" value="{{calcForm.serviceFee}}" suffix="{{calcForm.unit}}" align="right">
+
+
+  </t-input>
+  <t-input label="贷款服务费" align="right" value="{{calcForm.bankPrice}}" suffix="{{calcForm.unit}}" wx:if="{{calcForm.bankType!==3}}">
+  </t-input>
+</t-cell-group>
+
+
 <!-- 贷款信息 -->
-<view class="section-title">
-  <t-icon name="info-circle" color="#c6c6c6"></t-icon>
-  <text>贷款信息</text>
-</view>
+<block wx:if="{{calcForm.bankType!==3}}">
+  <t-cell-group theme="card" title="商贷信息">
+    <t-input borderless value="{{calcForm.loanRate}}" label="贷款利率" align="right" placeholder="请输入贷款利率" type="number"></t-input>
+    <l-cell>
+
+      <view slot="desc" class="flex f-row-between">
+
+        <l-tabs roundless current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanRateTypes}}"></l-tabs>
+        <t-button theme="primary" size="small">添加</t-button>
+      </view>
+
+    </l-cell>
+    <l-cell title="贷款年限">
+      <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanTypes}}"></l-tabs>
+    </l-cell>
+    <l-cell title="还款方式">
+      <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanBackIndex}}" bind:change="onLoanBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
+    </l-cell>
+  </t-cell-group>
+
+</block>
+<!-- 年月日 -->
+<t-date-time-picker title="选择年份" visible="{{yearVisible}}" mode="year" defaultValue="{{defaultDate}}" format="YYYY" start="{{mineDate}}" end="{{maxDate}}" bindchange="onYearConfirm" bindcancel="hidePicker" />

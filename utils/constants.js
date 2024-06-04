@@ -81,3 +81,55 @@ export const tabs = [{
   value: 4,
   label: '全款'
 }]
+
+export const loanTypes = [{
+  value: 5,
+  label: "5年"
+}, {
+  value: 10,
+  label: '10年'
+}, {
+  value: 15,
+  label: '15年'
+}, {
+  value: 20,
+  label: '20年'
+}, {
+  value: 25,
+  label: '25年'
+}, {
+  value: 30,
+  label: '30年'
+}, {
+  value: 0,
+  label: '自定义'
+}]
+export const loanBackTypes = [{
+  value: 1,
+  label: '等额本息'
+}, {
+  value: 2,
+  label: '等额本金'
+}]
+export const loanRateTypes = [{
+  value: 1,
+  label: '3.55'
+}, {
+  value: 2,
+  label: '3.95'
+}, {
+  value: 2,
+  label: '3.95'
+}, {
+  value: 2,
+  label: '3.95'
+}, {
+  value: 2,
+  label: '3.95'
+}, {
+  value: 2,
+  label: '3.95'
+}, {
+  value: 2,
+  label: '3.95'
+}]

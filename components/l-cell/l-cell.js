@@ -9,6 +9,13 @@ Component({
     },
     note: {
       type: String
+    },
+    bordered: {
+      type: Boolean,
+      value: true,
+    },
+    customStyle: {
+      type: Object
     }
   },
   options: {
@@ -19,7 +26,7 @@ Component({
    * 组件的初始数据
    */
   data: {
-
+    isLastChild: false,
   },
 
   /**

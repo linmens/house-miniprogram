@@ -1,5 +1,5 @@
 <view class="l-tabs">
-  <view class="l-tabs__wrap">
+  <view class="l-tabs__wrap {{roundless?'l-tabs__wrap__roundless':''}}">
     <scroll-view scroll-anchoring scroll-with-animation enable-passive show-scrollbar="{{false}}" type="list" bind:scroll="onScroll" enable-flex scroll-left="{{offset}}" scroll-x="{{true}}" style="position: relative;">
       <view class="l-tabs__content">
         <view bind:tap="tapOnItem" wx:key="index" data-index="{{index}}" class="l-tabs__item {{currentIndex === index?'active':''}}" wx:for="{{list}}">

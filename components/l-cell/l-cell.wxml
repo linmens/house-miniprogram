@@ -1,11 +1,16 @@
-<view class="l-cell">
-  <view class="l-cell__title">
-    <text>{{title}}</text>
-    <slot name="title">
-    </slot>
+<view class="l-cell" style="{{ !bordered || isLastChild ? 'l-cell--borderless' : '' }}">
+  <view class="l-cell--header">
+    <view class="l-cell__title">
+      <text>{{title}}</text>
+      <slot name="title">
+      </slot>
+    </view>
+    <view class="l-cell__note">
+      <text wx:if="{{ note }}">{{note}}</text>
+      <slot name="note" />
+    </view>
   </view>
-  <view class="l-cell__note">
-    <text wx:if="{{ note }}">{{note}}</text>
-    <slot name="note" />
+  <view class="l-cell--desc">
+    <slot name="desc"></slot>
   </view>
 </view>

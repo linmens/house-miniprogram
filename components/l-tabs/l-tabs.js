@@ -36,16 +36,7 @@ Component({
       this.children = this.children || [];
     },
     attached() {
-      wx.nextTick(() => {
-        this.setTrack();
-      });
-      getRect(this, `.l-tabs`).then((rect) => {
-        console.log(rect, 'rect')
-        this.setData({
-          containerWidth: rect.width
-        })
-      });
-
+      this.initTrack()
     },
   },
   /**
@@ -54,11 +45,20 @@ Component({
   properties: {
     list: {
       type: Array,
+
     },
     currentIndex: {
       type: Number,
-      value: -1
+      value: -1,
+    },
+    // 是否取消圆角
+    roundless: {
+      type: Boolean,
+      value: false
     }
+  },
+  observers: {
+
   },
   options: {
     multipleSlots: true,
@@ -77,6 +77,18 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    initTrack() {
+      getRect(this, `.l-tabs`).then((rect) => {
+
+        this.setData({
+          containerWidth: rect.width
+        })
+        wx.nextTick(async () => {
+          this.setTrack();
+
+        });
+      });
+    },
     onScroll(e) {
       const {
         scrollLeft
@@ -95,11 +107,13 @@ Component({
 
       if (!(currentTab === null) && index !== this.data.currentIndex) {
         this.triggerEvent('change', {
+          index,
           value,
           label
         });
       }
       this.triggerEvent('click', {
+        index,
         value,
         label
       });
@@ -109,7 +123,6 @@ Component({
       this.setTrack();
     },
     tapOnItem(event) {
-      console.log(event, 'event')
       const {
         index
       } = event.currentTarget.dataset;
@@ -127,7 +140,6 @@ Component({
           currentIndex,
           containerWidth
         } = this.data;
-
         if (currentIndex <= -1)
           return;
         try {
@@ -147,7 +159,7 @@ Component({
             totalSize += item.width;
           });
           if (containerWidth) {
-            console.log(containerWidth, 'containerWidth')
+
             const maxOffset = res.reduce((acc, item) => acc + item.width, 0) - containerWidth;
             this.setData({
               offset: Math.min(Math.max(distance, 0), maxOffset),

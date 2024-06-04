@@ -14,6 +14,10 @@
 
 }
 
+.l-tabs__wrap__roundless {
+  border-radius: 0;
+}
+
 .l-tabs__content {
   position: relative;
   user-select: none;

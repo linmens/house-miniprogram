@@ -1,0 +1,23 @@
+.l-cell {
+  display: flex;
+  justify-content: space-between;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  padding: var(--td-input-vertical-padding, 32rpx);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.l-cell__title {
+  flex: 35%;
+  overflow: hidden;
+}
+
+.l-cell__note {
+  flex: 65%;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+}

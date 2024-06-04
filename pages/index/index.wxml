@@ -1,0 +1,53 @@
+<t-tabs bind:change="onBankTypeChange" value="{{calcForm.bankType}}" theme="card">
+  <t-tab-panel wx:for="{{tabs}}" wx:key="index" label="{{item.label}}" value="{{index}}" />
+</t-tabs>
+<!-- 基本信息 -->
+<view class="section-title">
+  <t-icon name="info-circle" color="#c6c6c6"></t-icon>
+  <text>基本信息</text>
+</view>
+
+<l-cell title="计算单位">
+  <l-tabs slot="note" current-index="{{calcForm.unitIndex}}" bind:change="onTypesChange" list="{{unitTypes}}">
+  </l-tabs>
+</l-cell>
+<l-cell title="购房形式">
+  <l-tabs slot="note" current-index="{{calcForm.buyIndex}}" bind:change="onBuyTypesChange" list="{{buyTypes}}">
+  </l-tabs>
+</l-cell>
+<t-input align="right" label="交易总价" placeholder="请输入交易总价" suffix="{{calcForm.unit}}" type="number"></t-input>
+
+<l-cell title="产证面积">
+  <l-tabs slot="note" current-index="{{2}}" bind:change="onAreaTypesChange" list="{{areaTypes}}">
+  </l-tabs>
+</l-cell>
+<l-cell title="产权情况">
+  <l-tabs slot="note" current-index="{{2}}" bind:change="onAreaTypesChange" list="{{chanquanTypes}}">
+  </l-tabs>
+</l-cell>
+<!-- 买方信息 -->
+<view class="section-title">
+  <t-icon name="user" color="#c6c6c6"></t-icon>
+  <text>买方信息</text>
+</view>
+<l-cell title="名下房产">
+  <l-tabs slot="note" current-index="{{2}}" bind:change="onAreaTypesChange" list="{{selfHouseTypes}}">
+  </l-tabs>
+</l-cell>
+<t-input bindchange="onPriceInput" label="首付比例" tips="{{priceError ? '请输入正确的比例0%~100%' : ''}}" type="number" placeholder="请输入首付比例" suffix="%" align="right"></t-input>
+
+<!-- 居间机构 -->
+<view class="section-title">
+  <t-icon name="info-circle" color="#c6c6c6"></t-icon>
+  <text>居间机构</text>
+</view>
+<l-cell title="居间服务费(%)">
+  <t-stepper slot="note" step="0.5" max="10" defaultValue="1.5" theme="filled" />
+</l-cell>
+<t-input label="贷款服务费" value="{{calcForm.bankPrice}}" suffix="{{calcForm.unit}}" wx:if="{{calcForm.bankType!==3}}">
+</t-input>
+<!-- 贷款信息 -->
+<view class="section-title">
+  <t-icon name="info-circle" color="#c6c6c6"></t-icon>
+  <text>贷款信息</text>
+</view>

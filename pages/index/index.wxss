@@ -1,0 +1,10 @@
+.section-title {
+  padding: 10rpx 20rpx;
+  display: flex;
+  align-items: center;
+  font-size: 40rpx;
+}
+
+.section-title text {
+  margin-left: 20rpx;
+}

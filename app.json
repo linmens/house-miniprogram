@@ -1,0 +1,18 @@
+{
+  "darkmode": true,
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "navigationBarTextStyle": "@navTxtStyle",
+    "navigationBarTitleText": "Weixin",
+    "navigationBarBackgroundColor": "@navBgColor",
+    "backgroundColor": "@bgColor",
+    "backgroundColorTop": "@bgColorTop"
+  },
+  "themeLocation": "theme.json",
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

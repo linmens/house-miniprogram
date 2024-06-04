@@ -1,0 +1,15 @@
+{
+  "component": true,
+  "usingComponents": {
+    "t-tabs": "tdesign-miniprogram/tabs/tabs",
+    "t-tab-panel": "tdesign-miniprogram/tab-panel/tab-panel",
+    "t-radio-group": "tdesign-miniprogram/radio-group/radio-group",
+    "t-radio": "tdesign-miniprogram/radio/radio",
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "l-tabs": "/components/l-tabs/l-tabs",
+    "l-cell": "/components/l-cell/l-cell",
+    "t-stepper": "tdesign-miniprogram/stepper/stepper",
+    "t-cell": "tdesign-miniprogram/cell/cell",
+    "t-input": "tdesign-miniprogram/input/input"
+  }
+}

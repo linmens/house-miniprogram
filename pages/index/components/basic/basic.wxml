@@ -1,0 +1,27 @@
+<t-cell-group theme="card" title="基本信息">
+  <l-cell title="计算单位">
+    <l-tabs slot="note" current-index="{{calcForm.unitIndex}}" bind:change="onTypesChange" list="{{unitTypes}}">
+    </l-tabs>
+  </l-cell>
+  <l-cell title="购房形式">
+    <l-tabs slot="note" current-index="{{calcForm.buyIndex}}" bind:change="onBuyTypesChange" list="{{buyTypes}}">
+    </l-tabs>
+  </l-cell>
+
+  <l-cell title="建筑面积">
+    <l-tabs slot="note" current-index="{{calcForm.areaIndex}}" bind:change="onAreaTypesChange" list="{{areaTypes}}">
+    </l-tabs>
+  </l-cell>
+  <block wx:if="{{calcForm.buyIndex===0}}">
+    <l-cell title="产权情况">
+      <l-tabs slot="note" current-index="{{calcForm.chanquanIndex}}" bind:change="onAreaTypesChange" list="{{chanquanTypes}}">
+      </l-tabs>
+    </l-cell>
+    <t-input align="right" type="number" bind:change="onHouseAgeChange" suffix="年" value="{{calcForm.houseAge}}" label="房屋年龄" placeholder="请输入房屋年龄"></t-input>
+    <t-cell title="房屋建成年份" hover arrow bind:tap="showYearPicker">
+      <view slot="note" class="flex f-col-center">
+        <text>{{calcForm.houseYear}}年</text>
+      </view>
+    </t-cell>
+  </block>
+</t-cell-group>

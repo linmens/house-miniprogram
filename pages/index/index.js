@@ -1,22 +1,24 @@
 import {
   tabs,
-  buyTypes,
-  chanquanTypes,
-  selfHouseTypes,
-  unitTypes,
-  areaTypes,
+
   loanTypes,
   loanBackTypes,
   loanRateTypes
 } from '../../utils/constants';
 import {
   getOldYearTimestamp,
-  calculateBuiltYear
 } from '../../utils/util';
+import {
+  loanBehavior,
+  basicBehavior,
+  dealBehavior
+} from '../../behavior/index'
 
 import NP from 'number-precision'
 
 Component({
+
+  behaviors: [loanBehavior, basicBehavior, dealBehavior],
   options: {
     styleIsolation: 'apply-shared',
   },
@@ -28,46 +30,17 @@ Component({
     mineDate: getOldYearTimestamp(50),
     maxDate: getOldYearTimestamp(0),
     calcForm: {
-      // 房屋总价
-      totalPrice: '',
-      // 首付比例
-      paymentRate: 15,
-      // 首付金额
-      paymentPrice: '',
+
+
+
       // 居间服务费
       serviceFee: 0,
       // 服务比例
       serviceFeeRate: 1.5,
-      // 计价单位下标
-      unitIndex: 0,
-      unit: '元',
-      // 购房形式
-      buyIndex: 0,
-      // 金额换算值 元 1 || 万元 10000
-      unitCount: 1,
-      // 贷款方式 0 商业 1 公积金 2 组合贷 3 全款
-      bankType: 0,
       // 贷款服务费金额
       bankPrice: 3000,
-      // 房屋建成年份
-      houseYear: new Date().getFullYear(),
-      // 房屋年龄
-      houseAge: '',
-      // 贷款年限下标
-      loanIndex: 5,
-      // 贷款年限（年）
-      loanYear: 30,
-      // 还款方式
-      loanBackIndex: 0,
-      // 贷款利率
-      loanRate: 3.55
     },
     tabs,
-    buyTypes,
-    chanquanTypes,
-    selfHouseTypes,
-    unitTypes,
-    areaTypes,
     loanTypes,
     loanBackTypes,
     loanRateTypes
@@ -129,52 +102,14 @@ Component({
         'calcForm.bankPrice': bankPrice
       })
     },
-    // 元 万元 切换
-    onTypesChange(e) {
-      const {
-        label
-      } = e.detail;
-      const count = label === '元' ? 1 : 10000
-      this.setData({
-        'calcForm.unit': label,
-        'calcForm.unitCount': count
-      })
-      this.setBankPrice()
-    },
-    // 购房形式
-    onBuyTypesChange(e) {
-      const {
-        index
-      } = e.detail
-      console.log(index, 'e');
-      this.setData({
-        'calcForm.buyIndex': index
-      })
-    },
-    onAreaTypesChange(e) {
 
-    },
+
     onChange1(e) {
       this.setData({
         value1: e.detail.value
       });
     },
-    onPriceInput(e) {
-      const {
-        priceError
-      } = this.data;
-      const value = e.detail.value;
 
-      const isNumber = /^\d+(\.\d+)?$/.test(value);
-      const number = parseFloat(value);
-      const isValid = isNumber && number >= 0 && number <= 100;
-
-      this.setData({
-        priceError: !isValid,
-        'calcForm.paymentRate': value
-      });
-      this.setPaymentPrice()
-    },
     // 显示隐藏年份选择器
     showYearPicker() {
       this.setData({
@@ -203,24 +138,7 @@ Component({
       });
       this.setLoanYear()
     },
-    onHouseAgeChange(e) {
 
-      const {
-        value
-      } = e.detail
-      if (value) {
-        const builtYear = calculateBuiltYear(value);
-        console.log(builtYear, 'calculateBuiltYear')
-        if (builtYear) {
-          this.setData({
-            'calcForm.houseYear': builtYear,
-            'calcForm.loanIndex': 6
-          })
-          this.setLoanYear()
-        }
-
-      }
-    },
     /**
      * 计算居间服务费
      */
@@ -243,34 +161,8 @@ Component({
       }
 
     },
-    // 交易总价改变
-    onTotalPriceChange(e) {
-      const {
-        value
-      } = e.detail
-      this.setData({
-        'calcForm.totalPrice': value
-      })
-      this.setPaymentPrice()
-      this.calculateServiceFee()
-    },
-    /**
-     * 首付金额改变
-     */
-    onPaymentPriceChange(e) {
-      const {
-        value
-      } = e.detail
-      if (value) {
-        const {
-          totalPrice
-        } = this.data.calcForm
-        const paymentRate = NP.round(NP.times(NP.divide(value, totalPrice), 100), 2)
-        this.setData({
-          'calcForm.paymentRate': paymentRate
-        })
-      }
-    },
+
+
     /**
      * 计算居间服务费比例
      */
@@ -312,32 +204,7 @@ Component({
       // 计算服务费比例
       this.setServiceFeeRate()
     },
-    /**
-     * 贷款年限改变
-     * @param {*} e 
-     */
-    onLoanTypesChange(e) {
-      console.log(e, 'e')
-    },
-    /**
-     * 设置商贷贷款年限
-     */
-    setLoanYear() {
-      const {
-        houseAge,
-        loanIndex
-      } = this.data.calcForm
-      let loanYear = NP.minus(40, houseAge);
-      if (loanYear > 30) {
-        loanYear = 30
-      }
-      loanTypes[loanIndex].label = `自定义(${loanYear}年)`
-      this.setData({
-        'calcForm.loanYear': loanYear,
-        'loanTypes': loanTypes
-      })
-      this.selectComponent('#loanTabs').initTrack()
 
-    }
+
   },
 });

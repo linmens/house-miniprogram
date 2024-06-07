@@ -78,7 +78,9 @@
        const {
          index
        } = e.detail
-       console.log(index, 'e');
+       if(index===1){
+         
+       }
        this.setData({
          'calcForm.buyIndex': index
        })

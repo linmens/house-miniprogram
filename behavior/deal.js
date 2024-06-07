@@ -21,6 +21,7 @@
      }
    },
    observers: {
+
      'calcForm.wangqianPrice': function (wangqianPrice) {
        if (wangqianPrice) {
          const {
@@ -47,6 +48,7 @@
            'calcForm.paymentPrice': paymentPrice
          })
        }
+
      }
    },
    methods: {
@@ -71,7 +73,7 @@
 
        })
        this.setPaymentPrice()
-       this.calculateServiceFee()
+       this.setServiceFee()
      },
      /**
       * 首付比例改变
@@ -92,6 +94,7 @@
          'calcForm.paymentRate': value
        });
        this.setPaymentPrice()
+       this.setLoanPrice(0)
      },
      /**
       * 首付金额改变
@@ -103,6 +106,7 @@
 
        const {
          totalPrice,
+         wangqianPrice,
          paymentRate
        } = this.data.calcForm
        let rate = paymentRate
@@ -118,11 +122,11 @@
        } else {
          rate = NP.round(NP.times(NP.divide(value, totalPrice), 100), 2)
        }
-
        this.setData({
          'calcForm.paymentRate': rate,
-         'calcForm.paymentPrice': paymentPrice
+         'calcForm.paymentPrice': paymentPrice,
        })
+       this.setLoanPrice(0)
      },
      /**
       * 网签金额改变
@@ -134,12 +138,10 @@
        const {
          hukouWuyePrice
        } = this.data.calcForm
-       //  const result = calculatePlus(value, hukouWuyePrice, null);
-       //  console.log(result, value, 'onWangqianPriceChange')
        this.setData({
-         //  'calcForm.totalPrice': result.c,
          'calcForm.wangqianPrice': value
-       })
+       });
+       this.setServiceFee()
      },
      /**
       * 户口物业预留金额改变

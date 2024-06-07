@@ -5,35 +5,10 @@
 <l-pages-basic calcForm="{{calcForm}}" unitTypes="{{unitTypes}}" buyTypes="{{buyTypes}}" areaTypes="{{areaTypes}}" chanquanTypes="{{chanquanTypes}}" bind:typesChange="onTypesChange" bind:buyTypesChange="onBuyTypesChange" bind:areaTypesChange="onAreaTypesChange" bind:chanquanTypesChange="onChanquanTypesChange" bind:houseAgeChange="onHouseAgeChange" bind:showYearPicker="showYearPicker"></l-pages-basic>
 <!-- 交易信息 -->
 <l-pages-deal calcForm="{{calcForm}}" bind:totalPriceChange="onTotalPriceChange" bind:wangqianPriceChange="onWangqianPriceChange" bind:hukouWuyePriceChange="onHukouWuyePriceChange" bind:paymentRateChange="onPaymentRateChange" bind:paymentPriceChange="onPaymentPriceChange"></l-pages-deal>
-<!-- <t-cell-group theme="card" title="交易信息">
-  <t-input align="right" bind:change="onTotalPriceChange" value="{{calcForm.totalPrice}}" label="交易总价" placeholder="请输入交易总价" suffix="{{calcForm.unit}}" type="number"></t-input>
-  <t-input align="right" bind:change="onWangqianPriceChange" value="{{calcForm.wangqianPrice}}" label="网签金额" placeholder="请输入网签金额" suffix="{{calcForm.unit}}" type="number"></t-input>
-  <t-input align="right" bind:change="onHukouWuyePriceChange" value="{{calcForm.hukouWuyePrice}}" label="户口物业预留金额" placeholder="请输入户口物业预留金额" suffix="{{calcForm.unit}}" type="number"></t-input>
-  <t-input value="{{calcForm.paymentRate}}" bindchange="onPriceInput" label="首付比例" tips="{{priceError ? '请输入正确的比例0%~100%' : ''}}" type="number" placeholder="请输入首付比例" suffix="%" align="right"></t-input>
-  <t-input borderless bind:change="onPaymentPriceChange" value="{{calcForm.paymentPrice}}" label="首付金额" type="number" align="right" suffix="{{calcForm.unit}}" placeholder="请输入首付金额"></t-input>
 
-</t-cell-group> -->
-<!-- <l-cell title="名下房产">
-  <l-tabs slot="note" current-index="{{2}}" bind:change="onAreaTypesChange" list="{{selfHouseTypes}}">
-  </l-tabs>
-</l-cell> -->
 
 <!-- 居间机构 -->
-<t-cell-group wx:if="{{calcForm.buyIndex===0}}" theme="card" title="居间机构">
-  <t-cell title="居间服务费比例">
-    <view slot="note">
-      <t-stepper bind:change="onServiceFeeRateChange" value="{{calcForm.serviceFeeRate}}" step="0.5" theme="filled" />
-
-    </view>
-  </t-cell>
-  <t-input bind:change="onServiceFeeChange" label="居间服务费" value="{{calcForm.serviceFee}}" suffix="{{calcForm.unit}}" align="right">
-
-
-  </t-input>
-  <t-input label="贷款服务费" align="right" value="{{calcForm.bankPrice}}" suffix="{{calcForm.unit}}" wx:if="{{calcForm.bankType!==3}}">
-  </t-input>
-</t-cell-group>
-
+<l-pages-service calcForm="{{calcForm}}" bind:serviceFeeRateChange="onServiceFeeRateChange" bind:serviceFeeChange="onServiceFeeChange"></l-pages-service>
 
 <!-- 贷款信息 -->
 <block wx:if="{{calcForm.bankType!==3}}">

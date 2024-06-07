@@ -12,3 +12,7 @@ export {
   default as dealBehavior
 }
 from './deal';
+export {
+  default as serviceBehavior
+}
+from './service';

@@ -9,6 +9,9 @@
     },
     "l-pages-deal": {
       "default": "./components/deal/deal"
+    },
+    "l-pages-service": {
+      "default": "./components/service/service"
     }
   }
 }

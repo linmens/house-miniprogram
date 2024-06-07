@@ -1,0 +1,11 @@
+<t-cell-group wx:if="{{calcForm.buyIndex===0}}" theme="card" title="居间机构">
+  <t-cell title="居间服务费比例">
+    <view slot="note">
+      <t-stepper bind:change="onServiceFeeRateChange" value="{{calcForm.serviceFeeRate}}" step="0.5" theme="filled" />
+    </view>
+  </t-cell>
+  <t-input wx:if="{{calcForm.totalPrice}}" bind:change="onServiceFeeChange" label="居间服务费" value="{{calcForm.serviceFee}}" suffix="{{calcForm.unit}}" align="right">
+  </t-input>
+  <t-input label="贷款服务费" align="right" value="{{calcForm.bankPrice}}" suffix="{{calcForm.unit}}" wx:if="{{calcForm.bankType!==3}}">
+  </t-input>
+</t-cell-group>

@@ -11,16 +11,20 @@ import {
 import {
   loanBehavior,
   basicBehavior,
-  dealBehavior
+  dealBehavior,
+  serviceBehavior
 } from '../../behavior/index'
 
 import NP from 'number-precision'
 
 Component({
 
-  behaviors: [loanBehavior, basicBehavior, dealBehavior],
+  behaviors: [loanBehavior, basicBehavior, dealBehavior, serviceBehavior],
   options: {
     styleIsolation: 'apply-shared',
+  },
+  lifetimes: {
+
   },
   data: {
     priceError: false,
@@ -29,17 +33,7 @@ Component({
     defaultDate: new Date().getTime(),
     mineDate: getOldYearTimestamp(50),
     maxDate: getOldYearTimestamp(0),
-    calcForm: {
 
-
-
-      // 居间服务费
-      serviceFee: 0,
-      // 服务比例
-      serviceFeeRate: 1.5,
-      // 贷款服务费金额
-      bankPrice: 3000,
-    },
     tabs,
     loanTypes,
     loanBackTypes,
@@ -139,71 +133,10 @@ Component({
       this.setLoanYear()
     },
 
-    /**
-     * 计算居间服务费
-     */
-    calculateServiceFee() {
-      const {
-        totalPrice,
-        unitCount,
-        serviceFeeRate
-      } = this.data.calcForm
-
-      // 计算服务费 = 交易总价 * (居间服务比例/100)
-      if (totalPrice) {
-
-        const serviceFee =
-          NP.round(NP.times(totalPrice, NP.divide(serviceFeeRate, 100)), 4)
-        console.log(serviceFee, 'serviceFee')
-        this.setData({
-          'calcForm.serviceFee': serviceFee
-        })
-      }
-
-    },
 
 
-    /**
-     * 计算居间服务费比例
-     */
-    setServiceFeeRate() {
-      const {
-        totalPrice,
-        serviceFee
-      } = this.data.calcForm
-      if (totalPrice && serviceFee) {
-        const serviceFeeRate = NP.round(NP.times(NP.divide(serviceFee, totalPrice), 100), 2)
 
-        console.log(serviceFeeRate, 'serviceFeeRate')
-        this.setData({
-          'calcForm.serviceFeeRate': serviceFeeRate
-        })
-      }
 
-    },
-    onServiceFeeRateChange(e) {
-      const {
-        value
-      } = e.detail;
-
-      this.setData({
-        'calcForm.serviceFeeRate': value
-      });
-      this.calculateServiceFee()
-    },
-    /**
-     * 居间服务费改变
-     */
-    onServiceFeeChange(e) {
-      const {
-        value
-      } = e.detail
-      this.setData({
-        'calcForm.serviceFee': value
-      })
-      // 计算服务费比例
-      this.setServiceFeeRate()
-    },
 
 
   },

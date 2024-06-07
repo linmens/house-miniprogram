@@ -17,8 +17,8 @@
       <l-tabs slot="note" current-index="{{calcForm.chanquanIndex}}" bind:change="onAreaTypesChange" list="{{chanquanTypes}}">
       </l-tabs>
     </l-cell>
-    <t-input align="right" type="number" bind:change="onHouseAgeChange" suffix="年" value="{{calcForm.houseAge}}" label="房屋年龄" placeholder="请输入房屋年龄"></t-input>
-    <t-cell title="房屋建成年份" hover arrow bind:tap="showYearPicker">
+    <t-input wx:if="{{calcForm.bankType!==3}}" align="right" type="number" bind:change="onHouseAgeChange" suffix="年" value="{{calcForm.houseAge}}" label="房屋年龄" placeholder="请输入房屋年龄"></t-input>
+    <t-cell wx:if="{{calcForm.bankType!==3}}" title="房屋建成年份" hover arrow bind:tap="showYearPicker">
       <view slot="note" class="flex f-col-center">
         <text>{{calcForm.houseYear}}年</text>
       </view>

@@ -17,6 +17,29 @@ const loanBehavior = Behavior({
   },
   methods: {
     /**
+     * 设置贷款金额
+     * @param type 0 当改变首付金额时
+     */
+    setLoanPrice(type) {
+      const {
+        wangqianPrice,
+        paymentPrice
+      } = this.data.calcForm
+      let loanPrice = 0
+      switch (type) {
+        case 0:
+          loanPrice = NP.minus(wangqianPrice, paymentPrice)
+          break;
+
+        default:
+          break;
+      }
+
+      this.setData({
+        'calcForm.loanPrice': loanPrice
+      })
+    },
+    /**
      * 设置商贷贷款年限
      */
     setLoanYear() {

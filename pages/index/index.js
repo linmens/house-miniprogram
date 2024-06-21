@@ -6,6 +6,7 @@ import {
 } from '../../utils/constants';
 import {
   getOldYearTimestamp,
+  calculateLoan
 } from '../../utils/util';
 import {
   basicBehavior,
@@ -27,10 +28,12 @@ Component({
   },
   data: {
     priceError: false,
+    showCustomAreaInput: false,
     currentYear: new Date().getFullYear(),
     defaultDate: new Date().getTime(),
     mineDate: getOldYearTimestamp(50),
     maxDate: getOldYearTimestamp(0),
+    customAreaInputVal: '',
     calcForm: {
       // 组合贷款合计金额
       loanGroupPrice: 0,
@@ -66,7 +69,8 @@ Component({
       })
       console.log('贷款方式发生改变')
       console.log('设置贷款方式：', value)
-      this.setBankPrice()
+      // this.setBankPrice()
+      this.startCalc()
     },
     /**
      * 开始计算
@@ -83,12 +87,8 @@ Component({
       switch (bankType) {
         case 0:
           console.log('开始计算商业贷款部分...')
-          console.log('开始计算商业贷款金额...')
-          this.setLoanPrice(1)
-          if (buyIndex === 0) {
-            console.log('开始计算商业贷款二手房相关...')
-            this.setBankPrice()
-          }
+          await this.setLoanPrice(1)
+
           break;
         case 1:
           console.log('开始计算公积金贷款部分...')
@@ -114,6 +114,38 @@ Component({
         default:
           break;
       }
-    }
+      if (buyIndex === 0) {
+        await this.setBankPrice()
+        await this.setServiceFee()
+      }
+      await this.setPaymentPrice()
+      // this.setPaymentRate()
+    },
+    showDialog(e) {
+      const {
+        key
+      } = e.currentTarget.dataset;
+      this.setData({
+        [key]: true,
+        dialogKey: key
+      });
+    },
+    closeDialog() {
+      const {
+        dialogKey
+      } = this.data;
+      this.setData({
+        [dialogKey]: false
+      });
+    },
+    onCustomAreaInputValChange(e) {
+      const {
+        value
+      } = e.detail
+      this.setData({
+        customAreaInputVal: value
+      })
+    },
+    
   },
 });

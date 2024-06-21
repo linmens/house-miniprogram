@@ -4,7 +4,7 @@
   </t-tabs>
 </t-sticky>
 <!-- 基本信息 -->
-<l-pages-basic calcForm="{{calcForm}}" unitTypes="{{unitTypes}}" buyTypes="{{buyTypes}}" areaTypes="{{areaTypes}}" chanquanTypes="{{chanquanTypes}}" bind:typesChange="onTypesChange" bind:buyTypesChange="onBuyTypesChange" bind:areaTypesChange="onAreaTypesChange" bind:chanquanTypesChange="onChanquanTypesChange" bind:houseAgeChange="onHouseAgeChange" bind:showYearPicker="showYearPicker"></l-pages-basic>
+<l-pages-basic id="basicRef" calcForm="{{calcForm}}" unitTypes="{{unitTypes}}" buyTypes="{{buyTypes}}" areaTypes="{{areaTypes}}" chanquanTypes="{{chanquanTypes}}" bind:typesChange="onTypesChange" bind:buyTypesChange="onBuyTypesChange" bind:areaTypesChange="onAreaTypesChange" bind:chanquanTypesChange="onChanquanTypesChange" bind:houseAgeChange="onHouseAgeChange" bind:showYearPicker="showYearPicker" bind:onCustomAreaChange="onCustomAreaChange"></l-pages-basic>
 <!-- 交易信息 -->
 <l-pages-deal calcForm="{{calcForm}}" bind:totalPriceChange="onTotalPriceChange" bind:wangqianPriceChange="onWangqianPriceChange" bind:hukouWuyePriceChange="onHukouWuyePriceChange" bind:paymentRateChange="onPaymentRateChange" bind:paymentPriceChange="onPaymentPriceChange"></l-pages-deal>
 
@@ -13,12 +13,15 @@
 <l-pages-service calcForm="{{calcForm}}" bind:serviceFeeRateChange="onServiceFeeRateChange" bind:serviceFeeChange="onServiceFeeChange"></l-pages-service>
 
 <!-- 贷款信息 -->
-<l-pages-shangdai calcForm="{{calcForm}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===0||calcForm.bankType===2}}" bind:onLoanPriceChange="onLoanPriceChange"></l-pages-shangdai>
-<l-pages-gongjijin calcForm="{{calcForm}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanGjjHomeTypes="{{loanGjjHomeTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===1||calcForm.bankType===2}}" bind:handleLoanGjjIsFirstChange="handleLoanGjjIsFirstChange" bind:loanPriceChange="onLoanGjjPriceChange" bind:onLoanGjjHomeTypesChange="onLoanGjjHomeTypesChange" bind:onLoanGjjIndexChange="onLoanGjjIndexChange"></l-pages-gongjijin>
+<l-pages-shangdai calcForm="{{calcForm}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===0&&calcForm.totalPrice>0||calcForm.bankType===2&&calcForm.totalPrice>0}}" bind:onLoanPriceChange="onLoanPriceChange" bind:onLoanTypesChange="onLoanTypesChange" bind:onCustomLoanYearInputValChange="onCustomLoanYearInputValChange"></l-pages-shangdai>
+<l-pages-gongjijin calcForm="{{calcForm}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanGjjHomeTypes="{{loanGjjHomeTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===1&&calcForm.totalPrice>0||calcForm.bankType===2&&calcForm.totalPrice>0}}" bind:handleLoanGjjIsFirstChange="handleLoanGjjIsFirstChange" bind:loanPriceChange="onLoanGjjPriceChange" bind:onLoanGjjHomeTypesChange="onLoanGjjHomeTypesChange" bind:onLoanGjjIndexChange="onLoanGjjIndexChange"></l-pages-gongjijin>
 
 <!-- 年月日 -->
 <t-date-time-picker title="选择年份" visible="{{yearVisible}}" mode="year" defaultValue="{{defaultDate}}" format="YYYY" start="{{mineDate}}" end="{{maxDate}}" bindchange="onYearConfirm" bindcancel="hidePicker" />
 
 <t-message id="t-message" />
-
+<!-- 自定义输入建筑面积 -->
+<t-dialog visible="{{showCustomAreaInput}}" title="自定义建筑面积" confirm-btn="确定" cancel-btn="取消" bind:confirm="handleConfirmCustomArea" bind:cancel="closeDialog">
+  <t-input bind:change="onCustomAreaInputValChange" type="number" value="{{customAreaInputVal}}" borderless class="dialog-input" clearable slot="content" placeholder="请输入面积" suffix="㎡" placeholder-class="placeholder" />
+</t-dialog>
 <t-footer text="Copyright © 2021-{{currentYear}} 李长兴 版权所有" links="{{[{url:'/pages/webview/webview?src=https://beian.miit.gov.cn/',name:'陕ICP备2024038256号',openType: 'navigate'}]}}" />

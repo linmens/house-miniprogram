@@ -101,7 +101,7 @@ export const loanTypes = [{
   value: 30,
   label: '30年'
 }, {
-  value: 0,
+  value: 5,
   label: '自定义'
 }]
 export const loanBackTypes = [{

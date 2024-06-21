@@ -149,8 +149,7 @@
       */
      setPaymentRate(type) {
        const {
-         loanGjjIsFirst,
-         bankType,
+
          paymentPrice,
          wangqianPrice
        } = this.data.calcForm
@@ -220,8 +219,8 @@
        console.log('交易总价改变-设置交易总价：', value)
        console.log('交易总价改变-设置网签总价：', result.a)
        await this.startCalc()
-       this.setPaymentPrice()
-       this.setServiceFee()
+       //  this.setPaymentPrice()
+       //  this.setServiceFee()
 
      },
      /**
@@ -242,9 +241,10 @@
          priceError: !isValid,
          'calcForm.paymentRate': value
        });
-       this.setLoanPrice(1)
-       this.setPaymentPrice(0)
-       console.log('首付比例改变', e)
+       console.log('设置首付比例：', value)
+       //  this.setLoanPrice(1)
+       //  this.setPaymentPrice(0)
+       this.startCalc()
      },
      /**
       * 首付金额改变
@@ -285,7 +285,7 @@
      /**
       * 网签金额改变
       */
-     onWangqianPriceChange(e) {
+     async onWangqianPriceChange(e) {
        const {
          value
        } = e.detail
@@ -296,15 +296,16 @@
          'calcForm.wangqianPrice': value
        });
 
-       this.setTotalPrice(0)
-       this.setServiceFee()
-       if (bankType === 0) {
-         this.setLoanPrice(1)
-       }
-       if (bankType === 1) {
-         this.setLoanGjjPrice(0)
-       }
-       this.setPaymentPrice(0)
+       await this.setTotalPrice(0)
+       this.startCalc()
+       //  this.setServiceFee()
+       //  if (bankType === 0) {
+       //    this.setLoanPrice(1)
+       //  }
+       //  if (bankType === 1) {
+       //    this.setLoanGjjPrice(0)
+       //  }
+       //  this.setPaymentPrice(0)
      },
      /**
       * 户口物业预留金额改变

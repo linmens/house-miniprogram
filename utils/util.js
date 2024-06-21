@@ -63,19 +63,28 @@
 
    // 检查房龄是否为负数
    if (houseAge < 0) {
-     return "房龄无效，不能为负数。";
+     return {
+       builtYear: 0,
+       message: "房龄无效，不能为负数。"
+     };
    }
 
    // 检查房龄是否超过当前年份
    if (houseAge > currentYear) {
-     return "房龄无效，超过当前年份。";
+     return {
+       builtYear: 0,
+       message: "房龄无效，超过当前年份。"
+     };
    }
 
    // 计算建成年份
    const builtYear = currentYear - houseAge;
 
    // 返回建成年份
-   return builtYear;
+   return {
+     builtYear,
+     message: ''
+   };
  }
 
  function isNotEmpty(value) {
@@ -134,5 +143,24 @@
    if (unit === '万元') {
      result = Math.floor(NP.times(loanRate, wangqianPrice))
    }
+   return result
+ }
+
+ /**
+  * 反算网签金额
+  * @param {number} price - 商贷金额/公积金贷款金额
+  * @param {number} paymentRate - 首付比例 (如 0.85)
+  * @param {string} unit - 金额单位 ('元' 或 '万元')
+  * @returns {number} - 最终贷款金额
+  */
+ export function calculateWangqianPrice(price, paymentRate, unit) {
+   let result = 0;
+   const loanRate = NP.minus(1, NP.divide(paymentRate, 100));
+
+   result = Math.floor(NP.divide(price, loanRate))
+
+   // if (unit === '万元') {
+   //   result = Math.floor(NP.times(loanRate, wangqianPrice))
+   // }
    return result
  }

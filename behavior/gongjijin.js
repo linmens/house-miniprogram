@@ -2,6 +2,9 @@
   import {
     loanGjjHomeTypes
   } from '../utils/constants'
+  import {
+    calculateLoan
+  } from '../utils/util'
   export const gongjijinBehavior = Behavior({
     lifetimes: {
       ready() {
@@ -71,6 +74,7 @@
       setLoanGjjPrice(type) {
         const {
           unit,
+          unitCount,
           wangqianPrice,
           paymentRate,
           bankType,
@@ -79,16 +83,18 @@
           loanPrice,
           paymentPrice
         } = this.data.calcForm
-        const loanGjjMaxPrice = loanGjjHomeTypes[loanGjjSaveIndex].max
-        console.log('设置公积金贷款最大金额:' + type, loanGjjMaxPrice, )
+        const loanGjjMaxPrice = unit === '元' ? loanGjjHomeTypes[loanGjjSaveIndex].max : loanGjjHomeTypes[loanGjjSaveIndex].max / unitCount
+        console.log('设置公积金贷款最大金额:', loanGjjMaxPrice)
         let _loanGjjPrice = 0
         switch (type) {
           case 0:
-            if (wangqianPrice) {
-              const rate = NP.minus(100, paymentRate) / 100
-              _loanGjjPrice = Math.floor(rate * wangqianPrice / 10000) * 10000
+            _loanGjjPrice = calculateLoan(wangqianPrice, paymentRate, unit)
+            console.log('开始计算公积金贷款金额(网签*贷款比例):', _loanGjjPrice)
+            // if (wangqianPrice) {
+            //   const rate = NP.minus(100, paymentRate) / 100
+            //   _loanGjjPrice = Math.floor(rate * wangqianPrice / 10000) * 10000
 
-            }
+            // }
 
             break;
           case 1:

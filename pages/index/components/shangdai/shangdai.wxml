@@ -9,10 +9,19 @@
         <t-button theme="primary" size="small">添加常用</t-button>
       </view>
     </l-cell> -->
+
   <l-cell title="贷款年限">
     <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanTypes}}"></l-tabs>
   </l-cell>
+  <!-- 自定义贷款年限 -->
+  <t-cell title="自定义贷款年限" wx:if="{{calcForm.loanIndex===6}}">
+    <t-stepper slot="note" bind:change="onCustomLoanYearInputValChange" value="{{calcForm.loanYear}}" min="1" max="30" step="1" theme="filled" />
+  </t-cell>
   <l-cell title="还款方式">
-    <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanBackIndex}}" bind:change="onLoanBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
+    <l-tabs slot="note" current-index="{{calcForm.loanBackIndex}}" bind:change="onLoanBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
   </l-cell>
 </t-cell-group>
+
+<!-- <t-dialog visible="{{showCustomLoanYearInput}}" title="自定义建筑面积" confirm-btn="确定" cancel-btn="取消" bind:confirm="handleConfirmCustomLoanYear" bind:cancel="closeDialog">
+  <t-input bind:change="onCustomLoanYearInputValChange" type="number" value="{{customLoanYearInputVal}}" borderless class="dialog-input" clearable slot="content" placeholder="请输入贷款年限" suffix="年" placeholder-class="placeholder" />
+</t-dialog> -->

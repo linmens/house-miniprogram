@@ -71,13 +71,21 @@
         if (loanYear > 30) {
           loanYear = 30
         }
-        loanTypes[loanIndex].label = `自定义(${loanYear}年)`
-        loanTypes[loanIndex].value = loanYear
+        // loanTypes[loanIndex].label = `自定义(${loanYear}年)`
+        // loanTypes[loanIndex].value = loanYear
         this.setData({
           'calcForm.loanYear': loanYear,
-          'loanTypes': loanTypes
+          'loanIndex': 6
         })
-        this.selectComponent('#loanTabs').initTrack()
+        // this.selectComponent('#loanTabs').initTrack()
+      },
+      onCustomLoanYearInputValChange(e) {
+        const {
+          value
+        } = e.detail
+        this.setData({
+          'calcForm.loanYear': value
+        })
       },
       /**
        * 贷款年限改变
@@ -86,11 +94,14 @@
       onLoanTypesChange(e) {
         console.log(e, 'e')
         const {
-          value
+          value,
+          index
         } = e.detail
         this.setData({
-          'calcForm.loanYear': value
+          'calcForm.loanYear': value,
+          'calcForm.loanIndex': index
         })
+
       },
       /**
        * 贷款利率改变
@@ -106,14 +117,14 @@
       /**
        * 贷款金额改变时
        */
-      onLoanPriceChange(e) {
+      async onLoanPriceChange(e) {
         const {
           value
         } = e.detail
         this.setData({
           'calcForm.loanPrice': value,
         })
-        this.setLoanGjjPrice(2);
+        await this.setLoanGjjPrice(2);
         this.setPaymentPrice()
         this.setPaymentRate()
       }

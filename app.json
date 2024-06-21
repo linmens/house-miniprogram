@@ -23,7 +23,7 @@
   },
   "window": {
     "navigationBarTextStyle": "@navTxtStyle",
-    "navigationBarTitleText": "Weixin",
+    "navigationBarTitleText": "税费计算",
     "navigationBarBackgroundColor": "@navBgColor",
     "backgroundColor": "@bgColor",
     "backgroundColorTop": "@bgColorTop"

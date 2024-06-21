@@ -24,6 +24,12 @@ Component({
   methods: {
     onLoanPriceChange(e) {
       this.triggerEvent('onLoanPriceChange', e.detail)
+    },
+    onLoanTypesChange(e) {
+      this.triggerEvent('onLoanTypesChange', e.detail)
+    },
+    onCustomLoanYearInputValChange(e) {
+      this.triggerEvent('onCustomLoanYearInputValChange', e.detail)
     }
   }
 })

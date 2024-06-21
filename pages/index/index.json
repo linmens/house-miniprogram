@@ -5,7 +5,8 @@
     "l-pages-basic": "./components/basic/basic",
     "l-pages-gongjijin": "./components/gongjijin/gongjijin",
     "t-footer": "tdesign-miniprogram/footer/footer",
-    "t-link": "tdesign-miniprogram/link/link"
+    "t-link": "tdesign-miniprogram/link/link",
+    "t-dialog": "tdesign-miniprogram/dialog/dialog"
   },
   "componentGenerics": {
 

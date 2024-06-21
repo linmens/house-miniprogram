@@ -19,6 +19,7 @@
      areaTypes,
      // 显示隐藏年选择器
      yearVisible: false,
+
      calcForm: {
        // 计价单位下标
        unitIndex: 0,
@@ -29,6 +30,8 @@
        buyIndex: 0,
        // 产权情况下标
        chanquanIndex: 0,
+       // 建筑面积
+       area: 0,
        // 建筑面积下标
        areaIndex: 0,
        // 贷款方式 0 商业 1 公积金 2 组合贷 3 全款
@@ -37,6 +40,7 @@
        houseYear: new Date().getFullYear(),
        // 房屋年龄
        houseAge: '',
+       houseDescMsg: '',
      }
    },
    observers: {
@@ -113,8 +117,40 @@
        });
        this.setLoanYear()
      },
-     onAreaTypesChange(e) {
+     handleConfirmCustomArea(e) {
 
+       const {
+         customAreaInputVal,
+         areaTypes
+       } = this.data
+       const {
+         areaIndex
+       } = this.data.calcForm
+       console.log('自定义面积输入确认：', areaTypes, e, this.data.customAreaInputVal)
+       areaTypes[areaIndex].label = `自定义（${customAreaInputVal}㎡ ）`
+       areaTypes[areaIndex].value = customAreaInputVal
+       this.setData({
+         'areaTypes': areaTypes
+       })
+       this.closeDialog()
+       this.selectComponent('#basicRef').initTrack()
+     },
+     onCustomAreaChange(e) {
+       const {
+         value
+       } = e.detail
+       this.setData({
+         'calcForm.area': value
+       })
+     },
+     onAreaTypesChange(e) {
+       console.log('建筑面积改变：', e)
+       const {
+         index
+       } = e.detail
+       this.setData({
+         'calcForm.areaIndex': index
+       })
      },
      onHouseAgeChange(e) {
        const {
@@ -122,16 +158,15 @@
        } = e.detail
        console.log(value, 'value')
        if (value) {
-         const builtYear = calculateBuiltYear(value);
-         console.log(builtYear, 'calculateBuiltYear')
-         if (builtYear) {
-           this.setData({
-             'calcForm.houseYear': builtYear,
-             'calcForm.loanIndex': 6,
-             'calcForm.houseAge': value
-           })
-           this.setLoanYear()
-         }
+         const result = calculateBuiltYear(value);
+         console.log(result, 'calculateBuiltYear')
+         this.setData({
+           'calcForm.houseYear': result.builtYear,
+           'calcForm.loanIndex': 6,
+           'calcForm.houseAge': value,
+           'calcForm.houseDescMsg': result.message
+         })
+         this.setLoanYear()
        }
      },
    },

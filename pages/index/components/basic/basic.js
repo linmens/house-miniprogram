@@ -21,6 +21,10 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    initTrack() {
+      console.log(this.selectComponent('#areaTabs'), 'areaTabs')
+      this.selectComponent('#areaTabs').initTrack()
+    },
     onTypesChange(e) {
       this.triggerEvent('typesChange', e.detail);
     },
@@ -29,6 +33,9 @@ Component({
     },
     onAreaTypesChange(e) {
       this.triggerEvent('areaTypesChange', e.detail);
+    },
+    onCustomAreaChange(e) {
+      this.triggerEvent('onCustomAreaChange', e.detail)
     },
     onChanquanTypesChange(e) {
       this.triggerEvent('chanquanTypesChange', e.detail);

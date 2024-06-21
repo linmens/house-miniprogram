@@ -1,0 +1,18 @@
+<t-cell-group theme="card" title="商贷信息">
+  <t-input bind:change="onLoanPriceChange" value="{{calcForm.loanPrice}}" label="贷款金额" align="right" suffix="{{calcForm.unit}}" placeholder="请输入贷款金额" type="number">
+  </t-input>
+  <t-input bind:change="onLoanRateChange" value="{{calcForm.loanRate}}" label="贷款利率" align="right" placeholder="请输入贷款利率" type="number">
+  </t-input>
+  <!-- <l-cell>
+      <view slot="desc" class="flex f-row-between">
+        <l-tabs current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanRateTypes}}"></l-tabs>
+        <t-button theme="primary" size="small">添加常用</t-button>
+      </view>
+    </l-cell> -->
+  <l-cell title="贷款年限">
+    <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanTypes}}"></l-tabs>
+  </l-cell>
+  <l-cell title="还款方式">
+    <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanBackIndex}}" bind:change="onLoanBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
+  </l-cell>
+</t-cell-group>

@@ -1,0 +1,34 @@
+<t-cell-group theme="card" title="公积金信息">
+
+  <!-- <t-input bind:change="onLoanPriceChange" value="{{calcForm.loanGjjPrice}}" label="贷款金额" align="right" suffix="{{calcForm.unit}}" placeholder="请输入贷款金额" type="number">
+  </t-input> -->
+  <l-cell title="贷款金额">
+    <view slot="note" class="flex f-col-center">
+      <t-stepper max="{{calcForm.unit==='元'?loanGjjHomeTypes[calcForm.loanGjjSaveIndex].max:loanGjjHomeTypes[calcForm.loanGjjSaveIndex].max/10000}}" step="{{calcForm.unit==='元'?10000:1}}" input-width="80" value="{{calcForm.loanGjjPrice}}" size="large" theme="filled" bind:change="onLoanGjjPriceChange" />
+      <text class="m-l-20">{{calcForm.unit}}</text>
+    </view>
+    <view slot="desc">
+      {{loanGjjHomeTypes[calcForm.loanGjjSaveIndex].desc}}
+    </view>
+  </l-cell>
+  <t-input bind:change="onLoanRateChange" value="{{calcForm.loanGjjRate}}" label="贷款利率" align="right" placeholder="请输入贷款利率" type="number">
+  </t-input>
+  <!-- <l-cell>
+      <view slot="desc" class="flex f-row-between">
+        <l-tabs current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanRateTypes}}"></l-tabs>
+        <t-button theme="primary" size="small">添加常用</t-button>
+      </view>
+    </l-cell> -->
+  <l-cell title="贷款年限">
+    <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanGjjIndex}}" bind:change="onLoanGjjIndexChange" list="{{loanTypes}}"></l-tabs>
+  </l-cell>
+  <l-cell title="还款方式">
+    <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanGjjBackIndex}}" bind:change="onLoanBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
+  </l-cell>
+  <t-cell wx:if="{{calcForm.bankType===1||calcForm.bankType===2}}" title="是否首次使用">
+    <t-switch bindchange="handleLoanGjjIsFirstChange" defaultValue="{{calcForm.loanGjjIsFirst}}" slot="note" />
+  </t-cell>
+  <l-cell title="家庭缴存情况">
+    <l-tabs slot="note" bind:change="onLoanGjjHomeTypesChange" current-index="{{calcForm.loanGjjSaveIndex}}" list="{{loanGjjHomeTypes}}"></l-tabs>
+  </l-cell>
+</t-cell-group>

@@ -37,6 +37,7 @@ Component({
     },
     attached() {
       this.initTrack()
+
     },
   },
   /**
@@ -48,8 +49,8 @@ Component({
 
     },
     currentIndex: {
-      type: Number,
-      value: -1,
+      type: null,
+      value: null,
     },
     // 是否取消圆角
     roundless: {

@@ -10,13 +10,15 @@
    getOldYearTimestamp,
    calculateBuiltYear,
  } from '../utils/util';
- const basicBehavior = Behavior({
+ export const basicBehavior = Behavior({
    data: {
      buyTypes,
      chanquanTypes,
      selfHouseTypes,
      unitTypes,
      areaTypes,
+     // 显示隐藏年选择器
+     yearVisible: false,
      calcForm: {
        // 计价单位下标
        unitIndex: 0,
@@ -78,12 +80,38 @@
        const {
          index
        } = e.detail
-       if(index===1){
-         
+       if (index === 1) {
+
        }
        this.setData({
          'calcForm.buyIndex': index
        })
+     },
+     // 显示隐藏年份选择器
+     showYearPicker() {
+       this.setData({
+         yearVisible: true
+       })
+     },
+     // 确认选择年份
+     onYearConfirm(e) {
+       const {
+         value
+       } = e.detail;
+       console.log('confirm', value);
+       const {
+         defaultDate
+       } = this.data
+       const currentYear = new Date().getFullYear()
+       // 计算房龄
+       const houseAge = currentYear - value;
+       this.setData({
+         yearVisible: false,
+         'calcForm.houseYear': value,
+         'calcForm.houseAge': houseAge,
+         'calcForm.loanIndex': 6
+       });
+       this.setLoanYear()
      },
      onAreaTypesChange(e) {
 
@@ -108,4 +136,3 @@
      },
    },
  })
- export default basicBehavior

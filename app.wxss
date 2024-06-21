@@ -34,3 +34,31 @@ page {
     --td-input-border-color-example: #5e5e5e;
   }
 }
+
+.m-l-20 {
+  margin-left: 20rpx;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1
+}
+
+.f-row-center {
+  justify-content: center;
+}
+
+.f-row-between {
+  justify-content: space-between;
+}
+
+.f-col-center {
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}

@@ -1,6 +1,8 @@
-<t-tabs bind:change="onBankTypeChange" value="{{calcForm.bankType}}">
-  <t-tab-panel wx:for="{{tabs}}" wx:key="index" label="{{item.label}}" value="{{index}}" />
-</t-tabs>
+<t-sticky>
+  <t-tabs bind:change="onBankTypeChange" value="{{calcForm.bankType}}">
+    <t-tab-panel wx:for="{{tabs}}" wx:key="index" label="{{item.label}}" value="{{index}}" />
+  </t-tabs>
+</t-sticky>
 <!-- 基本信息 -->
 <l-pages-basic calcForm="{{calcForm}}" unitTypes="{{unitTypes}}" buyTypes="{{buyTypes}}" areaTypes="{{areaTypes}}" chanquanTypes="{{chanquanTypes}}" bind:typesChange="onTypesChange" bind:buyTypesChange="onBuyTypesChange" bind:areaTypesChange="onAreaTypesChange" bind:chanquanTypesChange="onChanquanTypesChange" bind:houseAgeChange="onHouseAgeChange" bind:showYearPicker="showYearPicker"></l-pages-basic>
 <!-- 交易信息 -->
@@ -11,28 +13,12 @@
 <l-pages-service calcForm="{{calcForm}}" bind:serviceFeeRateChange="onServiceFeeRateChange" bind:serviceFeeChange="onServiceFeeChange"></l-pages-service>
 
 <!-- 贷款信息 -->
-<block wx:if="{{calcForm.bankType!==3}}">
-  <t-cell-group theme="card" title="商贷信息">
-    <t-input bind:change="onLoanPriceChange" value="{{calcForm.loanPrice}}" label="贷款金额" align="right" suffix="{{calcForm.unit}}" placeholder="请输入贷款金额" type="number">
-    </t-input>
-    <t-input bind:change="onLoanRateChange" value="{{calcForm.loanRate}}" label="贷款利率" align="right" placeholder="请输入贷款利率" type="number">
-    </t-input>
-    <!-- <l-cell>
-      <view slot="desc" class="flex f-row-between">
-        <l-tabs current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanRateTypes}}"></l-tabs>
-        <t-button theme="primary" size="small">添加常用</t-button>
-      </view>
-    </l-cell> -->
-    <l-cell title="贷款年限">
-      <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanTypes}}"></l-tabs>
-    </l-cell>
-    <l-cell title="还款方式">
-      <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanBackIndex}}" bind:change="onLoanBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
-    </l-cell>
-  </t-cell-group>
+<l-pages-shangdai calcForm="{{calcForm}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===0||calcForm.bankType===2}}" bind:onLoanPriceChange="onLoanPriceChange"></l-pages-shangdai>
+<l-pages-gongjijin calcForm="{{calcForm}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanGjjHomeTypes="{{loanGjjHomeTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===1||calcForm.bankType===2}}" bind:handleLoanGjjIsFirstChange="handleLoanGjjIsFirstChange" bind:loanPriceChange="onLoanGjjPriceChange" bind:onLoanGjjHomeTypesChange="onLoanGjjHomeTypesChange" bind:onLoanGjjIndexChange="onLoanGjjIndexChange"></l-pages-gongjijin>
 
-</block>
 <!-- 年月日 -->
 <t-date-time-picker title="选择年份" visible="{{yearVisible}}" mode="year" defaultValue="{{defaultDate}}" format="YYYY" start="{{mineDate}}" end="{{maxDate}}" bindchange="onYearConfirm" bindcancel="hidePicker" />
 
 <t-message id="t-message" />
+
+<t-footer text="Copyright © 2021-{{currentYear}} 李长兴 版权所有" links="{{[{url:'/pages/webview/webview?src=https://beian.miit.gov.cn/',name:'陕ICP备2024038256号',openType: 'navigate'}]}}" />

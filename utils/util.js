@@ -120,29 +120,19 @@
 
  /**
   * 计算贷款额度
-  * @param {number} amount - 网签金额
-  * @param {number} loanRatio - 贷款比例 (如 0.85)
+  * @param {number} wangqianPrice - 网签金额
+  * @param {number} paymentRate - 首付比例 (如 0.85)
   * @param {string} unit - 金额单位 ('元' 或 '万元')
   * @returns {number} - 最终贷款金额
   */
- export function calculateLoan(amount, loanRatio, unit) {
-   let loanAmountInWan;
+ export function calculateLoan(wangqianPrice, paymentRate, unit) {
+   let result = 0;
+   const loanRate = NP.minus(1, NP.divide(paymentRate, 100));
 
-   // 如果单位是'元'，将金额转换为'万元'
-   if (unit === '元') {
-     loanAmountInWan = amount * loanRatio / 10000;
-   } else if (unit === '万元') {
-     loanAmountInWan = amount * loanRatio;
-   } else {
-     throw new Error('无效的单位');
+   result = Math.floor(NP.divide(NP.times(wangqianPrice, loanRate), 10000)) * 10000
+
+   if (unit === '万元') {
+     result = Math.floor(NP.times(loanRate, wangqianPrice))
    }
-
-   // 将贷款金额向下取整到最近的万位数
-   const flooredLoanAmountInWan = Math.floor(loanAmountInWan);
-
-   if (unit === '元') {
-     return flooredLoanAmountInWan * 10000; // 结果以元为单位返回
-   } else {
-     return flooredLoanAmountInWan; // 结果以万元为单位返回
-   }
+   return result
  }

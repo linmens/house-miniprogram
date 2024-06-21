@@ -1,6 +1,5 @@
 import {
   tabs,
-
   loanTypes,
   loanBackTypes,
   loanRateTypes
@@ -9,17 +8,17 @@ import {
   getOldYearTimestamp,
 } from '../../utils/util';
 import {
-  loanBehavior,
   basicBehavior,
   dealBehavior,
-  serviceBehavior
+  serviceBehavior,
+  gongjijinBehavior,
+  shangdaiBehavior
 } from '../../behavior/index'
 
 import NP from 'number-precision'
 
 Component({
-
-  behaviors: [loanBehavior, basicBehavior, dealBehavior, serviceBehavior],
+  behaviors: [basicBehavior, dealBehavior, serviceBehavior, gongjijinBehavior, shangdaiBehavior],
   options: {
     styleIsolation: 'apply-shared',
   },
@@ -28,23 +27,35 @@ Component({
   },
   data: {
     priceError: false,
-    // 显示隐藏年选择器
-    yearVisible: false,
+    currentYear: new Date().getFullYear(),
     defaultDate: new Date().getTime(),
     mineDate: getOldYearTimestamp(50),
     maxDate: getOldYearTimestamp(0),
-
+    calcForm: {
+      // 组合贷款合计金额
+      loanGroupPrice: 0,
+    },
     tabs,
     loanTypes,
     loanBackTypes,
     loanRateTypes
   },
+  observers: {
+    'calcForm.loanPrice,calcForm.loanGjjPrice': function (loanPrice, loanGjjPrice) {
+      // const {
+      //   bankType
+      // } = this.data.calcForm
+      // if (bankType === 2) {
+      //   let loanGroupPrice = NP.plus(loanPrice, loanGjjPrice)
+      //   this.setData({
+      //     'calcForm.loanGroupPrice': loanGroupPrice
+      //   })
+      //   console.log('设置组合贷合计贷款金额：', loanGroupPrice)
+      // }
+
+    }
+  },
   methods: {
-    onChange(e) {
-      this.setData({
-        value: e.detail.value
-      });
-    },
     // 贷款方式 0 商业贷款 1 公积金 2组合贷 3全款
     onBankTypeChange(e) {
       const {
@@ -53,91 +64,56 @@ Component({
       this.setData({
         'calcForm.bankType': value,
       })
+      console.log('贷款方式发生改变')
+      console.log('设置贷款方式：', value)
       this.setBankPrice()
     },
     /**
-     * 设置首付金额
+     * 开始计算
      */
-    setPaymentPrice() {
+    async startCalc() {
       const {
-        totalPrice,
-        paymentRate
-      } = this.data.calcForm
-      if (totalPrice && paymentRate) {
+        wangqianPrice,
+        unit,
+        paymentRate,
+        bankType,
+        buyIndex
+      } = this.data.calcForm;
 
-        const paymentPrice = NP.times(totalPrice, NP.divide(paymentRate, 100))
-        this.setData({
-          'calcForm.paymentPrice': paymentPrice
-        })
-      }
-
-    },
-    // 设置贷款服务费
-    setBankPrice() {
-      let bankPrice = 0
-      const {
-        unitCount,
-        bankType
-      } = this.data.calcForm
       switch (bankType) {
         case 0:
-          bankPrice = 3000 / unitCount
+          console.log('开始计算商业贷款部分...')
+          console.log('开始计算商业贷款金额...')
+          this.setLoanPrice(1)
+          if (buyIndex === 0) {
+            console.log('开始计算商业贷款二手房相关...')
+            this.setBankPrice()
+          }
           break;
         case 1:
-          bankPrice = 4000 / unitCount
+          console.log('开始计算公积金贷款部分...')
+          console.log('开始计算公积金贷款金额...')
+          this.setLoanGjjPrice(0)
           break;
         case 2:
-          bankPrice = 5000 / unitCount
+          console.log('开始计算组合贷部分...')
+          console.log('开始计算组合贷金额...')
+          await this.setLoanGjjPrice(0);
+          const groupLoanPrice = calculateLoan(wangqianPrice, paymentRate, unit)
+          const {
+            loanGjjPrice,
+          } = this.data.calcForm
+          let newLoanPrice = NP.minus(groupLoanPrice, loanGjjPrice)
+          this.setData({
+            'calcForm.loanGroupPrice': groupLoanPrice,
+            'calcForm.loanPrice': newLoanPrice
+          })
+          console.log('设置组合贷总金额', groupLoanPrice)
+          console.log('设置组合贷商业贷款部分', newLoanPrice)
           break;
         default:
           break;
       }
-      this.setData({
-        'calcForm.bankPrice': bankPrice
-      })
-    },
-
-
-    onChange1(e) {
-      this.setData({
-        value1: e.detail.value
-      });
-    },
-
-    // 显示隐藏年份选择器
-    showYearPicker() {
-      this.setData({
-        yearVisible: true
-      })
-    },
-    // 确认选择年份
-    onYearConfirm(e) {
-      const {
-        value
-      } = e.detail;
-      console.log('confirm', value);
-      const {
-        defaultDate
-      } = this.data
-      const currentYear = new Date().getFullYear()
-
-
-      // 计算房龄
-      const houseAge = currentYear - value;
-      this.setData({
-        yearVisible: false,
-        'calcForm.houseYear': value,
-        'calcForm.houseAge': houseAge,
-        'calcForm.loanIndex': 6
-      });
-      this.setLoanYear()
-    },
-
-
-
-
-
-
-
+    }
   },
 });

@@ -1,5 +1,5 @@
  import NP from 'number-precision'
- const serviceBehavior = Behavior({
+ export const serviceBehavior = Behavior({
    data: {
      calcForm: {
        // 居间服务费
@@ -24,10 +24,11 @@
        // 计算服务费 = 交易总价 * (居间服务比例/100)
        if (totalPrice) {
          const serviceFee =
-           NP.round(NP.times(totalPrice, NP.divide(serviceFeeRate, 100)), 4)
+           NP.times(totalPrice, NP.divide(serviceFeeRate, 100))
          this.setData({
            'calcForm.serviceFee': serviceFee
          })
+         console.log('设置居间服务费:', serviceFee)
        }
      },
      /**
@@ -75,4 +76,3 @@
      },
    }
  })
- export default serviceBehavior

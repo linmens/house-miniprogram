@@ -1,17 +1,23 @@
 {
   "component": true,
   "usingComponents": {
-
+    "t-sticky": "tdesign-miniprogram/sticky/sticky",
+    "l-pages-basic": "./components/basic/basic",
+    "l-pages-gongjijin": "./components/gongjijin/gongjijin",
+    "t-footer": "tdesign-miniprogram/footer/footer",
+    "t-link": "tdesign-miniprogram/link/link"
   },
   "componentGenerics": {
-    "l-pages-basic": {
-      "default": "./components/basic/basic"
-    },
+
     "l-pages-deal": {
       "default": "./components/deal/deal"
     },
     "l-pages-service": {
       "default": "./components/service/service"
+    },
+
+    "l-pages-shangdai": {
+      "default": "./components/shangdai/shangdai"
     }
   }
 }

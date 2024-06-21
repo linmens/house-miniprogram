@@ -2,7 +2,8 @@
   "darkmode": true,
   "pages": [
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/webview/webview"
   ],
   "usingComponents": {
     "t-tabs": "tdesign-miniprogram/tabs/tabs",

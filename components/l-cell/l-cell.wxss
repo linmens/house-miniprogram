@@ -41,6 +41,7 @@
 .l-cell__title {
   flex: 35%;
   overflow: hidden;
+  font-size: var(--td-font-size-m, 32rpx);
 }
 
 .l-cell__note {
@@ -48,4 +49,9 @@
   overflow: hidden;
   display: flex;
   justify-content: flex-end;
+}
+
+.l-cell__desc {
+  font-size: 24rpx;
+  color: #999;
 }

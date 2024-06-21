@@ -1,18 +1,5 @@
-export {
-  default as loanBehavior
-}
-from "./loan";
-
-export {
-  default as basicBehavior
-}
-from './basic';
-
-export {
-  default as dealBehavior
-}
-from './deal';
-export {
-  default as serviceBehavior
-}
-from './service';
+export * from './basic';
+export * from './deal';
+export * from './service';
+export * from './gongjijin'
+export * from './shangdai'

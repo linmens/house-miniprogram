@@ -10,7 +10,7 @@
       <slot name="note" />
     </view>
   </view>
-  <view class="l-cell--desc">
+  <view class="l-cell__desc">
     <slot name="desc"></slot>
   </view>
 </view>

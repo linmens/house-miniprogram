@@ -27,27 +27,3 @@
   left: var(--td-cell-border-left-space, var(--td-cell-horizontal-padding, 32rpx));
   right: var(--td-cell-border-right-space, 0);
 }
-
-.flex {
-  display: flex;
-}
-
-.flex-1 {
-  flex: 1
-}
-
-.f-row-center {
-  justify-content: center;
-}
-
-.f-row-between {
-  justify-content: space-between;
-}
-
-.f-col-center {
-  align-items: center;
-}
-
-.text-center {
-  text-align: center;
-}

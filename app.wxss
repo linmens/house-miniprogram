@@ -1,6 +1,14 @@
 @import 'miniprogram_npm/tdesign-miniprogram/common/style/theme/_index.wxss';
 
+page {
+  background-color: #f6f6f6;
+}
 
+@media (prefers-color-scheme: dark) {
+  page {
+    background: #181818 !important;
+  }
+}
 
 .m-l-20 {
   margin-left: 20rpx;

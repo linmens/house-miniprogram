@@ -17,6 +17,7 @@ import {
 } from '../../behavior/index'
 
 import NP from 'number-precision'
+import Toast from 'tdesign-miniprogram/toast/index';
 
 Component({
   behaviors: [basicBehavior, dealBehavior, serviceBehavior, gongjijinBehavior, shangdaiBehavior],
@@ -27,6 +28,10 @@ Component({
 
   },
   data: {
+    userList: ['居间机构', '购房者', '业主', '新房置业顾问'],
+    userIndex: 0,
+    userIndexRember: false,
+    userListVisible: false,
     priceError: false,
     showCustomAreaInput: false,
     currentYear: new Date().getFullYear(),
@@ -44,21 +49,79 @@ Component({
     loanRateTypes
   },
   observers: {
-    'calcForm.loanPrice,calcForm.loanGjjPrice': function (loanPrice, loanGjjPrice) {
-      // const {
-      //   bankType
-      // } = this.data.calcForm
-      // if (bankType === 2) {
-      //   let loanGroupPrice = NP.plus(loanPrice, loanGjjPrice)
-      //   this.setData({
-      //     'calcForm.loanGroupPrice': loanGroupPrice
-      //   })
-      //   console.log('设置组合贷合计贷款金额：', loanGroupPrice)
-      // }
 
+  },
+  lifetimes: {
+    async ready() {
+      let t = this
+      // 获取本地userIndex
+      const userIndexLocal = await wx.getStorageSync('userIndex')
+      if (userIndexLocal !== '') {
+        this.setData({
+          userIndex: userIndexLocal
+        })
+      }
+      wx.getStorage({
+        key: 'userIndexRember',
+        success(res) {
+          const data = res.data
+
+          t.setData({
+            userIndexRember: data
+          })
+          if (!data) {
+            // 首次加载如果记住角色选择不是true
+            t.setData({
+              userListVisible: true
+            })
+          }
+        }
+      })
     }
   },
   methods: {
+    onUserListVisibleChange(e) {
+      this.setData({
+        userListVisible: e.detail.visible,
+      });
+    },
+    onUserIndexRemberChange(e) {
+      const {
+        checked
+      } = e.detail
+      this.setData({
+        userIndexRember: checked
+      })
+      wx.setStorageSync('userIndexRember', checked)
+    },
+    onUserChange(e) {
+      console.log('角色改变：', e)
+      const {
+        value
+      } = e.detail
+      this.setData({
+        userIndex: value
+      })
+      Toast({
+        context: this,
+        selector: '#t-toast',
+        message: '切换成功',
+        theme: 'success',
+        direction: 'column',
+      });
+      this.setData({
+        userListVisible: false
+      })
+      wx.setStorageSync('userIndex', value)
+    },
+    /**
+     * 打开角色列表弹框
+     */
+    showUserList() {
+      this.setData({
+        userListVisible: true
+      })
+    },
     // 贷款方式 0 商业贷款 1 公积金 2组合贷 3全款
     onBankTypeChange(e) {
       const {

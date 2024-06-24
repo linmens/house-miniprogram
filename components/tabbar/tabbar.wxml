@@ -1,0 +1,9 @@
+<view class="t-tab-bar--placeholder__wrap">
+  <view class="t-tab-bar--placeholder"></view>
+  <view class="t-tab-bar-safe"></view>
+</view>
+<t-tab-bar t-class="t-tab-bar" value="{{value}}" bindchange="onChange" shape="round" theme="tag" split="{{false}}">
+  <t-tab-bar-item wx:for="{{list}}" wx:key="index" value="{{item.value}}" icon="{{item.icon}}">
+    {{item.ariaLabel}}
+  </t-tab-bar-item>
+</t-tab-bar>

@@ -7,7 +7,8 @@ Component({
     unitTypes: Array,
     buyTypes: Array,
     areaTypes: Array,
-    chanquanTypes: Array
+    chanquanTypes: Array,
+    userIndex: Number
   },
   options: {
     virtualHost: true
@@ -40,7 +41,7 @@ Component({
       this.triggerEvent('onCustomAreaChange', e.detail)
     },
     onChanquanTypesChange(e) {
-      this.triggerEvent('chanquanTypesChange', e.detail);
+      this.triggerEvent('onChanquanTypesChange', e.detail);
     },
     onHouseAgeChange(e) {
       this.triggerEvent('houseAgeChange', e.detail);

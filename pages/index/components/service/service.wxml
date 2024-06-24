@@ -1,4 +1,4 @@
-<l-cell-group wx:if="{{calcForm.buyIndex===0}}" theme="card" title="居间机构">
+<l-cell-group wx:if="{{calcForm.buyIndex===0&&calcForm.unit}}" theme="card" title="居间机构">
   <l-cell title="居间服务费比例">
     <view slot="note">
       <t-stepper bind:change="onServiceFeeRateChange" value="{{calcForm.serviceFeeRate}}" step="0.5" theme="filled" />

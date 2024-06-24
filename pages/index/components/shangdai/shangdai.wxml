@@ -1,4 +1,4 @@
-<l-cell-group theme="card" title="商贷信息">
+<l-cell-group theme="card" title="商贷信息" wx:if="{{calcForm.unit}}">
   <l-cell title="贷款金额">
     <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanPriceChange" value="{{calcForm.loanPrice}}" align="right" suffix="{{calcForm.unit}}" placeholder="请输入贷款金额" type="number">
     </t-input>

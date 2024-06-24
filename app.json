@@ -6,6 +6,7 @@
     "pages/webview/webview"
   ],
   "usingComponents": {
+
     "t-tabs": "tdesign-miniprogram/tabs/tabs",
     "t-tab-panel": "tdesign-miniprogram/tab-panel/tab-panel",
     "t-radio-group": "tdesign-miniprogram/radio-group/radio-group",
@@ -20,7 +21,10 @@
     "t-input": "tdesign-miniprogram/input/input",
     "t-date-time-picker": "tdesign-miniprogram/date-time-picker/date-time-picker",
     "t-button": "tdesign-miniprogram/button/button",
-    "t-message": "tdesign-miniprogram/message/message"
+    "t-message": "tdesign-miniprogram/message/message",
+    "l-tabbar": "/components/tabbar/tabbar",
+    "t-tab-bar": "tdesign-miniprogram/tab-bar/tab-bar",
+    "t-tab-bar-item": "tdesign-miniprogram/tab-bar-item/tab-bar-item"
   },
   "window": {
     "navigationBarTextStyle": "@navTxtStyle",

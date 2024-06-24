@@ -35,13 +35,11 @@ let CellGroup = class CellGroup extends SuperComponent {
     this.lifetimes = {
       ready() {
         this.updateLastChid();
-        console.log('ready')
       },
     };
     this.methods = {
       updateLastChid() {
         const items = this.$children;
-        console.log(items, 's')
         items.forEach((child, index) => child.setData({
           isLastChild: index === items.length - 1
         }));

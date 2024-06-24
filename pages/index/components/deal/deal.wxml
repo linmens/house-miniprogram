@@ -1,4 +1,4 @@
-<l-cell-group theme="card" title="交易信息">
+<l-cell-group wx:if="{{calcForm.unit}}" theme="card" title="交易信息">
   <l-cell title="交易总价" required>
     <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onTotalPriceChange" value="{{calcForm.totalPrice}}" placeholder="请输入交易总价" suffix="{{calcForm.unit}}" type="number"></t-input>
   </l-cell>

@@ -1,10 +1,23 @@
 <t-sticky>
+  <t-navbar t-class-placeholder="t-navbar-placeholder" t-class-content="t-navbar-content" t-class-title="nav-title" fixed="{{false}}">
+    <view slot="left">
+      <t-button bind:tap="showUserList" size="small" icon="arrow-left-right-3">
+        {{userList[userIndex]}}
+      </t-button>
+    </view>
+    <view slot="title">
+      <text>税费计算</text>
+    </view>
+  </t-navbar>
   <t-tabs bind:change="onBankTypeChange" value="{{calcForm.bankType}}">
     <t-tab-panel wx:for="{{tabs}}" wx:key="index" label="{{item.label}}" value="{{index}}" />
   </t-tabs>
+  <!-- <l-cell title="当前角色">
+    <t-button slot="note" ghost theme="primary" shape="round">业主</t-button>
+  </l-cell> -->
 </t-sticky>
 <!-- 基本信息 -->
-<l-pages-basic id="basicRef" calcForm="{{calcForm}}" unitTypes="{{unitTypes}}" buyTypes="{{buyTypes}}" areaTypes="{{areaTypes}}" chanquanTypes="{{chanquanTypes}}" bind:typesChange="onTypesChange" bind:buyTypesChange="onBuyTypesChange" bind:areaTypesChange="onAreaTypesChange" bind:chanquanTypesChange="onChanquanTypesChange" bind:houseAgeChange="onHouseAgeChange" bind:showYearPicker="showYearPicker" bind:onCustomAreaChange="onCustomAreaChange"></l-pages-basic>
+<l-pages-basic id="basicRef" calcForm="{{calcForm}}" unitTypes="{{unitTypes}}" buyTypes="{{buyTypes}}" areaTypes="{{areaTypes}}" chanquanTypes="{{chanquanTypes}}" bind:typesChange="onTypesChange" bind:buyTypesChange="onBuyTypesChange" bind:areaTypesChange="onAreaTypesChange" bind:chanquanTypesChange="onChanquanTypesChange" bind:houseAgeChange="onHouseAgeChange" bind:showYearPicker="showYearPicker" bind:onCustomAreaChange="onCustomAreaChange" bind:onChanquanTypesChange="onChanquanTypesChange"></l-pages-basic>
 <!-- 交易信息 -->
 <l-pages-deal calcForm="{{calcForm}}" bind:totalPriceChange="onTotalPriceChange" bind:wangqianPriceChange="onWangqianPriceChange" bind:hukouWuyePriceChange="onHukouWuyePriceChange" bind:paymentRateChange="onPaymentRateChange" bind:paymentPriceChange="onPaymentPriceChange"></l-pages-deal>
 
@@ -21,7 +34,27 @@
 
 <t-message id="t-message" />
 <!-- 自定义输入建筑面积 -->
-<t-dialog visible="{{showCustomAreaInput}}" title="自定义建筑面积" confirm-btn="确定" cancel-btn="取消" bind:confirm="handleConfirmCustomArea" bind:cancel="closeDialog">
+<!-- <t-dialog visible="{{showCustomAreaInput}}" title="自定义建筑面积" confirm-btn="确定" cancel-btn="取消" bind:confirm="handleConfirmCustomArea" bind:cancel="closeDialog">
   <t-input bind:change="onCustomAreaInputValChange" type="number" value="{{customAreaInputVal}}" borderless class="dialog-input" clearable slot="content" placeholder="请输入面积" suffix="㎡" placeholder-class="placeholder" />
-</t-dialog>
+</t-dialog> -->
+<view style="margin: 32rpx;">
+  <t-button theme="primary" size="large" block>开始计算</t-button>
+</view>
 <t-footer text="Copyright © 2021-{{currentYear}} 李长兴 版权所有" links="{{[{url:'/pages/webview/webview?src=https://beian.miit.gov.cn/',name:'陕ICP备2024038256号',openType: 'navigate'}]}}" />
+
+
+<!-- 切换角色 -->
+<t-popup close-btn bind:visible-change="onUserListVisibleChange" visible="{{userListVisible}}" customStyle="width:90%" placement="center">
+  <view class="flex f-row-center" style="padding:20rpx">
+    <text>切换角色</text>
+  </view>
+  <t-radio-group value="{{userIndex}}" bind:change="onUserChange">
+    <t-radio wx:for="{{userList}}" wx:key="index" value="{{index}}" label="{{item}}" icon="line" borderless />
+  </t-radio-group>
+  <view class="flex f-row-center">
+    <t-radio checked="{{userIndexRember}}" bind:change="onUserIndexRemberChange" label=" 记住我的选择"></t-radio>
+  </view>
+</t-popup>
+<t-toast id="t-toast" />
+
+<l-tabbar></l-tabbar>

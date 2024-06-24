@@ -7,7 +7,6 @@
 
  } from '../utils/constants';
  import {
-   getOldYearTimestamp,
    calculateBuiltYear,
  } from '../utils/util';
  export const basicBehavior = Behavior({
@@ -150,6 +149,14 @@
        } = e.detail
        this.setData({
          'calcForm.areaIndex': index
+       })
+     },
+     onChanquanTypesChange(e) {
+       const {
+         index
+       } = e.detail
+       this.setData({
+         'calcForm.chanquanIndex': index
        })
      },
      onHouseAgeChange(e) {

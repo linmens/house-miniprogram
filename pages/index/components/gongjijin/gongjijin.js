@@ -11,7 +11,9 @@ Component({
     loanRateTypes: Array,
     loanGjjHomeTypes: Array
   },
-
+  options: {
+    virtualHost: true
+  },
   /**
    * 组件的初始数据
    */
@@ -34,6 +36,9 @@ Component({
     },
     onLoanGjjIndexChange(e) {
       this.triggerEvent('onLoanGjjIndexChange', e.detail)
+    },
+    onCustomLoanGjjYearChange(e) {
+      this.triggerEvent('onCustomLoanGjjYearChange', e.detail)
     }
   }
 })

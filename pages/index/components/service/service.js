@@ -9,6 +9,9 @@ Component({
   lifetimes: {
 
   },
+  options: {
+    virtualHost: true
+  },
   /**
    * 组件的初始数据
    */

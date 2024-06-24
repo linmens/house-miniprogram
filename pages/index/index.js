@@ -81,19 +81,29 @@ Component({
         unit,
         paymentRate,
         bankType,
-        buyIndex
+        buyIndex,
+        loanIndex,
+        loanGjjIndex
       } = this.data.calcForm;
 
       switch (bankType) {
         case 0:
           console.log('开始计算商业贷款部分...')
           await this.setLoanPrice(1)
-
+          // 设置贷款年限
+          if (loanIndex === 6) {
+            await this.setLoanYear();
+          }
           break;
         case 1:
           console.log('开始计算公积金贷款部分...')
           console.log('开始计算公积金贷款金额...')
-          this.setLoanGjjPrice(0)
+          await this.setLoanGjjPrice(0)
+          // 设置贷款年限
+          if (loanGjjIndex === 6) {
+            await this.setLoanGjjYear();
+          }
+
           break;
         case 2:
           console.log('开始计算组合贷部分...')
@@ -110,6 +120,14 @@ Component({
           })
           console.log('设置组合贷总金额', groupLoanPrice)
           console.log('设置组合贷商业贷款部分', newLoanPrice)
+          // 设置贷款年限
+          if (loanIndex === 6) {
+            await this.setLoanYear();
+          }
+          if (loanGjjIndex === 6) {
+            await this.setLoanGjjYear();
+          }
+
           break;
         default:
           break;
@@ -146,6 +164,6 @@ Component({
         customAreaInputVal: value
       })
     },
-    
+
   },
 });

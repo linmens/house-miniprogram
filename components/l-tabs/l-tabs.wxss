@@ -6,7 +6,8 @@
 
 .l-tabs__wrap {
   width: 100%;
-  background-color: #f2f3ff;
+  /* background-color: #f2f3ff; */
+  background-color: var(--td-tab-item-tag-bg, var(--td-bg-color-secondarycontainer, var(--td-gray-color-1, #f3f3f3)));
   border-radius: 35rpx;
   display: flex;
   overflow: hidden;
@@ -42,6 +43,7 @@
 
 
 .l-tabs__item.active {
-  color: #fff;
-  background-color: #0052d9;
+  font-weight: 600;
+  color: var(--td-tab-item-active-color, var(--td-brand-color, var(--td-primary-color-7, #0052d9)));
+  background-color: var(--td-tab-item-tag-active-bg, var(--td-brand-color-light, var(--td-primary-color-1, #f2f3ff)));
 }

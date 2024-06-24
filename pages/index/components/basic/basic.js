@@ -9,7 +9,9 @@ Component({
     areaTypes: Array,
     chanquanTypes: Array
   },
-
+  options: {
+    virtualHost: true
+  },
   /**
    * 组件的初始数据
    */
@@ -45,6 +47,9 @@ Component({
     },
     showYearPicker() {
       this.triggerEvent('showYearPicker');
+    },
+    updateChildren() {
+      this.selectComponent('#basicGroupRef').updateLastChid()
     }
   }
 })

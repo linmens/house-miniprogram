@@ -1,4 +1,4 @@
-<t-cell-group theme="card" title="基本信息">
+<l-cell-group id="basicGroupRef" theme="card" title="基本信息">
   <l-cell title="计算单位">
     <l-tabs slot="note" current-index="{{calcForm.unitIndex}}" bind:change="onTypesChange" list="{{unitTypes}}">
     </l-tabs>
@@ -8,27 +8,29 @@
     </l-tabs>
   </l-cell>
 
-  <l-cell title="建筑面积">
+  <l-cell title="建筑面积" bordered="{{calcForm.buyIndex===0}}">
     <l-tabs slot="note" id="areaTabs" current-index="{{calcForm.areaIndex}}" bind:change="onAreaTypesChange" list="{{areaTypes}}">
     </l-tabs>
   </l-cell>
   <!-- 自定义建筑面积 -->
-  <t-cell title="自定义建筑面积" wx:if="{{calcForm.areaIndex===2}}">
+  <l-cell title="自定义建筑面积" wx:if="{{calcForm.areaIndex===2}}">
     <t-stepper slot="note" bind:change="onCustomAreaChange" value="{{calcForm.area}}" min="1" step="1" theme="filled" />
-  </t-cell>
+  </l-cell>
   <block wx:if="{{calcForm.buyIndex===0}}">
     <l-cell title="产权情况">
       <l-tabs slot="note" current-index="{{calcForm.chanquanIndex}}" bind:change="onAreaTypesChange" list="{{chanquanTypes}}">
       </l-tabs>
     </l-cell>
-    <t-input wx:if="{{calcForm.bankType!==3}}" align="right" type="number" bind:change="onHouseAgeChange" suffix="年" value="{{calcForm.houseAge}}" label="房屋年龄" placeholder="请输入房屋年龄"></t-input>
-    <t-cell wx:if="{{calcForm.bankType!==3}}" title="房屋建成年份" hover arrow bind:tap="showYearPicker">
+    <l-cell wx:if="{{calcForm.bankType!==3}}" title="房屋建成年份" hover arrow bind:tap="showYearPicker">
       <view slot="note" class="flex f-col-center">
         <text>{{calcForm.houseYear}}年</text>
       </view>
       <view slot="description">
         <text wx:if="{{calcForm.houseDescMsg}}">{{calcForm.houseDescMsg}}</text>
       </view>
-    </t-cell>
+    </l-cell>
+    <l-cell wx:if="{{calcForm.bankType!==3}}" title="请输入房屋年龄">
+      <t-input customStyle="padding:0" slot="note" borderless align="right" type="number" bind:change="onHouseAgeChange" suffix="年" value="{{calcForm.houseAge}}" placeholder="请输入房屋年龄"></t-input>
+    </l-cell>
   </block>
-</t-cell-group>
+</l-cell-group>

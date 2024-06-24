@@ -10,7 +10,9 @@ Component({
     loanBackTypes: Array,
     loanRateTypes: Array
   },
-
+  options: {
+    virtualHost: true
+  },
   /**
    * 组件的初始数据
    */

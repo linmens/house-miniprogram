@@ -1,8 +1,19 @@
-<t-cell-group theme="card" title="交易信息">
-  <t-input align="right" bind:change="onTotalPriceChange" value="{{calcForm.totalPrice}}" label="交易总价" placeholder="请输入交易总价" suffix="{{calcForm.unit}}" type="number"></t-input>
-  <t-input wx:if="{{calcForm.buyIndex===0}}" align="right" bind:change="onWangqianPriceChange" value="{{calcForm.wangqianPrice}}" label="网签金额" placeholder="请输入网签金额" suffix="{{calcForm.unit}}" type="number"></t-input>
-  <t-input wx:if="{{calcForm.buyIndex===0}}" align="right" bind:change="onHukouWuyePriceChange" value="{{calcForm.hukouWuyePrice}}" label="户口物业预留金额" placeholder="请输入户口物业预留金额" suffix="{{calcForm.unit}}" type="number"></t-input>
-  <t-input wx:if="{{calcForm.bankType!==3}}" value="{{calcForm.paymentRate}}" bindchange="onPaymentRateChange" label="首付比例" tips="{{priceError ? '请输入正确的比例0%~100%' : ''}}" type="number" placeholder="请输入首付比例" suffix="%" align="right"></t-input>
-  <t-input wx:if="{{(calcForm.wangqianPrice||calcForm.totalPrice)&&calcForm.bankType!==3}}" borderless bind:change="onPaymentPriceChange" value="{{calcForm.paymentPrice}}" label="首付金额" type="number" align="right" suffix="{{calcForm.unit}}" placeholder="请输入首付金额"></t-input>
-
-</t-cell-group>
+<l-cell-group theme="card" title="交易信息">
+  <l-cell title="交易总价" required>
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onTotalPriceChange" value="{{calcForm.totalPrice}}" placeholder="请输入交易总价" suffix="{{calcForm.unit}}" type="number"></t-input>
+  </l-cell>
+  <l-cell wx:if="{{calcForm.buyIndex===0}}" title="网签金额" required>
+    <t-input slot="note" borderless customStyle="padding:0" align="right" bind:change="onWangqianPriceChange" value="{{calcForm.wangqianPrice}}" placeholder="请输入网签金额" suffix="{{calcForm.unit}}" type="number"></t-input>
+  </l-cell>
+  <l-cell wx:if="{{calcForm.buyIndex===0}}" title="户口物业预留金额">
+    <t-input slot="note" borderless customStyle="padding:0" align="right" bind:change="onHukouWuyePriceChange" value="{{calcForm.hukouWuyePrice}}" placeholder="请输入户口物业预留金额" suffix="{{calcForm.unit}}" type="number"></t-input>
+  </l-cell>
+  <l-cell wx:if="{{calcForm.bankType!==3}}" title="首付比例">
+    <!-- <t-input slot="note" borderless customStyle="padding:0" value="{{calcForm.paymentRate}}" bindchange="onPaymentRateChange" tips="{{priceError ? '请输入正确的比例0%~100%' : ''}}" type="number" placeholder="请输入首付比例" suffix="%" align="right"></t-input> -->
+    <t-stepper slot="note" bind:change="onPaymentRateChange" value="{{calcForm.paymentRate}}" step="1" min="0" max="100" theme="filled" />
+    <text slot="right-icon">%</text>
+  </l-cell>
+  <l-cell bordered="{{false}}" wx:if="{{(calcForm.wangqianPrice||calcForm.totalPrice)&&calcForm.bankType!==3}}" title="首付金额">
+    <t-input slot="note" borderless customStyle="padding:0" bind:change="onPaymentPriceChange" value="{{calcForm.paymentPrice}}" type="number" align="right" suffix="{{calcForm.unit}}" placeholder="请输入首付金额"></t-input>
+  </l-cell>
+</l-cell-group>

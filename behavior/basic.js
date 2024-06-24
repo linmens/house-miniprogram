@@ -85,8 +85,9 @@
          index
        } = e.detail
        if (index === 1) {
-
+         //  this.selectComponent('#basicRef').updateChildren()
        }
+
        this.setData({
          'calcForm.buyIndex': index
        })
@@ -102,10 +103,7 @@
        const {
          value
        } = e.detail;
-       console.log('confirm', value);
-       const {
-         defaultDate
-       } = this.data
+
        const currentYear = new Date().getFullYear()
        // 计算房龄
        const houseAge = currentYear - value;
@@ -113,9 +111,11 @@
          yearVisible: false,
          'calcForm.houseYear': value,
          'calcForm.houseAge': houseAge,
-         'calcForm.loanIndex': 6
+         'calcForm.loanIndex': 6,
+         'calcForm.loanGjjIndex': 6
        });
        this.setLoanYear()
+       this.setLoanGjjYear()
      },
      handleConfirmCustomArea(e) {
 
@@ -156,17 +156,18 @@
        const {
          value
        } = e.detail
-       console.log(value, 'value')
        if (value) {
          const result = calculateBuiltYear(value);
          console.log(result, 'calculateBuiltYear')
          this.setData({
            'calcForm.houseYear': result.builtYear,
-           'calcForm.loanIndex': 6,
            'calcForm.houseAge': value,
-           'calcForm.houseDescMsg': result.message
+           'calcForm.houseDescMsg': result.message,
+           'calcForm.loanIndex': 6,
+           'calcForm.loanGjjIndex': 6
          })
          this.setLoanYear()
+         this.setLoanGjjYear()
        }
      },
    },

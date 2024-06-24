@@ -71,13 +71,11 @@
         if (loanYear > 30) {
           loanYear = 30
         }
-        // loanTypes[loanIndex].label = `自定义(${loanYear}年)`
-        // loanTypes[loanIndex].value = loanYear
+
         this.setData({
           'calcForm.loanYear': loanYear,
-          'loanIndex': 6
+          'calcForm.loanIndex': 6
         })
-        // this.selectComponent('#loanTabs').initTrack()
       },
       onCustomLoanYearInputValChange(e) {
         const {

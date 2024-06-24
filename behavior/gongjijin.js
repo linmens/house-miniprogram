@@ -122,10 +122,22 @@
       /**
        * 更新贷款年限
        */
-      setLoanGjjYear(value) {
-        this.setData({
-          'calcForm.loanGjjYear': value
-        })
+      setLoanGjjYear() {
+        const {
+          houseAge,
+          loanGjjIndex
+        } = this.data.calcForm
+        console.log('开始计算公积金贷款年限...', loanGjjIndex)
+        if (houseAge) {
+          let loanGjjYear = NP.minus(40, houseAge);
+          if (loanGjjYear > 30) {
+            loanGjjYear = 30
+          }
+          this.setData({
+            'calcForm.loanGjjYear': loanGjjYear,
+          })
+
+        }
       },
       /**
        * 公积金贷款金额改变时
@@ -191,8 +203,16 @@
         this.setData({
           'calcForm.loanGjjIndex': index
         })
-        this.setLoanGjjYear(value)
+        this.setLoanGjjYear()
         this.setLoanGjjRate()
+      },
+      onCustomLoanGjjYearChange(e) {
+        const {
+          value
+        } = e.detail
+        this.setData({
+          'calcForm.loanGjjYear': value
+        })
       }
     }
   })

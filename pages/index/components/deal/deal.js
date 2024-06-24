@@ -7,7 +7,9 @@ Component({
   properties: {
     calcForm: Object,
   },
-
+  options: {
+    virtualHost: true
+  },
   /**
    * 组件的初始数据
    */

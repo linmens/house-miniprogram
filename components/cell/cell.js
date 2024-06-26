@@ -63,6 +63,9 @@ let Cell = class Cell extends SuperComponent {
       },
     };
   }
+  handleTitleRightIcon(e) {
+    this.triggerEvent('title-right-click', e.detail);
+  }
   setIcon(name, value, defaultValue) {
     if (!value)
       return;

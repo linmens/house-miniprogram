@@ -16,7 +16,12 @@
       <block wx:if="{{required}}">
         <text decode class="{{classPrefix}}--required">&nbsp;*</text>
       </block>
+
     </view>
+    <view wx:if="{{titleRightIcon}}" class="{{classPrefix}}__title--right-icon">
+      <t-icon catch:tap="handleTitleRightIcon" data-key="{{key}}" name="{{titleRightIcon}}"></t-icon>
+    </view>
+
     <view class="{{classPrefix}}__note {{prefix}}-class-note">
       <text wx:if="{{ note }}">{{note}}</text>
       <slot name="note" />
@@ -27,6 +32,10 @@
         <template wx:if="{{_rightIcon}}" is="icon" data="{{tClass: classPrefix + '__right-icon ' + prefix + '-class-right-icon', ..._rightIcon }}" />
         <slot name="right-icon" />
       </block>
+    </view>
+    <view wx:if="{{ suffix }}" class="{{classPrefix}}__suffix">
+      <text>{{suffix}}</text>
+      <slot name="suffix"></slot>
     </view>
   </view>
   <view class="{{classPrefix}}__description {{prefix}}-class-description">

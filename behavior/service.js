@@ -7,7 +7,7 @@
        // 服务比例
        serviceFeeRate: 1.5,
        // 贷款服务费金额
-       bankPrice: 3000,
+       bankPrice: 0.3,
      },
    },
    methods: {

@@ -13,6 +13,8 @@
   margin-right: 20rpx;
 }
 
+
+
 .l-border-bottom::after {
   position: absolute;
   box-sizing: border-box;
@@ -59,4 +61,15 @@
   left: 1.5px;
   top: 1.5px;
   z-index: 1;
+}
+
+.long-content {
+  height: 576rpx;
+  margin-top: 16rpx;
+  font-size: 32rpx;
+  color: #888;
+}
+
+.long-content .content-container {
+  white-space: pre-line;
 }

@@ -14,7 +14,11 @@ Component({
    * 组件的初始数据
    */
   data: {
-
+    showHukouWuyeNotice: false,
+    confirmBtn: {
+      content: '知道了',
+      variant: 'base'
+    },
   },
 
   /**
@@ -35,6 +39,17 @@ Component({
     },
     onPaymentPriceChange(e) {
       this.triggerEvent('paymentPriceChange', e.detail)
+    },
+    handleHukouWuyeTitleRight(e) {
+      this.setData({
+        showHukouWuyeNotice: true
+      })
+      this.triggerEvent('handleHukouWuyeTitleRight', e.detail)
+    },
+    closeDialog() {
+      this.setData({
+        showHukouWuyeNotice: false
+      })
     }
   }
 })

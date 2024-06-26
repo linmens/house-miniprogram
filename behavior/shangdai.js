@@ -14,7 +14,11 @@
         // 贷款利率
         loanRate: 3.55,
         // 贷款金额
-        loanPrice: ''
+        loanPrice: '',
+        // 贷款已还期数 业主计算时显示
+        loanPaid: 0,
+        // 提前还款方式
+        loanPaidTypeIndex: 0
       },
 
     },
@@ -83,6 +87,26 @@
         } = e.detail
         this.setData({
           'calcForm.loanYear': value
+        })
+      },
+      /**
+       * 提前还款方式改变
+       * @param {*} e 
+       */
+      onLoanPaidTypeIndexChange(e) {
+        const {
+          index
+        } = e.detail
+        this.setData({
+          'calcForm.loanPaidTypeIndex': index
+        })
+      },
+      onLoanPaidChange(e) {
+        const {
+          value
+        } = e.detail
+        this.setData({
+          'calcForm.loanPaid': value
         })
       },
       /**

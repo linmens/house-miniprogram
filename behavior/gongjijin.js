@@ -8,7 +8,7 @@
   export const gongjijinBehavior = Behavior({
     lifetimes: {
       ready() {
-        console.log(this.data)
+
         const {
           unit,
 

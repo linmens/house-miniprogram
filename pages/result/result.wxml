@@ -1,0 +1,67 @@
+<t-navbar left-arrow title="计算结果">
+
+</t-navbar>
+<t-notice-bar visible="{{true}}" content="计算结果仅供参考，若有计算错误请联系开发者。"></t-notice-bar>
+
+<l-cell-group title="基本信息" theme="card">
+  <t-row>
+    <t-col span="12">
+      <view class="row-tag">
+        <t-tag theme="primary" variant="light-outline">成交方式</t-tag>
+        <text class="m-l-20 f-24">{{orderTypes[calcForm.orderType].label}}</text>
+      </view>
+    </t-col>
+    <t-col span="12">
+      <view class="row-tag">
+        <t-tag theme="primary" variant="light-outline">房屋新旧</t-tag>
+        <text class="m-l-20 f-24">{{calcForm.buy}}</text>
+      </view>
+    </t-col>
+    <t-col span="12">
+      <view class="row-tag">
+        <t-tag theme="primary" variant="light-outline">建筑面积</t-tag>
+        <text class="m-l-20 f-24">{{calcForm.areaIndex===2?calcForm.area:calcForm.areaName}}{{calcForm.areaIndex===2?'㎡':''}}</text>
+      </view>
+    </t-col>
+    <t-col span="12">
+      <view class="row-tag">
+        <t-tag theme="primary" variant="light-outline">产权情况</t-tag>
+        <text class="m-l-20 f-24">{{calcForm.chanquanName}}</text>
+      </view>
+    </t-col>
+    <t-col span="12">
+      <view class="row-tag">
+        <t-tag theme="primary" variant="light-outline">建成年份</t-tag>
+        <text class="m-l-20 f-24">{{calcForm.houseYear}}年</text>
+      </view>
+    </t-col>
+    <t-col span="12" wx:if="{{calcForm.houseAge}}">
+      <view class="row-tag">
+        <t-tag theme="primary" variant="light-outline">房屋年龄</t-tag>
+        <text class="m-l-20 f-24">{{calcForm.houseAge}}年</text>
+      </view>
+    </t-col>
+    <t-col span="12">
+      <view class="row-tag"></view>
+    </t-col>
+  </t-row>
+
+
+
+</l-cell-group>
+<l-cell-group title="卖方承担"></l-cell-group>
+<l-cell-group title="买方承担"></l-cell-group>
+<l-cell-group title="费用明细" theme="card">
+  <l-cell title="合计金额" suffix="{{calcForm.unit}}">
+    <text slot="note" style="font-size:36rpx">20000</text>
+  </l-cell>
+  <l-cell title="交易总价" note="{{calcForm.totalPrice}}" suffix="{{calcForm.unit}}"></l-cell>
+  <l-cell title="网签金额" note="{{calcForm.wangqianPrice}}" suffix="{{calcForm.unit}}"></l-cell>
+  <l-cell title="户口物业预留金额" note="{{calcForm.hukouWuyePrice}}" suffix="{{calcForm.unit}}"></l-cell>
+  <l-cell title="首付金额" note="{{calcForm.paymentPrice}}" suffix="{{calcForm.unit}}"></l-cell>
+  <l-cell title="居间服务费" note="{{calcForm.serviceFee}}" suffix="{{calcForm.unit}}"></l-cell>
+  <l-cell title="贷款服务费" note="{{calcForm.bankPrice}}" suffix="{{calcForm.unit}}"></l-cell>
+  <l-cell title="个税" note="{{result.geshui}}" suffix="{{calcForm.unit}}"></l-cell>
+  <l-cell title="契税" note="{{result.qishui}}" suffix="{{calcForm.unit}}"></l-cell>
+  <l-cell title="增值税" note="{{result.zengzhishui}}" suffix="{{calcForm.unit}}"></l-cell>
+</l-cell-group>

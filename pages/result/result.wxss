@@ -1,0 +1,12 @@
+.row-tag {
+  background-color: darkblue;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  padding: var(--td-input-vertical-padding, 32rpx);
+  box-sizing: border-box;
+  width: 100%;
+  background-color: var(--td-cell-bg-color, var(--td-bg-color-container, var(--td-font-white-1, #ffffff)));
+  height: 100%;
+}

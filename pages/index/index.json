@@ -8,8 +8,7 @@
     "l-pages-gongjijin": "./components/gongjijin/gongjijin",
     "t-footer": "tdesign-miniprogram/footer/footer",
     "t-link": "tdesign-miniprogram/link/link",
-    "t-dialog": "tdesign-miniprogram/dialog/dialog",
-    "t-navbar": "tdesign-miniprogram/navbar/navbar",
+    "t-slider": "tdesign-miniprogram/slider/slider",
     "t-popup": "tdesign-miniprogram/popup/popup"
   },
   "componentGenerics": {

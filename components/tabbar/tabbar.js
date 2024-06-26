@@ -17,10 +17,14 @@ Component({
     value: 'label_1',
     list: [{
         value: 'label_1',
-        icon: 'home',
-        ariaLabel: '税费计算'
+        icon: 'calculator-1',
+        ariaLabel: '房产计算'
       },
-
+      {
+        value: 'label_2',
+        icon: 'control-platform',
+        ariaLabel: '工具箱'
+      },
       {
         value: 'label_4',
         icon: 'user',

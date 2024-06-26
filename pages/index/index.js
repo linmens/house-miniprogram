@@ -2,25 +2,30 @@ import {
   tabs,
   loanTypes,
   loanBackTypes,
-  loanRateTypes
+  loanRateTypes,
+  loanPaidTypes
 } from '../../utils/constants';
 import {
   getOldYearTimestamp,
-  calculateLoan
+  calculateLoan,
+  addDataToCache
 } from '../../utils/util';
+// import SellerMethods from './seller'
 import {
   basicBehavior,
   dealBehavior,
   serviceBehavior,
   gongjijinBehavior,
-  shangdaiBehavior
+  shangdaiBehavior,
+  sellerBehavior,
+  buyerBehavior
 } from '../../behavior/index'
 
 import NP from 'number-precision'
 import Toast from 'tdesign-miniprogram/toast/index';
 
 Component({
-  behaviors: [basicBehavior, dealBehavior, serviceBehavior, gongjijinBehavior, shangdaiBehavior],
+  behaviors: [basicBehavior, dealBehavior, serviceBehavior, gongjijinBehavior, shangdaiBehavior, sellerBehavior, buyerBehavior],
   options: {
     styleIsolation: 'apply-shared',
   },
@@ -29,9 +34,15 @@ Component({
   },
   data: {
     userList: ['居间机构', '购房者', '业主', '新房置业顾问'],
-    userIndex: 0,
+    userIndex: '',
     userIndexRember: false,
     userListVisible: false,
+    // 显示隐藏计算说明
+    showNotice: false,
+    confirmBtn: {
+      content: '知道了',
+      variant: 'base'
+    },
     priceError: false,
     showCustomAreaInput: false,
     currentYear: new Date().getFullYear(),
@@ -42,11 +53,16 @@ Component({
     calcForm: {
       // 组合贷款合计金额
       loanGroupPrice: 0,
+      // 0 给客户算 1 给业主算
+      forWhoIndex: 0,
+
     },
     tabs,
     loanTypes,
     loanBackTypes,
-    loanRateTypes
+    loanRateTypes,
+    loanPaidTypes,
+
   },
   observers: {
 
@@ -56,30 +72,76 @@ Component({
       let t = this
       // 获取本地userIndex
       const userIndexLocal = await wx.getStorageSync('userIndex')
-      if (userIndexLocal !== '') {
+      const userIndexRemberLocal = await wx.getStorageSync('userIndexRember')
+      console.log(userIndexRemberLocal, 'userIndexRemberLocal')
+      if (userIndexLocal === '' || !userIndexRemberLocal) {
         this.setData({
-          userIndex: userIndexLocal
+          userListVisible: true,
         })
       }
-      wx.getStorage({
-        key: 'userIndexRember',
-        success(res) {
-          const data = res.data
-
-          t.setData({
-            userIndexRember: data
-          })
-          if (!data) {
-            // 首次加载如果记住角色选择不是true
-            t.setData({
-              userListVisible: true
-            })
-          }
-        }
+      this.setData({
+        userIndex: userIndexLocal,
+        userIndexRember: userIndexRemberLocal
       })
+      this.onSwitchUser()
+
     }
   },
   methods: {
+    handleClickStart() {
+      const timestamp = new Date().getTime();
+      addDataToCache(this.data.calcForm, timestamp)
+      wx.navigateTo({
+        url: `/pages/result/result?timestamp=${timestamp}`,
+      })
+    },
+    handleClickNoticebar(e) {
+      this.setData({
+        showNotice: true
+      })
+    },
+    onForWhoIndexChange(e) {
+      const {
+        value
+      } = e.detail
+      this.setData({
+        'calcForm.forWhoIndex': value
+      })
+    },
+    onSwitchUser() {
+      const {
+        userIndex
+      } = this.data
+      switch (userIndex) {
+        case 0:
+          // 居间机构
+          this.setData({
+            'calcForm.buyIndex': 0
+          })
+          break;
+        case 1:
+          // 购房者
+          this.setData({
+            'calcForm.buyIndex': 0
+          })
+          break;
+        case 2:
+          // 业主
+          this.setData({
+            'calcForm.buyIndex': 0
+          })
+          break;
+        case 3:
+          // 新房置业顾问
+          this.setData({
+            'calcForm.buyIndex': 1
+          })
+          break;
+        default:
+
+          break;
+      }
+    },
     onUserListVisibleChange(e) {
       this.setData({
         userListVisible: e.detail.visible,
@@ -112,12 +174,14 @@ Component({
       this.setData({
         userListVisible: false
       })
+      this.onSwitchUser()
       wx.setStorageSync('userIndex', value)
     },
     /**
      * 打开角色列表弹框
      */
-    showUserList() {
+    showUserList(e) {
+      console.log(e, 's')
       this.setData({
         userListVisible: true
       })
@@ -206,6 +270,7 @@ Component({
       const {
         key
       } = e.currentTarget.dataset;
+      console.log(e, 'sshowDialog')
       this.setData({
         [key]: true,
         dialogKey: key

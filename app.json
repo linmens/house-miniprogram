@@ -3,10 +3,16 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "pages/webview/webview"
+    "pages/webview/webview",
+    "pages/result/result"
   ],
   "usingComponents": {
-
+    "t-tag": "tdesign-miniprogram/tag/tag",
+    "t-row": "tdesign-miniprogram/row/row",
+    "t-col": "tdesign-miniprogram/col/col",
+    "t-dialog": "tdesign-miniprogram/dialog/dialog",
+    "t-navbar": "tdesign-miniprogram/navbar/navbar",
+    "t-notice-bar": "tdesign-miniprogram/notice-bar/notice-bar",
     "t-tabs": "tdesign-miniprogram/tabs/tabs",
     "t-tab-panel": "tdesign-miniprogram/tab-panel/tab-panel",
     "t-radio-group": "tdesign-miniprogram/radio-group/radio-group",

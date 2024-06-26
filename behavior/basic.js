@@ -4,7 +4,8 @@
    selfHouseTypes,
    unitTypes,
    areaTypes,
-
+   orderTypes,
+   exchangeTypes
  } from '../utils/constants';
  import {
    calculateBuiltYear,
@@ -16,20 +17,23 @@
      selfHouseTypes,
      unitTypes,
      areaTypes,
+     orderTypes,
+     exchangeTypes,
      // 显示隐藏年选择器
      yearVisible: false,
 
      calcForm: {
        // 计价单位下标
-       unitIndex: 0,
+       unitIndex: 1,
        // 金额换算值 元 1 || 万元 10000
        unitCount: 1,
-       unit: '元',
-       // 购房形式
+       unit: '万元',
+       // 房屋新旧
        buyIndex: 0,
-       // 产权情况下标
-       chanquanIndex: 0,
+       buy: '二手房',
+
        // 建筑面积
+       areaName: '90㎡以下',
        area: 0,
        // 建筑面积下标
        areaIndex: 0,
@@ -40,6 +44,10 @@
        // 房屋年龄
        houseAge: '',
        houseDescMsg: '',
+       // 成交方式 0 三方成交 1 自行成交
+       orderType: 0,
+       // 变更类型
+       exchangeType: 0
      }
    },
    observers: {
@@ -57,6 +65,23 @@
      }
    },
    methods: {
+     onExchangeTypeChange(e) {
+       const {
+         index
+       } = e.detail
+       this.setData({
+         'calcForm.exchangeType': index,
+         'calcForm.buyIndex': 0
+       })
+     },
+     onOrderTypesChange(e) {
+       const {
+         index
+       } = e.detail
+       this.setData({
+         'calcForm.orderType': index
+       })
+     },
      /**
       * 元 万元 切换
       * @param {*} e 
@@ -76,19 +101,18 @@
        this.setBankPrice()
      },
      /**
-      * 购房形式
+      * 房屋新旧
       * @param {*} e 
       */
      onBuyTypesChange(e) {
        const {
-         index
+         index,
+         label
        } = e.detail
-       if (index === 1) {
-         //  this.selectComponent('#basicRef').updateChildren()
-       }
 
        this.setData({
-         'calcForm.buyIndex': index
+         'calcForm.buyIndex': index,
+         'calcForm.buy': label
        })
      },
      // 显示隐藏年份选择器
@@ -145,18 +169,22 @@
      onAreaTypesChange(e) {
        console.log('建筑面积改变：', e)
        const {
-         index
+         index,
+         label
        } = e.detail
        this.setData({
-         'calcForm.areaIndex': index
+         'calcForm.areaIndex': index,
+         'calcForm.areaName': label
        })
      },
      onChanquanTypesChange(e) {
        const {
-         index
+         index,
+         label
        } = e.detail
        this.setData({
-         'calcForm.chanquanIndex': index
+         'calcForm.chanquanIndex': index,
+         'calcForm.chanquanName': label
        })
      },
      onHouseAgeChange(e) {

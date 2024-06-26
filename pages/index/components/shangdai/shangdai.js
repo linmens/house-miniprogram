@@ -8,7 +8,8 @@ Component({
     calcForm: Object,
     loanTypes: Array,
     loanBackTypes: Array,
-    loanRateTypes: Array
+    loanRateTypes: Array,
+    loanPaidTypes: Array
   },
   options: {
     virtualHost: true
@@ -32,6 +33,12 @@ Component({
     },
     onCustomLoanYearInputValChange(e) {
       this.triggerEvent('onCustomLoanYearInputValChange', e.detail)
+    },
+    onLoanPaidTypeIndexChange(e) {
+      this.triggerEvent('onLoanPaidTypeIndexChange', e.detail)
+    },
+    onLoanPaidChange(e) {
+      this.triggerEvent('onLoanPaidChange', e.detail)
     }
   }
 })

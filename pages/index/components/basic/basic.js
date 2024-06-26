@@ -8,6 +8,8 @@ Component({
     buyTypes: Array,
     areaTypes: Array,
     chanquanTypes: Array,
+    orderTypes: Array,
+    exchangeTypes: Array,
     userIndex: Number
   },
   options: {
@@ -51,6 +53,12 @@ Component({
     },
     updateChildren() {
       this.selectComponent('#basicGroupRef').updateLastChid()
+    },
+    onOrderTypesChange(e) {
+      this.triggerEvent('onOrderTypesChange', e.detail)
+    },
+    onExchangeTypeChange(e) {
+      this.triggerEvent('onExchangeTypeChange', e.detail)
     }
   }
 })

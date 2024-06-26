@@ -164,3 +164,32 @@
    // }
    return result
  }
+ // 获取缓存数据
+ function getCachedData() {
+   const data = wx.getStorageSync('result');
+   return data ? JSON.parse(data) : {};
+ }
+ // 根据key获取当前data
+ export function getCurrentCachedData(key) {
+   const data = wx.getStorageSync('result');
+   return data ? JSON.parse(data)[key] : {};
+ }
+ // 添加新数据到缓存中
+ export function addDataToCache(value, timestamp) {
+   const data = getCachedData()
+
+
+   // 获取缓存数据的键，并按时间戳排序
+   const keys = Object.keys(data).sort((a, b) => a - b);
+
+   // 如果已有10条数据，删除最旧的那条数据
+   if (keys.length >= 10) {
+     delete data[keys[0]];
+   }
+
+   // 添加新数据
+   data[timestamp] = value;
+
+   // 保存更新后的数据
+   wx.setStorageSync('result', JSON.stringify(data))
+ }

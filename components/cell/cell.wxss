@@ -69,6 +69,17 @@
   display: none;
 }
 
+.l-cell__suffix {
+  font-size: var(--td-font-size-m, 32rpx);
+  color: var(--td-input-suffix-text-color, var(--td-text-color-primary, var(--td-font-gray-1, rgba(0, 0, 0, 0.9))));
+  flex: 0 0 auto;
+  padding-left: var(--td-spacer-1, 24rpx);
+}
+
+.l-cell__title--right-icon {
+  padding-left: var(--td-spacer);
+}
+
 .l-cell__title {
   /* flex: 35%; */
   overflow: hidden;

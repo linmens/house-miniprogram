@@ -13,7 +13,7 @@
        // 网签金额
        wangqianPrice: '',
        // 户口物业预留金额
-       hukouWuyePrice: 10000,
+       hukouWuyePrice: 1,
        // 首付比例
        paymentRate: 15,
        // 首付金额
@@ -196,6 +196,9 @@
          'calcForm.paymentPrice': result
        })
        console.log('设置首付金额', result)
+     },
+     handleHukouWuyeTitleRight(e) {
+       console.log(e, 'shandleHukouWuyeTitleRight')
      },
      /**
       * 交易总价改变

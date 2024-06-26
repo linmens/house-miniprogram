@@ -1,14 +1,18 @@
 <t-sticky>
   <t-navbar t-class-placeholder="t-navbar-placeholder" t-class-content="t-navbar-content" t-class-title="nav-title" fixed="{{false}}">
     <view slot="left">
-      <t-button bind:tap="showUserList" size="small" icon="arrow-left-right-3">
+      <t-button wx:if="{{userList[userIndex]}}" bind:tap="showUserList" size="small" icon="arrow-left-right-3">
         {{userList[userIndex]}}
       </t-button>
     </view>
     <view slot="title">
-      <text>税费计算</text>
+      <text>房产计算</text>
     </view>
   </t-navbar>
+  <t-tabs bind:change="onForWhoIndexChange" value="{{calcForm.forWhoIndex}}" theme="tag">
+    <t-tab-panel label="给客户算" value="{{0}}" />
+    <t-tab-panel label="给业主算" value="{{1}}" />
+  </t-tabs>
   <t-tabs bind:change="onBankTypeChange" value="{{calcForm.bankType}}">
     <t-tab-panel wx:for="{{tabs}}" wx:key="index" label="{{item.label}}" value="{{index}}" />
   </t-tabs>
@@ -16,17 +20,46 @@
     <t-button slot="note" ghost theme="primary" shape="round">业主</t-button>
   </l-cell> -->
 </t-sticky>
+<t-notice-bar bind:click="showDialog" data-key="showNotice" visible="{{calcForm.forWhoIndex===1}}" suffixIcon="chevron-right" prefixIcon="{{false}}" content="计算业主本次二手房产交易所产生的所有费用">
+  <view slot="prefix-icon">
+    <t-icon name="error-circle-filled"></t-icon>
+  </view>
+</t-notice-bar>
+
 <!-- 基本信息 -->
-<l-pages-basic id="basicRef" calcForm="{{calcForm}}" unitTypes="{{unitTypes}}" buyTypes="{{buyTypes}}" areaTypes="{{areaTypes}}" chanquanTypes="{{chanquanTypes}}" bind:typesChange="onTypesChange" bind:buyTypesChange="onBuyTypesChange" bind:areaTypesChange="onAreaTypesChange" bind:chanquanTypesChange="onChanquanTypesChange" bind:houseAgeChange="onHouseAgeChange" bind:showYearPicker="showYearPicker" bind:onCustomAreaChange="onCustomAreaChange" bind:onChanquanTypesChange="onChanquanTypesChange"></l-pages-basic>
+<l-pages-basic id="basicRef" exchangeTypes="{{exchangeTypes}}" orderTypes="{{orderTypes}}" calcForm="{{calcForm}}" unitTypes="{{unitTypes}}" buyTypes="{{buyTypes}}" areaTypes="{{areaTypes}}" chanquanTypes="{{chanquanTypes}}" bind:typesChange="onTypesChange" bind:buyTypesChange="onBuyTypesChange" bind:areaTypesChange="onAreaTypesChange" bind:chanquanTypesChange="onChanquanTypesChange" bind:houseAgeChange="onHouseAgeChange" bind:showYearPicker="showYearPicker" bind:onCustomAreaChange="onCustomAreaChange" bind:onChanquanTypesChange="onChanquanTypesChange" bind:onOrderTypesChange="onOrderTypesChange" bind:onExchangeTypeChange="onExchangeTypeChange"></l-pages-basic>
 <!-- 交易信息 -->
-<l-pages-deal calcForm="{{calcForm}}" bind:totalPriceChange="onTotalPriceChange" bind:wangqianPriceChange="onWangqianPriceChange" bind:hukouWuyePriceChange="onHukouWuyePriceChange" bind:paymentRateChange="onPaymentRateChange" bind:paymentPriceChange="onPaymentPriceChange"></l-pages-deal>
-
-
+<l-pages-deal calcForm="{{calcForm}}" bind:totalPriceChange="onTotalPriceChange" bind:wangqianPriceChange="onWangqianPriceChange" bind:hukouWuyePriceChange="onHukouWuyePriceChange" bind:paymentRateChange="onPaymentRateChange" bind:paymentPriceChange="onPaymentPriceChange" bind:handleHukouWuyeTitleRight="handleHukouWuyeTitleRight"></l-pages-deal>
+<!-- 卖方属性 -->
+<l-cell-group theme="card" title="卖方属性" wx:if="{{calcForm.buyIndex===0}}">
+  <l-cell title="能否提供原值凭证">
+    <l-tabs slot="note" current-index="{{calcForm.oldPriceIndex}}" bind:change="onCanGiveOldpriceTypesChange" list="{{canGiveOldpriceTypes}}">
+    </l-tabs>
+  </l-cell>
+  <l-cell wx:if="{{calcForm.oldPriceIndex===0}}" title="原始购买价格" suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onTotalPriceChange" value="{{calcForm.oldPrice}}" placeholder="请输入原始购买价格" type="number"></t-input>
+  </l-cell>
+  <l-cell title="产权证持有">
+    <t-slider slot="note" value="{{calcForm.chanquanYear}}" max="70" step="{{1}}" bind:change="handleChanquanYearChange" />
+    <t-button size="small" slot="right-icon">已满{{calcForm.chanquanYear}}年</t-button>
+  </l-cell>
+  <l-cell title="是否唯一住房">
+    <l-tabs slot="note" current-index="{{calcForm.chanquanIndex}}" bind:change="onChanquanTypesChange" list="{{chanquanTypes}}">
+    </l-tabs>
+  </l-cell>
+</l-cell-group>
+<!-- 买方 -->
+<l-cell-group title="买方属性" theme="card">
+  <l-cell title="买方家庭">
+    <l-tabs slot="note" current-index="{{calcForm.buyerIndex}}" bind:change="onBuyerTypesChange" list="{{buyerTypes}}">
+    </l-tabs>
+  </l-cell>
+</l-cell-group>
 <!-- 居间机构 -->
-<l-pages-service calcForm="{{calcForm}}" bind:serviceFeeRateChange="onServiceFeeRateChange" bind:serviceFeeChange="onServiceFeeChange"></l-pages-service>
+<l-pages-service wx:if="{{calcForm.orderType===0}}" calcForm="{{calcForm}}" bind:serviceFeeRateChange="onServiceFeeRateChange" bind:serviceFeeChange="onServiceFeeChange"></l-pages-service>
 
 <!-- 贷款信息 -->
-<l-pages-shangdai calcForm="{{calcForm}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===0&&calcForm.totalPrice>0||calcForm.bankType===2&&calcForm.totalPrice>0}}" bind:onLoanPriceChange="onLoanPriceChange" bind:onLoanTypesChange="onLoanTypesChange" bind:onCustomLoanYearInputValChange="onCustomLoanYearInputValChange"></l-pages-shangdai>
+<l-pages-shangdai calcForm="{{calcForm}}" loanPaidTypes="{{loanPaidTypes}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===0&&calcForm.totalPrice>0||calcForm.bankType===2&&calcForm.totalPrice>0}}" bind:onLoanPriceChange="onLoanPriceChange" bind:onLoanTypesChange="onLoanTypesChange" bind:onCustomLoanYearInputValChange="onCustomLoanYearInputValChange" bind:onLoanPaidTypeIndexChange="onLoanPaidTypeIndexChange" bind:onLoanPaidChange="onLoanPaidChange"></l-pages-shangdai>
 <l-pages-gongjijin calcForm="{{calcForm}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanGjjHomeTypes="{{loanGjjHomeTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===1&&calcForm.totalPrice>0||calcForm.bankType===2&&calcForm.totalPrice>0}}" bind:handleLoanGjjIsFirstChange="handleLoanGjjIsFirstChange" bind:loanPriceChange="onLoanGjjPriceChange" bind:onLoanGjjHomeTypesChange="onLoanGjjHomeTypesChange" bind:onLoanGjjIndexChange="onLoanGjjIndexChange" bind:onCustomLoanGjjYearChange="onCustomLoanGjjYearChange"></l-pages-gongjijin>
 
 <!-- 年月日 -->
@@ -38,7 +71,7 @@
   <t-input bind:change="onCustomAreaInputValChange" type="number" value="{{customAreaInputVal}}" borderless class="dialog-input" clearable slot="content" placeholder="请输入面积" suffix="㎡" placeholder-class="placeholder" />
 </t-dialog> -->
 <view style="margin: 32rpx;">
-  <t-button theme="primary" size="large" block>开始计算</t-button>
+  <t-button disabled="{{!calcForm.totalPrice}}" bind:tap="handleClickStart" theme="primary" size="large" block>开始计算</t-button>
 </view>
 <t-footer text="Copyright © 2021-{{currentYear}} 李长兴 版权所有" links="{{[{url:'/pages/webview/webview?src=https://beian.miit.gov.cn/',name:'陕ICP备2024038256号',openType: 'navigate'}]}}" />
 
@@ -55,6 +88,23 @@
     <t-radio checked="{{userIndexRember}}" bind:change="onUserIndexRemberChange" label=" 记住我的选择"></t-radio>
   </view>
 </t-popup>
+<!-- 显示给业主计算提示 -->
+<t-dialog visible="{{showNotice}}" title="计算帮助提示" confirm-btn="{{confirmBtn}}" bind:confirm="closeDialog">
+  <!-- 适配skyline，增加type="list" -->
+  <scroll-view slot="content" type="list" scroll-y class="long-content">
+    <view class="content-container">
+      1.选择当时业主买房时使用的贷款方式[商业贷款、公积金、组合贷、全款]；
+
+      2.完善业主房屋基本信息；
+
+      3.完善此次交易的信息；
+
+      4.完善业主购买房产时的银行贷款信息,若为全款则无需填写。
+
+      最终计算结果：业主本次交易所需要承担的相关费用；业主本次交易房屋增值金额。
+    </view>
+  </scroll-view>
+</t-dialog>
 <t-toast id="t-toast" />
 
 <l-tabbar></l-tabbar>

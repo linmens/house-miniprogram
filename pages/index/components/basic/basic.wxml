@@ -1,26 +1,30 @@
 <l-cell-group wx:if="{{calcForm.unit}}" id="basicGroupRef" theme="card" title="基本信息">
+  <l-cell title="变更类型">
+    <l-tabs slot="note" current-index="{{calcForm.exchangeType}}" bind:change="onExchangeTypeChange" list="{{exchangeTypes}}">
+    </l-tabs>
+  </l-cell>
   <l-cell title="计算单位">
     <l-tabs slot="note" current-index="{{calcForm.unitIndex}}" bind:change="onTypesChange" list="{{unitTypes}}">
     </l-tabs>
   </l-cell>
-  <l-cell title="购房形式">
+  <l-cell title="房屋新旧">
     <l-tabs slot="note" current-index="{{calcForm.buyIndex}}" bind:change="onBuyTypesChange" list="{{buyTypes}}">
     </l-tabs>
   </l-cell>
-
+  <l-cell title="成交方式" wx:if="{{calcForm.buyIndex===0}}">
+    <l-tabs slot="note" current-index="{{calcForm.orderType}}" bind:change="onOrderTypesChange" list="{{orderTypes}}">
+    </l-tabs>
+  </l-cell>
   <l-cell title="建筑面积" bordered="{{calcForm.buyIndex===0}}">
     <l-tabs slot="note" id="areaTabs" current-index="{{calcForm.areaIndex}}" bind:change="onAreaTypesChange" list="{{areaTypes}}">
     </l-tabs>
   </l-cell>
   <!-- 自定义建筑面积 -->
-  <l-cell title="自定义建筑面积" wx:if="{{calcForm.areaIndex===2}}">
+  <l-cell suffix="㎡" title="自定义建筑面积" wx:if="{{calcForm.areaIndex===2}}">
     <t-stepper slot="note" bind:change="onCustomAreaChange" value="{{calcForm.area}}" min="1" step="1" theme="filled" />
   </l-cell>
   <block wx:if="{{calcForm.buyIndex===0}}">
-    <l-cell title="产权情况">
-      <l-tabs slot="note" current-index="{{calcForm.chanquanIndex}}" bind:change="onChanquanTypesChange" list="{{chanquanTypes}}">
-      </l-tabs>
-    </l-cell>
+
     <l-cell wx:if="{{calcForm.bankType!==3}}" title="房屋建成年份" hover arrow bind:tap="showYearPicker">
       <view slot="note" class="flex f-col-center">
         <text>{{calcForm.houseYear}}年</text>
@@ -29,8 +33,8 @@
         <text wx:if="{{calcForm.houseDescMsg}}">{{calcForm.houseDescMsg}}</text>
       </view>
     </l-cell>
-    <l-cell wx:if="{{calcForm.bankType!==3}}" title="请输入房屋年龄">
-      <t-input customStyle="padding:0" slot="note" borderless align="right" type="number" bind:change="onHouseAgeChange" suffix="年" value="{{calcForm.houseAge}}" placeholder="请输入房屋年龄"></t-input>
+    <l-cell suffix="年" wx:if="{{calcForm.bankType!==3}}" title="请输入房屋年龄">
+      <t-input customStyle="padding:0" slot="note" borderless align="right" type="number" bind:change="onHouseAgeChange" value="{{calcForm.houseAge}}" placeholder="请输入房屋年龄"></t-input>
     </l-cell>
   </block>
 </l-cell-group>

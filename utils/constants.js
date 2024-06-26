@@ -9,17 +9,13 @@ export const buyTypes = [{
 ];
 
 export const chanquanTypes = [{
+    value: 0,
+    label: '家庭唯一'
+  },
+  {
     value: 1,
-    label: '满三满二'
+    label: '非家庭唯一'
   },
-  {
-    value: 2,
-    label: '不满二'
-  },
-  {
-    value: 3,
-    label: '满五唯一'
-  }
 ];
 
 export const selfHouseTypes = [{
@@ -153,4 +149,56 @@ export const loanGjjHomeTypes = [{
   label: '双缴存职工多子女家庭',
   max: 1020000,
   desc: '双缴存职工多子女家庭最高贷款额度提高至102万元。'
+}]
+// 提前还款方式
+export const loanPaidTypes = [{
+  value: 0,
+  label: '全部提前还款'
+}, {
+  value: 1,
+  label: '部分提前还款'
+}]
+// 成交方式
+export const orderTypes = [{
+  value: 0,
+  label: '三方成交'
+}, {
+  value: 1,
+  label: '自行成交'
+}]
+// 变更类型
+export const exchangeTypes = [{
+  value: 0,
+  label: '买卖'
+}, {
+  value: 1,
+  label: '赠与'
+}, {
+  value: 2,
+  label: '继承'
+}, {
+  value: 3,
+  label: '婚内更名'
+}, {
+  value: 4,
+  label: '离婚分割'
+}]
+// 买方属性
+export const buyerTypes = [{
+  value: 0,
+  label: '首套'
+}, {
+  value: 1,
+  label: '二套'
+}, {
+  value: 2,
+  label: '三套及以上'
+}]
+// 能否提供原值凭证
+export const canGiveOldpriceTypes = [{
+  value: 0,
+  label: '可以提供'
+}, {
+  value: 1,
+  label: '不可以提供'
 }]

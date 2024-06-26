@@ -4,5 +4,18 @@
   "setting": {
     "compileHotReLoad": true
   },
-  "libVersion": "3.4.2"
+  "libVersion": "3.4.2",
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "\"1719393698380\"",
+          "pathName": "pages/result/result",
+          "query": "timestamp=1719393698380",
+          "launchMode": "default",
+          "scene": null
+        }
+      ]
+    }
+  }
 }

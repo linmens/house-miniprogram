@@ -17,6 +17,9 @@
   <l-cell suffix="{{calcForm.unit}}" bordered="{{false}}" wx:if="{{(calcForm.wangqianPrice||calcForm.totalPrice)&&calcForm.bankType!==3}}" title="首付金额">
     <t-input slot="note" borderless customStyle="padding:0" bind:change="onPaymentPriceChange" value="{{calcForm.paymentPrice}}" type="number" align="right" placeholder="请输入首付金额"></t-input>
   </l-cell>
+  <!-- <l-cell title="税费承担方">
+    <l-tabs slot="note" current-index="{{calcForm.shuifeiIndex}}" bind:change="onShuifeiTypesChange" list="{{shuifeiTypes}}"></l-tabs>
+  </l-cell> -->
 </l-cell-group>
 
 <!-- 显示户口物业预留金额提示 -->

@@ -27,6 +27,7 @@
        unitIndex: 1,
        // 金额换算值 元 1 || 万元 10000
        unitCount: 1,
+       unitRate: 0.0001,
        unit: '万元',
        // 房屋新旧
        buyIndex: 0,
@@ -53,18 +54,52 @@
    observers: {
      'calcForm.unitIndex': function (unitIndex) {
 
-       const {
-         hukouWuyePrice,
-         unitCount
-       } = this.data.calcForm
-       // 万元
-       this.setData({
-         'calcForm.hukouWuyePrice': unitIndex === 1 ? hukouWuyePrice / unitCount : 10000
-       })
+       //  const {
+       //    hukouWuyePrice,
+       //    unitCount
+       //  } = this.data.calcForm
+       //  // 万元
+       //  this.setData({
+       //    'calcForm.hukouWuyePrice': unitIndex === 1 ? hukouWuyePrice / unitCount : 10000
+       //  })
 
      }
    },
    methods: {
+     setAllPrice() {
+       const {
+         unitIndex,
+         bankPrice,
+         hukouWuyePrice,
+         loanGjjMaxPrice,
+         oldPrice,
+         paymentPrice,
+         wangqianPrice,
+         totalPrice
+       } = this.data.calcForm
+       if (unitIndex === 0) {
+         // 当计算单位为元时换算
+         this.setData({
+           'calcForm.bankPrice': bankPrice * 10000,
+           'calcForm.hukouWuyePrice': hukouWuyePrice * 10000,
+           'calcForm.totalPrice': totalPrice * 10000,
+           'calcForm.wangqianPrice': wangqianPrice * 10000,
+           //  'calcForm.loanGjjMaxPrice': loanGjjMaxPrice * 10000,
+           //  'calcForm.oldPrice': oldPrice * 10000,
+           //  'calcForm.paymentPrice': paymentPrice * 10000
+         })
+       } else {
+         this.setData({
+           'calcForm.bankPrice': bankPrice / 10000,
+           'calcForm.hukouWuyePrice': hukouWuyePrice / 10000,
+           'calcForm.totalPrice': totalPrice / 10000,
+           'calcForm.wangqianPrice': wangqianPrice / 10000,
+           //  'calcForm.loanGjjMaxPrice': loanGjjMaxPrice / 10000,
+           //  'calcForm.oldPrice': oldPrice / 10000,
+           //  'calcForm.paymentPrice': paymentPrice / 10000
+         })
+       }
+     },
      onExchangeTypeChange(e) {
        const {
          index
@@ -79,8 +114,10 @@
          index
        } = e.detail
        this.setData({
-         'calcForm.orderType': index
+         'calcForm.orderType': index,
        })
+       this.setServiceFee()
+       this.setBankPrice()
      },
      /**
       * 元 万元 切换
@@ -93,12 +130,18 @@
        } = e.detail;
 
        const count = label === '元' ? 1 : 10000
+       const rate = label === '元' ? 1 : 0.0001
        this.setData({
          'calcForm.unit': label,
          'calcForm.unitCount': count,
-         'calcForm.unitIndex': index
+         'calcForm.unitIndex': index,
+         'calcForm.unitRate': rate,
        })
-       this.setBankPrice()
+       this.setAllPrice()
+       //  this.setBankPrice()
+       //  this.setLoanGjjPrice(0)
+       // 设置所有相关金额的数值
+       this.startCalc()
      },
      /**
       * 房屋新旧

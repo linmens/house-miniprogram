@@ -4,10 +4,17 @@
 <t-notice-bar visible="{{true}}" content="计算结果仅供参考，若有计算错误请联系开发者。"></t-notice-bar>
 
 <l-cell-group title="基本信息" theme="card">
-  <t-row>
+  <t-row style="background-color: var(--td-cell-bg-color, var(--td-bg-color-container, var(--td-font-white-1, #ffffff)));">
     <t-col span="12">
       <view class="row-tag">
-        <t-tag theme="primary" variant="light-outline">成交方式</t-tag>
+        <t-tag theme="primary" variant="light-outline">支付方式</t-tag>
+        <text class="m-l-20 f-24">{{tabs[calcForm.bankType].label}}</text>
+      </view>
+    </t-col>
+
+    <t-col span="12">
+      <view class="row-tag">
+        <t-tag theme="primary" variant="light-outline">变更类型</t-tag>
         <text class="m-l-20 f-24">{{orderTypes[calcForm.orderType].label}}</text>
       </view>
     </t-col>
@@ -25,8 +32,14 @@
     </t-col>
     <t-col span="12">
       <view class="row-tag">
-        <t-tag theme="primary" variant="light-outline">产权情况</t-tag>
-        <text class="m-l-20 f-24">{{calcForm.chanquanName}}</text>
+        <t-tag theme="primary" variant="light-outline">唯一住房</t-tag>
+        <text class="m-l-20 f-24">{{chanquanTypes[calcForm.chanquanIndex].label}}</text>
+      </view>
+    </t-col>
+    <t-col span="12" wx:if="{{calcForm.chanquanYear}}">
+      <view class="row-tag">
+        <t-tag theme="primary" variant="light-outline">产证持有</t-tag>
+        <text class="m-l-20 f-24">{{calcForm.chanquanYear}}年</text>
       </view>
     </t-col>
     <t-col span="12">
@@ -42,16 +55,43 @@
       </view>
     </t-col>
     <t-col span="12">
-      <view class="row-tag"></view>
+      <view class="row-tag">
+        <t-tag theme="primary" variant="light-outline">交易总价</t-tag>
+        <text class="m-l-20 f-24">{{calcForm.totalPrice}}{{calcForm.unit}}</text>
+      </view>
+    </t-col>
+    <t-col span="12">
+      <view class="row-tag">
+        <t-tag theme="primary" variant="light-outline">网签金额</t-tag>
+        <text class="m-l-20 f-24">{{calcForm.wangqianPrice}}{{calcForm.unit}}</text>
+      </view>
     </t-col>
   </t-row>
 
 
 
 </l-cell-group>
-<l-cell-group title="卖方承担"></l-cell-group>
-<l-cell-group title="买方承担"></l-cell-group>
-<l-cell-group title="费用明细" theme="card">
+<view class="l-result__total" style="margin: 20rpx 32rpx;">
+  <text>前期需支付金额合计</text>
+  <view class="l-result__card" wx:if="{{item.show}}" wx:for="{{result.details}}" wx:key="index">
+    <view class="l-result__card__title">
+      <t-tag theme="{{item.theme}}">{{item.title}}</t-tag>
+    </view>
+    <view class="l-result__card__main">
+      <view wx:if="{{dataItem.show}}" class="l-result__card__main__item" wx:for-item="dataItem" wx:for="{{item.data}}" wx:key="index">
+        <text class="l-result__card__main__item__label">{{dataItem.label}}</text>
+        <text class="l-result__card__main__item__value">{{dataItem.value}} <text class="l-result__card__main__item__label">{{calcForm.unit}}</text></text>
+      </view>
+    </view>
+  </view>
+</view>
+<l-cell-group title="卖方承担" theme="card">
+  <l-card info="{{seller}}" unit="{{calcForm.unit}}" calcForm="{{calcForm}}"></l-card>
+</l-cell-group>
+<l-cell-group title="买方承担" theme="card">
+  <l-card info="{{buyer}}" unit="{{calcForm.unit}}"></l-card>
+</l-cell-group>
+<!-- <l-cell-group title="费用明细" theme="card">
   <l-cell title="合计金额" suffix="{{calcForm.unit}}">
     <text slot="note" style="font-size:36rpx">20000</text>
   </l-cell>
@@ -64,4 +104,4 @@
   <l-cell title="个税" note="{{result.geshui}}" suffix="{{calcForm.unit}}"></l-cell>
   <l-cell title="契税" note="{{result.qishui}}" suffix="{{calcForm.unit}}"></l-cell>
   <l-cell title="增值税" note="{{result.zengzhishui}}" suffix="{{calcForm.unit}}"></l-cell>
-</l-cell-group>
+</l-cell-group> -->

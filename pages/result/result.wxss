@@ -1,5 +1,5 @@
 .row-tag {
-  background-color: darkblue;
+
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -7,6 +7,40 @@
   padding: var(--td-input-vertical-padding, 32rpx);
   box-sizing: border-box;
   width: 100%;
-  background-color: var(--td-cell-bg-color, var(--td-bg-color-container, var(--td-font-white-1, #ffffff)));
+
   height: 100%;
+}
+
+.l-result__card {
+  background-color: var(--td-cell-bg-color, var(--td-bg-color-container, var(--td-font-white-1, #ffffff)));
+  border-radius: var(--td-radius-large, 18rpx);
+  overflow: hidden;
+  margin: 20rpx 0;
+}
+
+.l-result__card__title {
+  padding: 20rpx
+}
+
+.l-result__card__main {
+  display: flex;
+  padding-bottom: 20rpx
+}
+
+.l-result__card__main__item {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.l-result__card__main__item__label {
+  color: var(--td-gray-color-9);
+  font-size: 20rpx;
+}
+
+.l-result__card__main__item__value {
+  font-weight: bold;
+  font-size: 40rpx;
 }

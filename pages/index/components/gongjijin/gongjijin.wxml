@@ -1,14 +1,14 @@
 <l-cell-group wx:if="{{calcForm.unit}}" theme="card" title="公积金信息">
   <l-cell title="贷款金额">
     <view slot="note" class="flex f-col-center">
-      <t-stepper max="{{calcForm.unit==='元'?loanGjjHomeTypes[calcForm.loanGjjSaveIndex].max:loanGjjHomeTypes[calcForm.loanGjjSaveIndex].max/10000}}" step="{{calcForm.unit==='元'?10000:1}}" input-width="80" value="{{calcForm.loanGjjPrice}}" size="large" theme="filled" bind:change="onLoanGjjPriceChange" />
+      <t-stepper max="{{calcForm.loanGjjMaxPrice}}" step="1" input-width="80" value="{{calcForm.loanGjjPrice}}" size="large" theme="filled" bind:change="onLoanGjjPriceChange" />
       <text class="m-l-20">{{calcForm.unit}}</text>
     </view>
     <view slot="description">
       {{loanGjjHomeTypes[calcForm.loanGjjSaveIndex].desc}}
     </view>
   </l-cell>
-  <l-cell title="贷款利率">
+  <l-cell title="贷款利率" suffix="%">
     <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanRateChange" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="number">
     </t-input>
   </l-cell>

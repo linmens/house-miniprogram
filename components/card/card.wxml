@@ -1,0 +1,74 @@
+<view class="l-card">
+  <view class="l-card__header">
+    <text>{{headerTitle}}</text>
+
+    <view>
+      <view wx:if="{{info.type==='seller'}}" class="flex f-col-center f-row-between">
+        <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="primary">核定征收</t-tag>
+        <view style="margin-right: 10rpx;">
+          <view class="l-card__label--text">全额</view>
+          <text>{{info.total}}</text>
+          <text class="l-card__unit">{{unit}}</text>
+        </view>
+        <view wx:if="{{info.halfTotal&&info.isHalf}}">
+          <view class="l-card__label--text">减半</view>
+          <text>{{info.halfTotal}}</text>
+          <text class="l-card__unit">{{unit}}</text>
+        </view>
+
+      </view>
+      <view wx:if="{{info.type==='buyer'}}" class="flex f-col-center f-row-between">
+        <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="primary">总房价</t-tag>
+        <text>{{info.total}}</text>
+        <text class="l-card__unit">{{unit}}</text>
+      </view>
+      <view wx:if="{{info.type==='buyer'}}" class="flex f-col-center f-row-between">
+        <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="success">除去贷款</t-tag>
+        <text>{{info.withoutTotal}}</text>
+        <text class="l-card__unit">{{unit}}</text>
+      </view>
+      <view wx:if="{{info.realTotal&&calcForm.oldPrice}}" class="flex f-col-center f-row-between" style="color:var(--td-gray-color-9);font-weight: 400;">
+        <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="warning">据实征收</t-tag>
+        <view style="margin-right:10rpx">
+          <text>{{info.realTotal}}</text>
+          <text class="l-card__unit">{{unit}}</text>
+        </view>
+        <view>
+          <text>{{info.halfrealTotal}}</text>
+          <text class="l-card__unit">{{unit}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <t-divider />
+
+  <view class="l-card__main">
+    <view wx:if="{{item.value}}" class="l-card__main--item" wx:for="{{info.details}}" wx:key="index">
+      <view class="l-card__main__label">
+        <text>{{item.label}}</text>
+      </view>
+      <view class="l-card__main__value">
+        <view wx:if="{{item.type===0}}">
+          <text>{{item.value}}</text>
+          <text class="l-card__unit">{{unit}}</text>
+        </view>
+        <view class="l-card__main__value__extra" wx:else>
+          <view class="l-card__main__value__extra__tag" wx:if="{{item.value.default}}">
+            <t-tag variant="light" size="small" theme="{{item.type===1?'default':'primary'}}">{{item.type===1?'全额':'核定'}}</t-tag>
+            <view>
+              <text>{{item.value.default}}</text>
+              <text class="l-card__unit">{{unit}}</text>
+            </view>
+          </view>
+          <view class="l-card__main__value__extra__tag" wx:if="{{item.value.extra}}">
+            <t-tag size="small" variant="light" theme="{{item.type===1?'success':'warning'}}">{{item.type===1?'减半':'据实'}}</t-tag>
+            <view>
+              <text>{{item.value.extra}}</text>
+              <text class="l-card__unit">{{unit}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,64 @@
+.l-card {
+  /* margin: 32rpx; */
+  background-color: var(--td-cell-bg-color, var(--td-bg-color-container, var(--td-font-white-1, #ffffff)));
+  padding: var(--td-input-vertical-padding, 32rpx);
+}
+
+.l-card__header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.l-card__unit {
+  margin-left: 10rpx;
+  font-size: 20rpx;
+}
+
+.l-card__label--text {
+  font-size: 20rpx;
+  margin-right: 10rpx;
+  color: var(--td-gray-color-9);
+}
+
+.l-card__main {
+  font-size: 24rpx;
+  color: var(--td-cell-note-color, var(--td-text-color-placeholder, var(--td-font-gray-3, rgba(0, 0, 0, 0.4))));
+
+}
+
+.l-card__main--item {
+  display: flex;
+
+  align-items: center;
+  margin-bottom: 10rpx;
+  /* text-align: right; */
+}
+
+.l-card__main__label {
+  flex: 1;
+}
+
+
+
+.l-card__main__value {
+  flex: 0 0 35%;
+  text-align: right;
+}
+
+.l-card__main__value__extra {
+  display: flex;
+  flex-direction: column;
+}
+
+.l-card__main__value__extra__tag {
+  margin-bottom: 10rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.l-card__main__value__extra__tag:last-child {
+  margin-bottom: 0;
+}

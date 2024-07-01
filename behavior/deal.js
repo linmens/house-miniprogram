@@ -18,6 +18,8 @@
        paymentRate: 15,
        // 首付金额
        paymentPrice: '',
+       // 税费承担方
+       shuifeiIndex: 0
      }
    },
    observers: {
@@ -52,49 +54,7 @@
      }
    },
    methods: {
-     /**
-      * 根据tabs设置对应条件的贷款金额
-      */
-     async setLoanAllPrice() {
-       const {
-         bankType,
-         wangqianPrice,
-         unit,
-         paymentRate
-       } = this.data.calcForm
-       console.log('根据bankType开始计算贷款金额...')
-       switch (bankType) {
-         case 0:
-           console.log('根据bankType开始计算贷款金额:商业贷款')
-           this.setLoanPrice(1)
-           break;
-         case 1:
-           console.log('根据bankType开始计算贷款金额:公积金贷款')
-           this.setLoanGjjPrice(0)
-           break;
-         case 2:
-           // 如果是组合贷 
-           console.log('根据bankType开始计算贷款金额:组合贷款')
-           //  this.setLoanPrice(1)
-           await this.setLoanGjjPrice(0)
-           const groupLoanPrice = calculateLoan(wangqianPrice, paymentRate, unit)
 
-           const {
-             loanGjjPrice,
-           } = this.data.calcForm
-           let newLoanPrice = NP.minus(groupLoanPrice, loanGjjPrice)
-           this.setData({
-             'calcForm.loanGroupPrice': groupLoanPrice,
-             'calcForm.loanPrice': newLoanPrice
-           })
-
-           console.log('根据bankType开始计算贷款金额:组合贷款设置组合贷款总金额', groupLoanPrice)
-           console.log('根据bankType开始计算贷款金额:组合贷款设置组合贷款商业贷款部分', newLoanPrice)
-           break;
-         default:
-           break;
-       }
-     },
      /**
       * 设置交易总价
       * @param type 0 网签+户口预留
@@ -124,21 +84,35 @@
        let bankPrice = 0
        const {
          unitCount,
-         bankType
+         unitRate,
+         bankType,
+         orderType
        } = this.data.calcForm
-       switch (bankType) {
-         case 0:
-           bankPrice = 3000 / unitCount
-           break;
-         case 1:
-           bankPrice = 4000 / unitCount
-           break;
-         case 2:
-           bankPrice = 5000 / unitCount
-           break;
-         default:
-           break;
+       if (orderType === 0) {
+         switch (bankType) {
+           case 0:
+             bankPrice = 3000 * unitRate
+             console.log('设置商业贷款服务费：', bankPrice)
+             break;
+           case 1:
+             bankPrice = 4000 * unitRate
+             console.log('设置公积金贷款服务费：', bankPrice)
+             break;
+           case 2:
+             bankPrice = 5000 * unitRate
+             console.log('设置组合贷款服务费：', bankPrice)
+             break;
+           case 3:
+             bankPrice = 0
+             console.log('设置全款贷款服务费：', bankPrice)
+             break;
+           default:
+             break;
+         }
+       } else {
+         bankPrice = 0
        }
+
        this.setData({
          'calcForm.bankPrice': bankPrice
        })
@@ -191,6 +165,9 @@
            wangqianPrice,
            loanGroupPrice
          })
+       }
+       if (bankType === 3) {
+         result = wangqianPrice
        }
        this.setData({
          'calcForm.paymentPrice': result
@@ -301,14 +278,7 @@
 
        await this.setTotalPrice(0)
        this.startCalc()
-       //  this.setServiceFee()
-       //  if (bankType === 0) {
-       //    this.setLoanPrice(1)
-       //  }
-       //  if (bankType === 1) {
-       //    this.setLoanGjjPrice(0)
-       //  }
-       //  this.setPaymentPrice(0)
+
      },
      /**
       * 户口物业预留金额改变

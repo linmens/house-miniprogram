@@ -5,6 +5,7 @@ Component({
    */
   properties: {
     calcForm: Object,
+    serviceFeeTypes: Array
   },
   lifetimes: {
 

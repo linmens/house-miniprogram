@@ -9,9 +9,16 @@
     "miniprogram": {
       "list": [
         {
-          "name": "\"1719393698380\"",
+          "name": "不满2年",
           "pathName": "pages/result/result",
           "query": "timestamp=1719393698380",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "\"1719393698380\"",
+          "pathName": "pages/result/result",
+          "query": "timestamp=1719472959013",
           "launchMode": "default",
           "scene": null
         }

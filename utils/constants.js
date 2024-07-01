@@ -132,22 +132,34 @@ export const loanRateTypes = [{
 export const loanGjjHomeTypes = [{
   value: 1,
   label: '单人连续足额缴存',
-  max: 650000,
+  max: {
+    0: 650000,
+    1: 65
+  },
   desc: '借款人单人连续足额缴存住房公积金的，贷款额度最高不超过65万元;'
 }, {
   value: 2,
   label: '借款人及配偶同时连续足额缴存',
-  max: 850000,
+  max: {
+    0: 850000,
+    1: 85
+  },
   desc: '借款人及配偶同时连续足额缴存住房公积金的，贷款额度最高不超过85万元。'
 }, {
   value: 3,
   label: '多子女家庭',
-  max: 780000,
+  max: {
+    0: 780000,
+    1: 78
+  },
   desc: '2024年5月9日起，多子女家庭(抚养至少有一个未成年子女的二孩及以上家庭)使用公积金贷款购买住房的，贷款最高额度在现行信贷政策基础上提高至1.2倍，即78万元。'
 }, {
   value: 4,
   label: '双缴存职工多子女家庭',
-  max: 1020000,
+  max: {
+    0: 1020000,
+    1: 102
+  },
   desc: '双缴存职工多子女家庭最高贷款额度提高至102万元。'
 }]
 // 提前还款方式
@@ -201,4 +213,26 @@ export const canGiveOldpriceTypes = [{
 }, {
   value: 1,
   label: '不可以提供'
+}]
+// 居间服务费支付方式
+export const serviceFeeTypes = [{
+  value: 3,
+  label: '买卖双方各承担一半'
+}, {
+  value: 0,
+  label: '买方承担'
+}, {
+  value: 1,
+  label: '卖方承担'
+}, {
+  value: 2,
+  label: '买卖双方承担自定义'
+}]
+// 税费承担方
+export const shuifeiTypes = [{
+  value: 0,
+  label: '买方承担'
+}, {
+  value: 1,
+  label: '卖方承担'
 }]

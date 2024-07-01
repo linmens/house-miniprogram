@@ -29,7 +29,7 @@
 <!-- 基本信息 -->
 <l-pages-basic id="basicRef" exchangeTypes="{{exchangeTypes}}" orderTypes="{{orderTypes}}" calcForm="{{calcForm}}" unitTypes="{{unitTypes}}" buyTypes="{{buyTypes}}" areaTypes="{{areaTypes}}" chanquanTypes="{{chanquanTypes}}" bind:typesChange="onTypesChange" bind:buyTypesChange="onBuyTypesChange" bind:areaTypesChange="onAreaTypesChange" bind:chanquanTypesChange="onChanquanTypesChange" bind:houseAgeChange="onHouseAgeChange" bind:showYearPicker="showYearPicker" bind:onCustomAreaChange="onCustomAreaChange" bind:onChanquanTypesChange="onChanquanTypesChange" bind:onOrderTypesChange="onOrderTypesChange" bind:onExchangeTypeChange="onExchangeTypeChange"></l-pages-basic>
 <!-- 交易信息 -->
-<l-pages-deal calcForm="{{calcForm}}" bind:totalPriceChange="onTotalPriceChange" bind:wangqianPriceChange="onWangqianPriceChange" bind:hukouWuyePriceChange="onHukouWuyePriceChange" bind:paymentRateChange="onPaymentRateChange" bind:paymentPriceChange="onPaymentPriceChange" bind:handleHukouWuyeTitleRight="handleHukouWuyeTitleRight"></l-pages-deal>
+<l-pages-deal calcForm="{{calcForm}}" shuifeiTypes="{{shuifeiTypes}}" bind:totalPriceChange="onTotalPriceChange" bind:wangqianPriceChange="onWangqianPriceChange" bind:hukouWuyePriceChange="onHukouWuyePriceChange" bind:paymentRateChange="onPaymentRateChange" bind:paymentPriceChange="onPaymentPriceChange" bind:handleHukouWuyeTitleRight="handleHukouWuyeTitleRight"></l-pages-deal>
 <!-- 卖方属性 -->
 <l-cell-group theme="card" title="卖方属性" wx:if="{{calcForm.buyIndex===0}}">
   <l-cell title="能否提供原值凭证">
@@ -37,9 +37,9 @@
     </l-tabs>
   </l-cell>
   <l-cell wx:if="{{calcForm.oldPriceIndex===0}}" title="原始购买价格" suffix="{{calcForm.unit}}">
-    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onTotalPriceChange" value="{{calcForm.oldPrice}}" placeholder="请输入原始购买价格" type="number"></t-input>
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldPriceChange" value="{{calcForm.oldPrice}}" placeholder="请输入原始购买价格" type="number"></t-input>
   </l-cell>
-  <l-cell title="产权证持有">
+  <l-cell title="产证持有">
     <t-slider slot="note" value="{{calcForm.chanquanYear}}" max="70" step="{{1}}" bind:change="handleChanquanYearChange" />
     <t-button size="small" slot="right-icon">已满{{calcForm.chanquanYear}}年</t-button>
   </l-cell>
@@ -56,7 +56,35 @@
   </l-cell>
 </l-cell-group>
 <!-- 居间机构 -->
-<l-pages-service wx:if="{{calcForm.orderType===0}}" calcForm="{{calcForm}}" bind:serviceFeeRateChange="onServiceFeeRateChange" bind:serviceFeeChange="onServiceFeeChange"></l-pages-service>
+<!-- <l-pages-service serviceFeeTypes="{{serviceFeeTypes}}" wx:if="{{calcForm.orderType===0}}" calcForm="{{calcForm}}" bind:serviceFeeRateChange="onServiceFeeRateChange" bind:serviceFeeChange="onServiceFeeChange"></l-pages-service> -->
+<view wx:if="{{calcForm.orderType===0}}">
+  <l-cell-group wx:if="{{calcForm.buyIndex===0&&calcForm.unit}}" theme="card" title="居间机构">
+    <l-cell title="居间服务费比例" suffix="%">
+      <view slot="note">
+        <t-stepper bind:change="onServiceFeeRateChange" value="{{calcForm.serviceFeeRate}}" step="0.5" theme="filled" />
+      </view>
+
+    </l-cell>
+    <l-cell suffix="{{calcForm.unit}}" wx:if="{{calcForm.totalPrice}}" title="居间服务费">
+      <t-input slot="note" borderless customStyle="padding:0" bind:change="onServiceFeeChange" value="{{calcForm.serviceFee}}" align="right">
+      </t-input>
+    </l-cell>
+    <l-cell wx:if="{{calcForm.totalPrice||calcForm.wangqianPrice}}" title="费用承担方">
+      <l-tabs slot="note" current-index="{{calcForm.servicePayerIndex}}" bind:change="onServicePayerIndexChange" list="{{serviceFeeTypes}}"></l-tabs>
+    </l-cell>
+    <l-cell wx:if="{{calcForm.servicePayerIndex===3}}" title="买方承担" suffix="{{calcForm.unit}}">
+      <t-stepper step="{{calcForm.unitRate}}" slot="note" bind:change="onServiceBuyerChange" value="{{calcForm.serviceBuyer}}" theme="filled" max="{{calcForm.serviceFee}}" />
+
+    </l-cell>
+    <l-cell title="卖方承担" wx:if="{{calcForm.servicePayerIndex===3}}" suffix="{{calcForm.unit}}">
+      <t-stepper step="{{calcForm.unitRate}}" slot="note" bind:change="onServiceSellerChange" value="{{calcForm.serviceSeller}}" theme="filled" max="{{calcForm.serviceFee}}" />
+    </l-cell>
+    <l-cell wx:if="{{calcForm.bankType!==3&&calcForm.forWhoIndex!==1}}" title="贷款服务费" suffix="{{calcForm.unit}}">
+      <t-input slot="note" borderless customStyle="padding:0" align="right" value="{{calcForm.bankPrice}}">
+      </t-input>
+    </l-cell>
+  </l-cell-group>
+</view>
 
 <!-- 贷款信息 -->
 <l-pages-shangdai calcForm="{{calcForm}}" loanPaidTypes="{{loanPaidTypes}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===0&&calcForm.totalPrice>0||calcForm.bankType===2&&calcForm.totalPrice>0}}" bind:onLoanPriceChange="onLoanPriceChange" bind:onLoanTypesChange="onLoanTypesChange" bind:onCustomLoanYearInputValChange="onCustomLoanYearInputValChange" bind:onLoanPaidTypeIndexChange="onLoanPaidTypeIndexChange" bind:onLoanPaidChange="onLoanPaidChange"></l-pages-shangdai>

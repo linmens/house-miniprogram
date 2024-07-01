@@ -3,7 +3,9 @@ import {
   loanTypes,
   loanBackTypes,
   loanRateTypes,
-  loanPaidTypes
+  loanPaidTypes,
+  serviceFeeTypes,
+  shuifeiTypes
 } from '../../utils/constants';
 import {
   getOldYearTimestamp,
@@ -62,7 +64,8 @@ Component({
     loanBackTypes,
     loanRateTypes,
     loanPaidTypes,
-
+    serviceFeeTypes,
+    shuifeiTypes
   },
   observers: {
 
@@ -225,7 +228,11 @@ Component({
         case 1:
           console.log('开始计算公积金贷款部分...')
           console.log('开始计算公积金贷款金额...')
+          this.setLoanGjjMaxPrice()
           await this.setLoanGjjPrice(0)
+          this.setData({
+            'calcForm.loanPrice': 0
+          })
           // 设置贷款年限
           if (loanGjjIndex === 6) {
             await this.setLoanGjjYear();
@@ -235,17 +242,22 @@ Component({
         case 2:
           console.log('开始计算组合贷部分...')
           console.log('开始计算组合贷金额...')
-          await this.setLoanGjjPrice(0);
+          this.setLoanGjjMaxPrice()
           const groupLoanPrice = calculateLoan(wangqianPrice, paymentRate, unit)
+          this.setData({
+            'calcForm.loanGroupPrice': groupLoanPrice,
+          })
+          console.log('设置组合贷总金额', groupLoanPrice)
+          await this.setLoanGjjPrice(0);
           const {
             loanGjjPrice,
           } = this.data.calcForm
+
           let newLoanPrice = NP.minus(groupLoanPrice, loanGjjPrice)
           this.setData({
-            'calcForm.loanGroupPrice': groupLoanPrice,
             'calcForm.loanPrice': newLoanPrice
           })
-          console.log('设置组合贷总金额', groupLoanPrice)
+
           console.log('设置组合贷商业贷款部分', newLoanPrice)
           // 设置贷款年限
           if (loanIndex === 6) {
@@ -255,6 +267,13 @@ Component({
             await this.setLoanGjjYear();
           }
 
+          break;
+        case 3:
+          // 全款
+          this.setData({
+            'calcForm.loanPrice': 0,
+            'calcForm.loanGjjPrice': 0
+          })
           break;
         default:
           break;

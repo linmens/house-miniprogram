@@ -1,4 +1,7 @@
 {
   "navigationStyle": "custom",
-  "styleIsolation": "apply-shared"
+  "styleIsolation": "apply-shared",
+  "usingComponents": {
+    "l-card": "/components/card/card"
+  }
 }

@@ -39,11 +39,25 @@
         // 是否首次使用公积金
         loanGjjIsFirst: true,
         // 最大贷款额度
-        loanGjjMaxPrice: 650000,
+        loanGjjMaxPrice: 65,
 
       },
     },
     methods: {
+      setLoanGjjMaxPrice() {
+        const {
+          unit,
+          unitIndex,
+          unitRate,
+          unitCount,
+          loanGjjSaveIndex
+        } = this.data.calcForm
+        let gjjMaxPrice = loanGjjHomeTypes[loanGjjSaveIndex].max[unitIndex]
+        this.setData({
+          'calcForm.loanGjjMaxPrice': gjjMaxPrice
+        })
+        console.log('设置公积金贷款最大金额:', gjjMaxPrice)
+      },
       /**
        * 更新公积金贷款利率
        */
@@ -75,41 +89,38 @@
         const {
           unit,
           unitCount,
+          unitRate,
           wangqianPrice,
           paymentRate,
           bankType,
           loanGjjSaveIndex,
           loanGroupPrice,
           loanPrice,
-          paymentPrice
+          paymentPrice,
+          loanGjjMaxPrice
         } = this.data.calcForm
-        const loanGjjMaxPrice = unit === '元' ? loanGjjHomeTypes[loanGjjSaveIndex].max : loanGjjHomeTypes[loanGjjSaveIndex].max / unitCount
-        console.log('设置公积金贷款最大金额:', loanGjjMaxPrice)
+        // const loanGjjMaxPrice = loanGjjHomeTypes[loanGjjSaveIndex].max * unitCount
+        // console.log('设置公积金贷款最大金额:', loanGjjMaxPrice)
         let _loanGjjPrice = 0
-        switch (type) {
-          case 0:
+        switch (bankType) {
+          case 1:
             _loanGjjPrice = calculateLoan(wangqianPrice, paymentRate, unit)
             console.log('开始计算公积金贷款金额(网签*贷款比例):', _loanGjjPrice)
-            // if (wangqianPrice) {
-            //   const rate = NP.minus(100, paymentRate) / 100
-            //   _loanGjjPrice = Math.floor(rate * wangqianPrice / 10000) * 10000
-
-            // }
-
+            console.log('开始计算公积金贷款金额(网签金额):', wangqianPrice)
+            console.log('开始计算公积金贷款金额(首付比例):', paymentRate)
             break;
-          case 1:
-            _loanGjjPrice = NP.minus(wangqianPrice, paymentPrice)
-
-            break;
+            // case 2:
+            //   _loanGjjPrice = NP.minus(wangqianPrice, paymentPrice)
+            //   console.log('开始计算公积金贷款金额(首付改变):', wangqianPrice, paymentPrice, _loanGjjPrice)
+            //   break;
           case 2:
-            _loanGjjPrice = NP.minus(loanGroupPrice, loanPrice)
+            _loanGjjPrice = loanGroupPrice
+            console.log('开始计算公积金贷款金额(组合贷款金额):', _loanGjjPrice, loanGroupPrice, loanPrice)
             break;
           default:
             break;
         }
-        if (_loanGjjPrice > loanGjjMaxPrice) {
-          _loanGjjPrice = loanGjjMaxPrice
-        } else if (_loanGjjPrice >= loanGjjMaxPrice) {
+        if (_loanGjjPrice >= loanGjjMaxPrice) {
           _loanGjjPrice = loanGjjMaxPrice
         } else if (_loanGjjPrice < 0) {
           _loanGjjPrice = 0
@@ -117,7 +128,7 @@
         this.setData({
           'calcForm.loanGjjPrice': _loanGjjPrice
         })
-        console.log(`设置公积金贷款金额-${type}:`, _loanGjjPrice)
+        console.log(`设置公积金贷款金额:`, _loanGjjPrice)
       },
       /**
        * 更新贷款年限
@@ -178,7 +189,7 @@
        * @param {*} e 
        */
       onLoanGjjHomeTypesChange(e) {
-        console.log(e, 'onLoanGjjHomeTypesChange')
+
         const {
           index,
           value
@@ -186,9 +197,10 @@
         this.setData({
           'calcForm.loanGjjSaveIndex': index
         })
-        this.setLoanGjjPrice(0)
-        this.setPaymentPrice()
-        this.setPaymentRate(0)
+        // this.setLoanGjjPrice(0)
+        // this.setPaymentPrice()
+        // this.setPaymentRate(0)
+        this.startCalc()
       },
       /**
        * 公积金贷款年限下标改变

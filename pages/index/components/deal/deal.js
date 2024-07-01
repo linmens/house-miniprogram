@@ -6,6 +6,7 @@ Component({
    */
   properties: {
     calcForm: Object,
+    shuifeiTypes: Array
   },
   options: {
     virtualHost: true
@@ -39,6 +40,9 @@ Component({
     },
     onPaymentPriceChange(e) {
       this.triggerEvent('paymentPriceChange', e.detail)
+    },
+    onShuifeiTypesChange(e) {
+      this.triggerEvent('onShuifeiTypesChange', e.detail)
     },
     handleHukouWuyeTitleRight(e) {
       this.setData({

@@ -56,6 +56,10 @@ Component({
     roundless: {
       type: Boolean,
       value: false
+    },
+    disabled: {
+      type: Boolean,
+      value: false
     }
   },
   observers: {
@@ -99,7 +103,9 @@ Component({
       });
     },
     changeIndex(index) {
-
+      if (this.data.disabled) {
+        return;
+      }
       const currentTab = this.data.list[index];
       const {
         value,

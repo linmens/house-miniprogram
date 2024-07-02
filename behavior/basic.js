@@ -5,7 +5,8 @@
    unitTypes,
    areaTypes,
    orderTypes,
-   exchangeTypes
+   exchangeTypes,
+   fadingTypes
  } from '../utils/constants';
  import {
    calculateBuiltYear,
@@ -19,6 +20,7 @@
      areaTypes,
      orderTypes,
      exchangeTypes,
+     fadingTypes,
      // 显示隐藏年选择器
      yearVisible: false,
 
@@ -31,10 +33,10 @@
        unit: '万元',
        // 房屋新旧
        buyIndex: 0,
-       buy: '二手房',
-
+       // 是否法定继承人下标
+       fadingIndex: 0,
        // 建筑面积
-       areaName: '90㎡以下',
+
        area: 0,
        // 建筑面积下标
        areaIndex: 0,
@@ -73,7 +75,7 @@
          hukouWuyePrice,
          loanGjjMaxPrice,
          oldPrice,
-         paymentPrice,
+         pingguPrice,
          wangqianPrice,
          totalPrice
        } = this.data.calcForm
@@ -84,7 +86,7 @@
            'calcForm.hukouWuyePrice': hukouWuyePrice * 10000,
            'calcForm.totalPrice': totalPrice * 10000,
            'calcForm.wangqianPrice': wangqianPrice * 10000,
-           //  'calcForm.loanGjjMaxPrice': loanGjjMaxPrice * 10000,
+           'calcForm.pingguPrice': pingguPrice * 10000,
            //  'calcForm.oldPrice': oldPrice * 10000,
            //  'calcForm.paymentPrice': paymentPrice * 10000
          })
@@ -94,7 +96,7 @@
            'calcForm.hukouWuyePrice': hukouWuyePrice / 10000,
            'calcForm.totalPrice': totalPrice / 10000,
            'calcForm.wangqianPrice': wangqianPrice / 10000,
-           //  'calcForm.loanGjjMaxPrice': loanGjjMaxPrice / 10000,
+           'calcForm.pingguPrice': pingguPrice / 10000,
            //  'calcForm.oldPrice': oldPrice / 10000,
            //  'calcForm.paymentPrice': paymentPrice / 10000
          })
@@ -142,6 +144,14 @@
        //  this.setLoanGjjPrice(0)
        // 设置所有相关金额的数值
        this.startCalc()
+     },
+     onFadingTypeChange(e) {
+       const {
+         index
+       } = e.detail
+       this.setData({
+         'calcForm.fadingIndex': index
+       })
      },
      /**
       * 房屋新旧

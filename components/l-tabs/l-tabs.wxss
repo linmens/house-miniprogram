@@ -4,6 +4,12 @@
   /* width: 100%; */
 }
 
+/* 
+.l-tabs__disabled.l-tabs__wrap .l-tabs__item {
+  color: var(--td-tab-item-disabled-color, var(--td-text-color-disabled, var(--td-font-gray-4, rgba(0, 0, 0, 0.26))));
+
+} */
+
 .l-tabs__wrap {
   width: 100%;
   /* background-color: #f2f3ff; */

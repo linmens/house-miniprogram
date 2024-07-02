@@ -4,7 +4,6 @@
   "usingComponents": {
     "t-toast": "tdesign-miniprogram/toast/toast",
     "t-sticky": "tdesign-miniprogram/sticky/sticky",
-    "l-pages-basic": "./components/basic/basic",
     "l-pages-gongjijin": "./components/gongjijin/gongjijin",
     "t-footer": "tdesign-miniprogram/footer/footer",
     "t-link": "tdesign-miniprogram/link/link",

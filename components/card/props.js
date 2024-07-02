@@ -3,6 +3,10 @@ const props = {
     type: String,
     value: '合计金额'
   },
+  headerValue: {
+    type: String,
+    value: ''
+  },
   info: {
     type: Object,
   },

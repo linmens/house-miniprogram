@@ -12,11 +12,21 @@ import {
 }
 from '../../utils/constants';
 import NP from 'number-precision'
+import {
+  sendBehavior
+} from './send'
+import {
+  basicBehavior
+} from './basic'
+import {
+  extendBehavior
+} from './extend'
 Page({
   options: {},
   /**
    * 页面的初始数据
    */
+  behaviors: [sendBehavior, basicBehavior, extendBehavior],
   data: {
     orderTypes,
     tabs,
@@ -69,7 +79,8 @@ Page({
       type: 'seller',
       serviceFee: 0,
       // 是否有减半征收政策
-      isHalf: 0
+      isHalf: 0,
+      custom: true
     },
     // 买方费用
     buyer: {
@@ -79,7 +90,8 @@ Page({
       withoutTotal: 0,
       total: 0,
       serviceFee: 0,
-      details: []
+      details: [],
+      custom: true
     }
   },
 
@@ -119,14 +131,11 @@ Page({
         if (forWhoIndex === 0) {
           // 给客户
 
-          // 计算中介费
-          if (orderType === 0) {
-            this.calcService()
-          }
+
           // 计算税费
           console.log('开始给客户计算税费...')
           await this.calcShuifei();
-          this.calcTotal();
+
           // 判断贷款方式
 
           switch (bankType) {
@@ -164,22 +173,34 @@ Page({
   async calcShuifei() {
     // 判断变更类型
     const {
-      exchangeType
+      exchangeType,
+      orderType
     } = this.data.calcForm
     switch (exchangeType) {
       case 0:
         // 买卖
-
+        // 计算中介费
+        if (orderType === 0) {
+          this.calcService()
+        }
         // 计算卖方税费
         this.calcSeller()
         this.calcBuyer()
-
+        this.calcTotal();
+        this.initBuyList()
         break;
       case 1:
         // 赠与
+        this.calcSender()
+        this.calcGetter()
+        this.calcSendAll()
+        this.initSendList()
         break;
       case 2:
         // 继承
+        this.calcExtender()
+        this.calcExtenderAll()
+        this.initExtendList()
         break;
       case 3:
         // 婚内更名

@@ -25,7 +25,7 @@ import {
 
 import NP from 'number-precision'
 import Toast from 'tdesign-miniprogram/toast/index';
-
+import Message from 'tdesign-miniprogram/message/index';
 Component({
   behaviors: [basicBehavior, dealBehavior, serviceBehavior, gongjijinBehavior, shangdaiBehavior, sellerBehavior, buyerBehavior],
   options: {
@@ -94,6 +94,21 @@ Component({
     handleClickStart() {
       const timestamp = new Date().getTime();
       addDataToCache(this.data.calcForm, timestamp)
+      const {
+        oldPriceIndex,
+        oldPrice
+      } = this.data.calcForm
+      if (oldPriceIndex === 0) {
+        if (!oldPrice) {
+          Message.warning({
+            context: this,
+            offset: [90, 32],
+            duration: 5000,
+            content: '请输入原始购买价格',
+          });
+          return
+        }
+      }
       wx.navigateTo({
         url: `/pages/result/result?timestamp=${timestamp}`,
       })

@@ -42,6 +42,7 @@ let Cell = class Cell extends SuperComponent {
         type: 'parent',
       },
     };
+
     this.options = {
       multipleSlots: true,
     };

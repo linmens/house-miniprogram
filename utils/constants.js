@@ -236,3 +236,11 @@ export const shuifeiTypes = [{
   value: 1,
   label: '卖方承担'
 }]
+// 是否法定继承
+export const fadingTypes = [{
+  value: 0,
+  label: '法定继承',
+}, {
+  value: 1,
+  label: '非法定继承'
+}]

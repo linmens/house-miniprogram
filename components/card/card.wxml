@@ -3,39 +3,42 @@
     <text>{{headerTitle}}</text>
 
     <view>
-      <view wx:if="{{info.type==='seller'}}" class="flex f-col-center f-row-between">
-        <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="primary">核定征收</t-tag>
-        <view style="margin-right: 10rpx;">
-          <view class="l-card__label--text">全额</view>
-          <text>{{info.total}}</text>
-          <text class="l-card__unit">{{unit}}</text>
-        </view>
-        <view wx:if="{{info.halfTotal&&info.isHalf}}">
-          <view class="l-card__label--text">减半</view>
-          <text>{{info.halfTotal}}</text>
-          <text class="l-card__unit">{{unit}}</text>
-        </view>
+      <text wx:if="{{headerValue&&!info.custom}}">{{headerValue}} {{unit}}</text>
+      <view v-else>
+        <view wx:if="{{info.type==='seller'}}" class="flex f-col-center f-row-between">
+          <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="primary">核定征收</t-tag>
+          <view style="margin-right: 10rpx;">
+            <view class="l-card__label--text">全额</view>
+            <text>{{info.total}}</text>
+            <text class="l-card__unit">{{unit}}</text>
+          </view>
+          <view wx:if="{{info.halfTotal&&info.isHalf}}">
+            <view class="l-card__label--text">减半</view>
+            <text>{{info.halfTotal}}</text>
+            <text class="l-card__unit">{{unit}}</text>
+          </view>
 
-      </view>
-      <view wx:if="{{info.type==='buyer'}}" class="flex f-col-center f-row-between">
-        <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="primary">总房价</t-tag>
-        <text>{{info.total}}</text>
-        <text class="l-card__unit">{{unit}}</text>
-      </view>
-      <view wx:if="{{info.type==='buyer'}}" class="flex f-col-center f-row-between">
-        <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="success">除去贷款</t-tag>
-        <text>{{info.withoutTotal}}</text>
-        <text class="l-card__unit">{{unit}}</text>
-      </view>
-      <view wx:if="{{info.realTotal&&calcForm.oldPrice}}" class="flex f-col-center f-row-between" style="color:var(--td-gray-color-9);font-weight: 400;">
-        <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="warning">据实征收</t-tag>
-        <view style="margin-right:10rpx">
-          <text>{{info.realTotal}}</text>
+        </view>
+        <view wx:if="{{info.type==='buyer'}}" class="flex f-col-center f-row-between">
+          <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="primary">落地房价</t-tag>
+          <text class="flex-1 text-right">{{info.total}}</text>
           <text class="l-card__unit">{{unit}}</text>
         </view>
-        <view>
-          <text>{{info.halfrealTotal}}</text>
+        <view wx:if="{{info.type==='buyer'}}" class="flex f-col-center f-row-between">
+          <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="success">不含贷款</t-tag>
+          <text class="flex-1 text-right">{{info.withoutTotal}}</text>
           <text class="l-card__unit">{{unit}}</text>
+        </view>
+        <view wx:if="{{info.realTotal}}" class="flex f-col-center f-row-between" style="color:var(--td-gray-color-9);font-weight: 400;">
+          <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="warning">据实征收</t-tag>
+          <view style="margin-right:10rpx">
+            <text>{{info.realTotal}}</text>
+            <text class="l-card__unit">{{unit}}</text>
+          </view>
+          <view>
+            <text>{{info.halfrealTotal}}</text>
+            <text class="l-card__unit">{{unit}}</text>
+          </view>
         </view>
       </view>
     </view>

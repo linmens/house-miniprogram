@@ -27,6 +27,7 @@ let CellGroup = class CellGroup extends SuperComponent {
         type: 'child',
       },
     };
+
     this.properties = props;
     this.data = {
       prefix,

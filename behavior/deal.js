@@ -7,7 +7,10 @@
  } from '../utils/util';
  export const dealBehavior = Behavior({
    data: {
+     showHukouWuyeNotice: false,
      calcForm: {
+       // 评估金额
+       pingguPrice: '',
        // 房屋总价
        totalPrice: '',
        // 网签金额
@@ -174,8 +177,14 @@
        })
        console.log('设置首付金额', result)
      },
-     handleHukouWuyeTitleRight(e) {
-       console.log(e, 'shandleHukouWuyeTitleRight')
+
+     onPingguPriceChange(e) {
+       const {
+         value
+       } = e.detail
+       this.setData({
+         'calcForm.pingguPrice': value
+       })
      },
      /**
       * 交易总价改变

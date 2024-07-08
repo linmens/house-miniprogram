@@ -12,6 +12,7 @@
   "dependencies": {
     "lodash": "^4.17.21",
     "number-precision": "^1.6.0",
+    "supabase-wechat-stable-v2": "^2.2.0",
     "tdesign-miniprogram": "^1.4.1"
   }
 }

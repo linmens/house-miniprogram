@@ -9,7 +9,7 @@
       <text>房产计算</text>
     </view>
   </t-navbar>
-  <t-tabs bind:change="onForWhoIndexChange" value="{{calcForm.forWhoIndex}}" theme="tag">
+  <t-tabs wx:if="{{userIndex===0}}" bind:change="onForWhoIndexChange" value="{{calcForm.forWhoIndex}}" theme="tag">
     <t-tab-panel label="给客户算" value="{{0}}" />
     <t-tab-panel label="给业主算" value="{{1}}" />
   </t-tabs>
@@ -37,6 +37,11 @@
     <l-tabs slot="note" current-index="{{calcForm.fadingIndex}}" bind:change="onFadingTypeChange" list="{{fadingTypes}}">
     </l-tabs>
   </l-cell>
+  <l-cell wx:if="{{calcForm.exchangeType===4}}" title="分割条件">
+    <l-tabs slot="note" current-index="{{calcForm.fengeIndex}}" bind:change="onFengeTypeChange" list="{{fengeTypes}}">
+    </l-tabs>
+  </l-cell>
+
   <l-cell title="计算单位">
     <l-tabs slot="note" current-index="{{calcForm.unitIndex}}" bind:change="onTypesChange" list="{{unitTypes}}">
     </l-tabs>
@@ -45,17 +50,25 @@
     <l-tabs disabled="{{calcForm.exchangeType!==0}}" slot="note" current-index="{{calcForm.buyIndex}}" bind:change="onBuyTypesChange" list="{{buyTypes}}">
     </l-tabs>
   </l-cell>
+  <l-cell title="房屋类型">
+    <l-tabs slot="note" current-index="{{calcForm.houseType}}" bind:change="onHouseTypesChange" list="{{houseTypes}}">
+    </l-tabs>
+  </l-cell>
   <l-cell title="成交方式" wx:if="{{calcForm.buyIndex===0&&calcForm.exchangeType===0}}">
     <l-tabs slot="note" current-index="{{calcForm.orderType}}" bind:change="onOrderTypesChange" list="{{orderTypes}}">
     </l-tabs>
   </l-cell>
+  <l-cell wx:if="{{calcForm.exchangeType===0&&calcForm.buyIndex===1}}" title="楼层电梯">
+    <l-tabs slot="note" current-index="{{calcForm.floorIndex}}" bind:change="onNewHouseTypesChange" list="{{newHouseTypes}}">
+    </l-tabs>
+  </l-cell>
   <l-cell wx:if="{{calcForm.exchangeType===0}}" title="建筑面积" bordered="{{calcForm.buyIndex===0}}">
-    <l-tabs slot="note" id="areaTabs" current-index="{{calcForm.areaIndex}}" bind:change="onAreaTypesChange" list="{{areaTypes}}">
+    <l-tabs disabled="{{calcForm.buyIndex===1}}" slot="note" id="areaTabs" current-index="{{calcForm.areaIndex}}" bind:change="onAreaTypesChange" list="{{areaTypes}}">
     </l-tabs>
   </l-cell>
   <!-- 自定义建筑面积 -->
   <l-cell suffix="㎡" title="自定义建筑面积" wx:if="{{calcForm.areaIndex===2&&calcForm.exchangeType===0}}">
-    <t-stepper slot="note" bind:change="onCustomAreaChange" value="{{calcForm.area}}" min="1" step="1" :max="10000" theme="filled" />
+    <t-stepper slot="note" bind:change="onCustomAreaChange" value="{{calcForm.area}}" step="1" :max="10000" theme="filled" />
   </l-cell>
   <block wx:if="{{calcForm.buyIndex===0&&calcForm.exchangeType===0}}">
 
@@ -102,12 +115,21 @@
 
 <!-- 卖方属性 -->
 <l-cell-group theme="card" title="卖方属性" wx:if="{{calcForm.buyIndex===0&&calcForm.exchangeType===0}}">
-  <l-cell title="能否提供原值凭证">
+  <l-cell title="能否提供原值凭证" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showNotice" data-content-key="canyuanzhi">
     <l-tabs slot="note" current-index="{{calcForm.oldPriceIndex}}" bind:change="onCanGiveOldpriceTypesChange" list="{{canGiveOldpriceTypes}}">
     </l-tabs>
   </l-cell>
-  <l-cell wx:if="{{calcForm.oldPriceIndex===0}}" title="原始购买价格" suffix="{{calcForm.unit}}">
+  <l-cell required wx:if="{{calcForm.oldPriceIndex===0}}" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showNotice" data-content-key="yuanzhi" title="原值" suffix="{{calcForm.unit}}">
     <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldPriceChange" value="{{calcForm.oldPrice}}" placeholder="请输入原始购买价格" type="number"></t-input>
+  </l-cell>
+  <l-cell wx:if="{{calcForm.oldPriceIndex===0}}" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showNotice" data-content-key="zhuangxiu" title="住房装修费用" suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldHouseStylePriceChange" value="{{calcForm.oldHouseStylePrice}}" placeholder="请输入住房装修费用" type="number"></t-input>
+  </l-cell>
+  <l-cell wx:if="{{calcForm.oldPriceIndex===0}}" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showNotice" data-content-key="daikuanlixi" title="住房贷款利息" suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldBankPriceChange" value="{{calcForm.oldBankPrice}}" placeholder="请输入住房贷款利息" type="number"></t-input>
+  </l-cell>
+  <l-cell wx:if="{{calcForm.oldPriceIndex===0}}" title="手续费、公证费等" suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldOtherPriceChange" value="{{calcForm.oldOtherPrice}}" placeholder="请输入手续费、公证费等" type="number"></t-input>
   </l-cell>
   <l-cell title="产证持有">
     <t-slider slot="note" value="{{calcForm.chanquanYear}}" max="70" step="{{1}}" bind:change="handleChanquanYearChange" />
@@ -192,15 +214,7 @@
   <!-- 适配skyline，增加type="list" -->
   <scroll-view slot="content" type="list" scroll-y class="long-content">
     <view class="content-container">
-      1.选择当时业主买房时使用的贷款方式[商业贷款、公积金、组合贷、全款]；
-
-      2.完善业主房屋基本信息；
-
-      3.完善此次交易的信息；
-
-      4.完善业主购买房产时的银行贷款信息,若为全款则无需填写。
-
-      最终计算结果：业主本次交易所需要承担的相关费用；业主本次交易房屋增值金额。
+      {{noticeContent}}
     </view>
   </scroll-view>
 </t-dialog>

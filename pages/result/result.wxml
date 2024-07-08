@@ -3,7 +3,7 @@
 </t-navbar>
 <t-notice-bar visible="{{true}}" content="计算结果仅供参考，若有计算错误请联系开发者。"></t-notice-bar>
 
-<l-cell-group title="基本信息" theme="card">
+<view class="l-card__group">
   <t-row style="background-color: var(--td-cell-bg-color, var(--td-bg-color-container, var(--td-font-white-1, #ffffff)));">
     <t-col span="12" wx:if="{{item.show}}" wx:for="{{list}}" wx:key="index">
       <view class="row-tag">
@@ -15,8 +15,9 @@
 
 
 
-</l-cell-group>
-<view class="l-result__total" style="margin: 20rpx 32rpx;">
+</view>
+
+<!-- <view class="l-result__total" style="margin: 20rpx 32rpx;">
   <text>前期需支付金额合计</text>
   <view class="l-result__card" wx:if="{{item.show}}" wx:for="{{result.details}}" wx:key="index">
     <view class="l-result__card__title">
@@ -29,8 +30,12 @@
       </view>
     </view>
   </view>
-</view>
-
+</view> -->
+<l-cell-group theme="card" wx:if="{{result.totalAll}}">
+  <l-cell title="前期支付金额合计" suffix="{{calcForm.unit}}">
+    <text slot="note" style="font-size: large;font-weight: bold;color:var(--td-primary-color-8)">{{result.totalAll}}</text>
+  </l-cell>
+</l-cell-group>
 <view class="l-card__group" wx:if="{{calcForm.exchangeType===1}}">
   <l-card headerTitle="赠与方合计" headerValue="{{sender.total}}" info="{{sender}}" unit="{{calcForm.unit}}"></l-card>
 </view>
@@ -40,9 +45,22 @@
 <view class="l-card__group" wx:if="{{calcForm.exchangeType===2}}">
   <l-card headerValue="{{extender.total}}" headerTitle="继承人合计" info="{{extender}}" unit="{{calcForm.unit}}"></l-card>
 </view>
-<view class="l-card__group" wx:if="{{calcForm.exchangeType===0}}">
+
+<view class="l-card__group" wx:if="{{calcForm.exchangeType===3}}">
+  <l-card headerValue="{{marryder.total}}" headerTitle="夫妻双方合计" info="{{marryder}}" unit="{{calcForm.unit}}"></l-card>
+</view>
+<block wx:if="{{calcForm.exchangeType===4}}">
+  <view class="l-card__group">
+    <l-card headerValue="{{divorcer.total}}" headerTitle="夫妻双方合计" info="{{divorcer}}" unit="{{calcForm.unit}}"></l-card>
+  </view>
+  <view class="l-card__group">
+    <l-card headerValue="{{another.total}}" headerTitle="房屋权属变更后的一方合计" info="{{another}}" unit="{{calcForm.unit}}"></l-card>
+  </view>
+</block>
+<view class="l-card__group" wx:if="{{calcForm.exchangeType===0&&calcForm.buyIndex===0}}">
   <l-card headerValue="{{seller.total}}" headerTitle="卖方合计" info="{{seller}}" unit="{{calcForm.unit}}"></l-card>
 </view>
 <view class="l-card__group" wx:if="{{calcForm.exchangeType===0}}">
   <l-card headerValue="{{seller.total}}" headerTitle="买方合计" info="{{buyer}}" unit="{{calcForm.unit}}"></l-card>
 </view>
+<t-toast id="t-toast" />

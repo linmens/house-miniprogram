@@ -1,25 +1,20 @@
 .t-float-left {
   float: left;
 }
-
 .t-float-right {
   float: right;
 }
-
 @keyframes tdesign-fade-out {
   from {
     opacity: 1;
   }
-
   to {
     opacity: 0;
   }
 }
-
 .hotspot-expanded.relative {
   position: relative;
 }
-
 .hotspot-expanded::after {
   content: '';
   display: block;
@@ -30,11 +25,9 @@
   bottom: 0;
   transform: scale(1.5);
 }
-
 .t-cell-group {
   position: relative;
 }
-
 .t-cell-group__title {
   font-family: PingFangSC-Regular;
   font-size: var(--td-cell-group-title-font-size, 28rpx);
@@ -44,7 +37,6 @@
   background-color: var(--td-cell-group-title-bg-color, var(--td-bg-color-secondarycontainer, var(--td-gray-color-1, #f3f3f3)));
   padding-left: var(--td-cell-group-title-padding-left, 32rpx);
 }
-
 .t-cell-group--bordered::before {
   position: absolute;
   box-sizing: border-box;
@@ -59,7 +51,6 @@
   transform-origin: top;
   z-index: 1;
 }
-
 .t-cell-group--bordered::after {
   position: absolute;
   box-sizing: border-box;
@@ -73,9 +64,8 @@
   transform-origin: bottom;
   z-index: 1;
 }
-
 .t-cell-group--card {
-  margin: 32rpx;
+  margin: 0 32rpx;
   border-radius: var(--td-radius-large, 18rpx);
   overflow: hidden;
 }

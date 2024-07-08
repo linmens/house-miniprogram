@@ -57,7 +57,21 @@
      }
    },
    methods: {
+     setWangqianPrice() {
+       const {
+         totalPrice,
+         hukouWuyePrice,
+         buyIndex
+       } = this.data.calcForm
+       if (totalPrice) {
+         let wangqian = NP.minus(totalPrice, hukouWuyePrice)
+         this.setData({
+           'calcForm.wangqianPrice': wangqian
+         })
+         console.log('设置网签金额:', wangqian)
+       }
 
+     },
      /**
       * 设置交易总价
       * @param type 0 网签+户口预留
@@ -195,21 +209,19 @@
          value
        } = e.detail
        const {
-         wangqianPrice,
          hukouWuyePrice
        } = this.data.calcForm
 
-       const result = calculatePlus(null, hukouWuyePrice, value);
-
+       //  const result = calculatePlus(null, hukouWuyePrice, value);
+       //  const wangqianPrice = NP.minus(value,hukouWuyePrice, )
        this.setData({
          'calcForm.totalPrice': value,
-         'calcForm.wangqianPrice': result.a,
+         //  'calcForm.wangqianPrice': result.a,
        })
        console.log('交易总价改变-设置交易总价：', value)
-       console.log('交易总价改变-设置网签总价：', result.a)
+       //  console.log('交易总价改变-设置网签总价：', result.a)
        await this.startCalc()
-       //  this.setPaymentPrice()
-       //  this.setServiceFee()
+
 
      },
      /**
@@ -299,7 +311,8 @@
        this.setData({
          'calcForm.hukouWuyePrice': value,
        })
-       this.setTotalPrice(0)
+       //  this.setTotalPrice(0)
+       this.startCalc()
      }
    }
  })

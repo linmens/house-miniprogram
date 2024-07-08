@@ -1,5 +1,4 @@
 .row-tag {
-
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -12,25 +11,28 @@
 }
 
 .l-card__group {
-  margin: 20rpx 32rpx;
+  margin: 32rpx;
   border-radius: var(--td-radius-large, 18rpx);
   overflow: hidden;
 }
 
 .l-result__card {
-  background-color: var(--td-cell-bg-color, var(--td-bg-color-container, var(--td-font-white-1, #ffffff)));
+  background-color: var(
+    --td-cell-bg-color,
+    var(--td-bg-color-container, var(--td-font-white-1, #ffffff))
+  );
   border-radius: var(--td-radius-large, 18rpx);
   overflow: hidden;
   margin: 20rpx 0;
 }
 
 .l-result__card__title {
-  padding: 20rpx
+  padding: 20rpx;
 }
 
 .l-result__card__main {
   display: flex;
-  padding-bottom: 20rpx
+  padding-bottom: 20rpx;
 }
 
 .l-result__card__main__item {

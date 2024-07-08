@@ -5,7 +5,8 @@ import {
   loanRateTypes,
   loanPaidTypes,
   serviceFeeTypes,
-  shuifeiTypes
+  shuifeiTypes,
+  NoticeData
 } from '../../utils/constants';
 import {
   getOldYearTimestamp,
@@ -26,6 +27,10 @@ import {
 import NP from 'number-precision'
 import Toast from 'tdesign-miniprogram/toast/index';
 import Message from 'tdesign-miniprogram/message/index';
+import {
+  createClient
+}
+from 'supabase-wechat-stable-v2'
 Component({
   behaviors: [basicBehavior, dealBehavior, serviceBehavior, gongjijinBehavior, shangdaiBehavior, sellerBehavior, buyerBehavior],
   options: {
@@ -41,6 +46,7 @@ Component({
     userListVisible: false,
     // 显示隐藏计算说明
     showNotice: false,
+    noticeContent: '',
     confirmBtn: {
       content: '知道了',
       variant: 'base'
@@ -73,6 +79,21 @@ Component({
   lifetimes: {
     async ready() {
       let t = this
+
+      const supabaseUrl = 'https://cq29rba5g6h0s3o5amt0.baseapi.memfiredb.com'
+      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiZXhwIjozMjk2NzY3MTQ5LCJpYXQiOjE3MTk5NjcxNDksImlzcyI6InN1cGFiYXNlIn0.RWr3S2joN1HS8kCHWi38pZ6p9kcFAb9yfAh6c7ollUM"
+      const supabase = createClient(supabaseUrl, supabaseKey)
+      console.log(supabase, 'supabase')
+      // const {
+      //   data,
+      //   error
+      // } = await supabase
+      //   .from('test')
+      //   .insert([{
+      //     day_num: 20,
+      //   }, ])
+      //   .select()
+      // console.log(data, 'data')
       // 获取本地userIndex
       const userIndexLocal = await wx.getStorageSync('userIndex')
       const userIndexRemberLocal = await wx.getStorageSync('userIndexRember')
@@ -96,7 +117,9 @@ Component({
       addDataToCache(this.data.calcForm, timestamp)
       const {
         oldPriceIndex,
-        oldPrice
+        oldPrice,
+        areaIndex,
+        area
       } = this.data.calcForm
       if (oldPriceIndex === 0) {
         if (!oldPrice) {
@@ -104,10 +127,19 @@ Component({
             context: this,
             offset: [90, 32],
             duration: 5000,
-            content: '请输入原始购买价格',
+            content: '请输入原值',
           });
           return
         }
+      }
+      if (areaIndex === 2 && !area) {
+        Message.warning({
+          context: this,
+          offset: [90, 32],
+          duration: 5000,
+          content: '请输入自定义面积',
+        });
+        return
       }
       wx.navigateTo({
         url: `/pages/result/result?timestamp=${timestamp}`,
@@ -152,7 +184,9 @@ Component({
         case 3:
           // 新房置业顾问
           this.setData({
-            'calcForm.buyIndex': 1
+            'calcForm.buyIndex': 1,
+            'calcForm.hukouWuyePrice': 0,
+            'calcForm.areaIndex': 2
           })
           break;
         default:
@@ -230,7 +264,7 @@ Component({
         loanIndex,
         loanGjjIndex
       } = this.data.calcForm;
-
+      await this.setWangqianPrice()
       switch (bankType) {
         case 0:
           console.log('开始计算商业贷款部分...')
@@ -293,21 +327,25 @@ Component({
         default:
           break;
       }
+
       if (buyIndex === 0) {
         await this.setBankPrice()
         await this.setServiceFee()
       }
+
       await this.setPaymentPrice()
       // this.setPaymentRate()
     },
     showDialog(e) {
       const {
-        key
+        key,
+        contentKey
       } = e.currentTarget.dataset;
-      console.log(e, 'sshowDialog')
+      console.log(contentKey, 'contentKey')
       this.setData({
         [key]: true,
-        dialogKey: key
+        dialogKey: key,
+        noticeContent: NoticeData[contentKey]
       });
     },
     closeDialog() {

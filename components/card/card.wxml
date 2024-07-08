@@ -1,42 +1,16 @@
 <view class="l-card">
   <view class="l-card__header">
     <text>{{headerTitle}}</text>
-
-    <view>
+    <view class="flex-1">
       <text wx:if="{{headerValue&&!info.custom}}">{{headerValue}} {{unit}}</text>
       <view v-else>
-        <view wx:if="{{info.type==='seller'}}" class="flex f-col-center f-row-between">
-          <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="primary">核定征收</t-tag>
-          <view style="margin-right: 10rpx;">
-            <view class="l-card__label--text">全额</view>
-            <text>{{info.total}}</text>
-            <text class="l-card__unit">{{unit}}</text>
+        <view wx:for="{{info.totalList}}" wx:key="index" class="flex f-col-center">
+          <view class="flex-1 flex " style="justify-content: flex-end;align-items: baseline;">
+            <t-tag size="small" theme="primary" variant="light" style="margin-right: 20rpx;" wx:if="{{item.isCurrent}}">当前推荐算法</t-tag>
+            <t-tag size="small" theme="{{item.tagOptions.type}}">{{item.tagOptions.text}}</t-tag>
           </view>
-          <view wx:if="{{info.halfTotal&&info.isHalf}}">
-            <view class="l-card__label--text">减半</view>
-            <text>{{info.halfTotal}}</text>
-            <text class="l-card__unit">{{unit}}</text>
-          </view>
-
-        </view>
-        <view wx:if="{{info.type==='buyer'}}" class="flex f-col-center f-row-between">
-          <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="primary">落地房价</t-tag>
-          <text class="flex-1 text-right">{{info.total}}</text>
-          <text class="l-card__unit">{{unit}}</text>
-        </view>
-        <view wx:if="{{info.type==='buyer'}}" class="flex f-col-center f-row-between">
-          <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="success">不含贷款</t-tag>
-          <text class="flex-1 text-right">{{info.withoutTotal}}</text>
-          <text class="l-card__unit">{{unit}}</text>
-        </view>
-        <view wx:if="{{info.realTotal}}" class="flex f-col-center f-row-between" style="color:var(--td-gray-color-9);font-weight: 400;">
-          <t-tag style="margin-right: 20rpx;" size="small" variant="light" theme="warning">据实征收</t-tag>
-          <view style="margin-right:10rpx">
-            <text>{{info.realTotal}}</text>
-            <text class="l-card__unit">{{unit}}</text>
-          </view>
-          <view>
-            <text>{{info.halfrealTotal}}</text>
+          <view class="flex-1 flex " style="justify-content: flex-end;align-items: baseline">
+            <text>{{item.value}}</text>
             <text class="l-card__unit">{{unit}}</text>
           </view>
         </view>
@@ -46,31 +20,27 @@
   <t-divider />
 
   <view class="l-card__main">
-    <view wx:if="{{item.value}}" class="l-card__main--item" wx:for="{{info.details}}" wx:key="index">
-      <view class="l-card__main__label">
-        <text>{{item.label}}</text>
+    <view class="" style="margin-bottom: 10rpx;" wx:for="{{info.details}}" wx:key="index">
+      <view wx:if="{{item.value}}" class="l-card__main--item">
+        <view class="l-card__main__label">
+          <text>{{item.label}}</text>
+        </view>
+        <t-tag wx:if="{{item.tagOptions}}" size="small" variant="light" theme="{{item.tagOptions.type}}">{{item.tagOptions.text}}</t-tag>
+        <view class="l-card__main__value">
+          <!-- <view wx:if="{{item.type===0}}">
+            <text>{{item.value}}</text>
+            <text class="l-card__unit">{{unit}}</text>
+          </view> -->
+
+          <view>
+            <text>{{item.value}}</text>
+            <text class="l-card__unit">{{unit}}</text>
+          </view>
+        </view>
       </view>
-      <view class="l-card__main__value">
-        <view wx:if="{{item.type===0}}">
-          <text>{{item.value}}</text>
-          <text class="l-card__unit">{{unit}}</text>
-        </view>
-        <view class="l-card__main__value__extra" wx:else>
-          <view class="l-card__main__value__extra__tag" wx:if="{{item.value.default}}">
-            <t-tag variant="light" size="small" theme="{{item.type===1?'default':'primary'}}">{{item.type===1?'全额':'核定'}}</t-tag>
-            <view>
-              <text>{{item.value.default}}</text>
-              <text class="l-card__unit">{{unit}}</text>
-            </view>
-          </view>
-          <view class="l-card__main__value__extra__tag" wx:if="{{item.value.extra}}">
-            <t-tag size="small" variant="light" theme="{{item.type===1?'success':'warning'}}">{{item.type===1?'减半':'据实'}}</t-tag>
-            <view>
-              <text>{{item.value.extra}}</text>
-              <text class="l-card__unit">{{unit}}</text>
-            </view>
-          </view>
-        </view>
+      <view class="l-card__main--desc" wx:if="{{item.desc}}" wx:for-item="descItem" wx:for="{{item.desc}}" wx:key="index">
+        <text style="font-size: 20rpx;margin-right: 20rpx;">{{descItem.label}}</text>
+        <t-tag size="small" wx:if="{{descItem.isLower}}" theme="success">较低</t-tag>
       </view>
     </view>
   </view>

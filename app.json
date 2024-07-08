@@ -7,6 +7,7 @@
     "pages/result/result"
   ],
   "usingComponents": {
+    "t-toast": "tdesign-miniprogram/toast/toast",
     "t-divider": "tdesign-miniprogram/divider/divider",
     "t-tag": "tdesign-miniprogram/tag/tag",
     "t-row": "tdesign-miniprogram/row/row",

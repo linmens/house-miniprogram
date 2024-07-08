@@ -12,10 +12,40 @@
          // 能否提供原值下标
          oldPriceIndex: 1,
          // 原值
-         oldPrice: 0
+         oldPrice: '',
+         // 住房装修费用
+         oldHouseStylePrice: '',
+         // 住房贷款利息
+         oldBankPrice: '',
+         // 手续费、公证费等
+         oldOtherPrice: ''
        }
      },
      methods: {
+       onOldOtherPriceChange(e) {
+         const {
+           value
+         } = e.detail
+         this.setData({
+           'calcForm.oldOtherPrice': value
+         })
+       },
+       onOldBankPriceChange(e) {
+         const {
+           value
+         } = e.detail
+         this.setData({
+           'calcForm.oldBankPrice': value
+         })
+       },
+       onOldHouseStylePriceChange(e) {
+         const {
+           value
+         } = e.detail
+         this.setData({
+           'calcForm.oldHouseStylePrice': value
+         })
+       },
        onOldPriceChange(e) {
          const {
            value

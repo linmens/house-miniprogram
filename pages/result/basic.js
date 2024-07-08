@@ -5,7 +5,11 @@
    areaTypes,
    orderTypes,
    tabs,
-   fadingTypes
+   fadingTypes,
+   fengeTypes,
+   buyerTypes,
+   newHouseTypes,
+   houseTypes
  }
  from '../../utils/constants';
  export const basicBehavior = Behavior({
@@ -28,7 +32,9 @@
          houseAge,
          totalPrice,
          unit,
-         wangqianPrice
+         wangqianPrice,
+         buyerIndex,
+         houseType
        } = this.data.calcForm
        let list = [{
          label: '支付方式',
@@ -44,7 +50,7 @@
          show: 1
        }, {
          label: '建筑面积',
-         value: areaIndex === 2 ? area : areaTypes[areaIndex].label,
+         value: areaIndex === 2 ? area + '㎡' : areaTypes[areaIndex].label,
          show: 1
        }, {
          label: '唯一住房',
@@ -62,6 +68,14 @@
          label: '房屋年龄',
          value: houseAge + '年',
          show: houseAge ? 1 : 0
+       }, {
+         label: '买方家庭',
+         value: buyerTypes[buyerIndex].label,
+         show: 1
+       }, {
+         label: '房屋类型',
+         value: houseTypes[houseType].label,
+         show: 1
        }, {
          label: '交易总价',
          value: totalPrice + unit,
@@ -81,11 +95,16 @@
          buyIndex,
          unit,
          pingguPrice,
-         exchangeType
+         exchangeType,
+         houseType
        } = this.data.calcForm
        let list = [{
          label: '变更类型',
          value: exchangeTypes[exchangeType].label,
+         show: 1
+       }, {
+         label: '房屋类型',
+         value: houseTypes[houseType].label,
          show: 1
        }, {
          label: '房屋新旧',
@@ -107,7 +126,8 @@
          unit,
          pingguPrice,
          exchangeType,
-         fadingIndex
+         fadingIndex,
+         houseType
        } = this.data.calcForm
        let list = [{
          label: '变更类型',
@@ -118,6 +138,10 @@
          value: buyTypes[buyIndex].label,
          show: 1
        }, {
+         label: '房屋类型',
+         value: houseTypes[houseType].label,
+         show: 1
+       }, {
          label: '继承类型',
          value: fadingTypes[fadingIndex].label,
          show: 1
@@ -125,6 +149,111 @@
          label: '评估价格',
          value: pingguPrice + unit,
          show: pingguPrice ? 1 : 0
+       }]
+       this.setData({
+         list: list
+       })
+     },
+     // 初始化婚内更名列表
+     initMarryList() {
+       const {
+         buyIndex,
+         unit,
+         pingguPrice,
+         exchangeType,
+         houseType
+       } = this.data.calcForm
+       let list = [{
+         label: '变更类型',
+         value: exchangeTypes[exchangeType].label,
+         show: 1
+       }, {
+         label: '房屋类型',
+         value: houseTypes[houseType].label,
+         show: 1
+       }, {
+         label: '房屋新旧',
+         value: buyTypes[buyIndex].label,
+         show: 1
+       }, {
+         label: '评估价格',
+         value: pingguPrice + unit,
+         show: pingguPrice ? 1 : 0
+       }]
+       this.setData({
+         list: list
+       })
+     },
+     // 初始化离婚分割列表
+     initDivorceList() {
+       const {
+         buyIndex,
+         unit,
+         pingguPrice,
+         exchangeType,
+         fengeIndex,
+         houseType
+       } = this.data.calcForm
+       let list = [{
+         label: '变更类型',
+         value: exchangeTypes[exchangeType].label,
+         show: 1
+       }, {
+         label: '房屋新旧',
+         value: buyTypes[buyIndex].label,
+         show: 1
+       }, {
+         label: '房屋类型',
+         value: houseTypes[houseType].label,
+         show: 1
+       }, {
+         label: '分割条件',
+         value: fengeTypes[fengeIndex].label,
+         show: 1
+       }, {
+         label: '评估价格',
+         value: pingguPrice + unit,
+         show: pingguPrice ? 1 : 0
+       }]
+       this.setData({
+         list: list
+       })
+     },
+     initNewBasicData() {
+       const {
+         buyIndex,
+         unit,
+         buyerIndex,
+         areaIndex,
+         area,
+         totalPrice,
+         floorIndex,
+         houseType
+       } = this.data.calcForm
+       let list = [{
+         label: '房屋新旧',
+         value: buyTypes[buyIndex].label,
+         show: 1
+       }, {
+         label: '建筑面积',
+         value: areaIndex === 2 ? area + '㎡' : areaTypes[areaIndex].label,
+         show: 1
+       }, {
+         label: '楼层电梯',
+         value: newHouseTypes[floorIndex].label,
+         show: 1
+       }, {
+         label: '房屋类型',
+         value: houseTypes[houseType].label,
+         show: 1
+       }, {
+         label: '买方家庭',
+         value: buyerTypes[buyerIndex].label,
+         show: 1
+       }, {
+         label: '交易总价',
+         value: totalPrice + unit,
+         show: totalPrice ? 1 : 0
        }]
        this.setData({
          list: list

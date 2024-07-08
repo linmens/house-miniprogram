@@ -18,18 +18,18 @@
      calcSendAll() {
 
        let totalAll = NP.plus(this.data.sender.total, this.data.getter.total)
-       let details = [{
-         title: '核定征收',
-         theme: 'primary',
-         show: 1,
-         data: [{
-           label: '全额',
-           value: totalAll,
-           show: 1
-         }, ]
-       }]
+       //  let details = [{
+       //    title: '核定征收',
+       //    theme: 'primary',
+       //    show: 1,
+       //    data: [{
+       //      label: '全额',
+       //      value: totalAll,
+       //      show: 1
+       //    }, ]
+       //  }]
        this.setData({
-         'result.details': details
+         'result.totalAll': totalAll
        })
      },
      calcSender() {

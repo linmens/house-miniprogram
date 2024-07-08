@@ -6,7 +6,10 @@
    areaTypes,
    orderTypes,
    exchangeTypes,
-   fadingTypes
+   fadingTypes,
+   fengeTypes,
+   newHouseTypes,
+   houseTypes
  } from '../utils/constants';
  import {
    calculateBuiltYear,
@@ -21,6 +24,9 @@
      orderTypes,
      exchangeTypes,
      fadingTypes,
+     fengeTypes,
+     newHouseTypes,
+     houseTypes,
      // 显示隐藏年选择器
      yearVisible: false,
 
@@ -35,8 +41,9 @@
        buyIndex: 0,
        // 是否法定继承人下标
        fadingIndex: 0,
+       // 分割条件
+       fengeIndex: 0,
        // 建筑面积
-
        area: 0,
        // 建筑面积下标
        areaIndex: 0,
@@ -50,7 +57,11 @@
        // 成交方式 0 三方成交 1 自行成交
        orderType: 0,
        // 变更类型
-       exchangeType: 0
+       exchangeType: 0,
+       // 楼层电梯
+       floorIndex: 2,
+       // 房屋类型
+       houseType: 0
      }
    },
    observers: {
@@ -68,6 +79,39 @@
      }
    },
    methods: {
+     setHukouWuyePrice() {
+       const {
+         unit,
+         buyIndex,
+         hukouWuyePrice
+       } = this.data.calcForm
+       let price = 0
+       if (buyIndex === 0) {
+         // 二手房
+         if (unit === '元') {
+           if (hukouWuyePrice) {
+             price = hukouWuyePrice * 10000
+           } else {
+             price = 10000
+           }
+
+         } else {
+           // 万元
+           if (hukouWuyePrice) {
+             price = hukouWuyePrice / 10000
+           } else {
+             price = 1
+           }
+         }
+         this.setData({
+           'calcForm.hukouWuyePrice': price
+         })
+       } else {
+         this.setData({
+           'calcForm.hukouWuyePrice': 0
+         })
+       }
+     },
      setAllPrice() {
        const {
          unitIndex,
@@ -75,15 +119,17 @@
          hukouWuyePrice,
          loanGjjMaxPrice,
          oldPrice,
+         unit,
          pingguPrice,
          wangqianPrice,
          totalPrice
        } = this.data.calcForm
+
        if (unitIndex === 0) {
          // 当计算单位为元时换算
          this.setData({
            'calcForm.bankPrice': bankPrice * 10000,
-           'calcForm.hukouWuyePrice': hukouWuyePrice * 10000,
+
            'calcForm.totalPrice': totalPrice * 10000,
            'calcForm.wangqianPrice': wangqianPrice * 10000,
            'calcForm.pingguPrice': pingguPrice * 10000,
@@ -93,7 +139,7 @@
        } else {
          this.setData({
            'calcForm.bankPrice': bankPrice / 10000,
-           'calcForm.hukouWuyePrice': hukouWuyePrice / 10000,
+
            'calcForm.totalPrice': totalPrice / 10000,
            'calcForm.wangqianPrice': wangqianPrice / 10000,
            'calcForm.pingguPrice': pingguPrice / 10000,
@@ -109,6 +155,22 @@
        this.setData({
          'calcForm.exchangeType': index,
          'calcForm.buyIndex': 0
+       })
+     },
+     onHouseTypesChange(e) {
+       const {
+         index
+       } = e.detail
+       this.setData({
+         'calcForm.houseType': index,
+       })
+     },
+     onNewHouseTypesChange(e) {
+       const {
+         index
+       } = e.detail
+       this.setData({
+         'calcForm.floorIndex': index,
        })
      },
      onOrderTypesChange(e) {
@@ -139,10 +201,10 @@
          'calcForm.unitIndex': index,
          'calcForm.unitRate': rate,
        })
-       this.setAllPrice()
-       //  this.setBankPrice()
-       //  this.setLoanGjjPrice(0)
        // 设置所有相关金额的数值
+       this.setAllPrice()
+       this.setHukouWuyePrice()
+
        this.startCalc()
      },
      onFadingTypeChange(e) {
@@ -160,13 +222,16 @@
      onBuyTypesChange(e) {
        const {
          index,
-         label
+         label,
+         unit
        } = e.detail
 
        this.setData({
          'calcForm.buyIndex': index,
-         'calcForm.buy': label
+         'calcForm.areaIndex': 2
        })
+       this.setHukouWuyePrice()
+       this.startCalc()
      },
      // 显示隐藏年份选择器
      showYearPicker() {
@@ -217,6 +282,14 @@
        } = e.detail
        this.setData({
          'calcForm.area': value
+       })
+     },
+     onFengeTypeChange(e) {
+       const {
+         index
+       } = e.detail
+       this.setData({
+         'calcForm.fengeIndex': index
        })
      },
      onAreaTypesChange(e) {

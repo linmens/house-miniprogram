@@ -20,8 +20,8 @@
   <t-divider />
 
   <view class="l-card__main">
-    <view class="" style="margin-bottom: 10rpx;" wx:for="{{info.details}}" wx:key="index">
-      <view wx:if="{{item.value}}" class="l-card__main--item">
+    <view wx:if="{{item.value}}" class="" style="margin-bottom: 10rpx;" wx:for="{{info.details}}" wx:key="index">
+      <view class="l-card__main--item">
         <view class="l-card__main__label">
           <text>{{item.label}}</text>
         </view>

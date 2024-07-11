@@ -34,7 +34,8 @@
          unit,
          wangqianPrice,
          buyerIndex,
-         houseType
+         houseType,
+         pingguPrice
        } = this.data.calcForm
        let list = [{
          label: '支付方式',
@@ -84,6 +85,10 @@
          label: '网签金额',
          value: wangqianPrice + unit,
          show: wangqianPrice ? 1 : 0
+       }, {
+         label: '评估价格',
+         value: pingguPrice + unit,
+         show: pingguPrice ? 1 : 0
        }]
        this.setData({
          list: list

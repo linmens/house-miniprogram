@@ -31,12 +31,20 @@
      calcMarryer() {
        const {
          pingguPrice,
+         numPoint
        } = this.data.calcForm
-       let yinhuaShui = NP.times(pingguPrice, NP.divide(5, 10000))
+       const {
+         yinhuaRate
+       } = this.data.shuifeiRate
+       const {
+         yinhuaDesc
+       } = this.data.shuifeiDesc
+       let yinhuaShui = NP.round(NP.times(pingguPrice, yinhuaRate), numPoint)
        let details = [{
          label: '印花税',
          value: yinhuaShui,
-         type: 0
+         type: 0,
+         desc: yinhuaDesc[1]
        }]
 
        let total = NP.plus(yinhuaShui)

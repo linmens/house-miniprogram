@@ -31,10 +31,8 @@
 
 .l-card__main--item {
   display: flex;
-
   align-items: center;
-  /* margin-bottom: 10rpx; */
-  /* text-align: right; */
+  margin-bottom: 10rpx;
 }
 
 .l-card__main__label {

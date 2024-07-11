@@ -63,6 +63,8 @@ Component({
       loanGroupPrice: 0,
       // 0 给客户算 1 给业主算
       forWhoIndex: 0,
+      // 保留小数位数
+      numPoint: 4,
 
     },
     tabs,
@@ -95,33 +97,39 @@ Component({
       //   .select()
       // console.log(data, 'data')
       // 获取本地userIndex
-      const userIndexLocal = await wx.getStorageSync('userIndex')
-      const userIndexRemberLocal = await wx.getStorageSync('userIndexRember')
-      console.log(userIndexRemberLocal, 'userIndexRemberLocal')
-      if (userIndexLocal === '' || !userIndexRemberLocal) {
-        this.setData({
-          userListVisible: true,
-        })
-      }
-      this.setData({
-        userIndex: userIndexLocal,
-        userIndexRember: userIndexRemberLocal
-      })
-      this.onSwitchUser()
+      // const userIndexLocal = await wx.getStorageSync('userIndex')
+      // const userIndexRemberLocal = await wx.getStorageSync('userIndexRember')
+      // console.log(userIndexRemberLocal, 'userIndexRemberLocal')
+      // if (userIndexLocal === '' || !userIndexRemberLocal) {
+      //   this.setData({
+      //     userListVisible: true,
+      //   })
+      // }
+      // this.setData({
+      //   userIndex: userIndexLocal,
+      //   userIndexRember: userIndexRemberLocal
+      // })
+      // this.onSwitchUser()
 
     }
   },
   methods: {
     handleClickStart() {
-      const timestamp = new Date().getTime();
-      addDataToCache(this.data.calcForm, timestamp)
       const {
         oldPriceIndex,
         oldPrice,
         areaIndex,
-        area
+        area,
+        exchangeType,
+        unit
       } = this.data.calcForm
-      if (oldPriceIndex === 0) {
+      this.setData({
+        'calcForm.numPoint': unit === '元' ? 2 : 4
+      })
+      const timestamp = new Date().getTime();
+      addDataToCache(this.data.calcForm, timestamp)
+
+      if (oldPriceIndex === 0 && exchangeType === 0) {
         if (!oldPrice) {
           Message.warning({
             context: this,
@@ -262,7 +270,8 @@ Component({
         bankType,
         buyIndex,
         loanIndex,
-        loanGjjIndex
+        loanGjjIndex,
+        pingguPrice
       } = this.data.calcForm;
       await this.setWangqianPrice()
       switch (bankType) {

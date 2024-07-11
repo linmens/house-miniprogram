@@ -1,18 +1,18 @@
 <t-sticky>
   <t-navbar t-class-placeholder="t-navbar-placeholder" t-class-content="t-navbar-content" t-class-title="nav-title" fixed="{{false}}">
     <view slot="left">
-      <t-button wx:if="{{userList[userIndex]}}" bind:tap="showUserList" size="small" icon="arrow-left-right-3">
+      <!-- <t-button wx:if="{{userList[userIndex]}}" bind:tap="showUserList" size="small" icon="arrow-left-right-3">
         {{userList[userIndex]}}
-      </t-button>
+      </t-button> -->
     </view>
     <view slot="title">
-      <text>房产计算</text>
+      <text>个人房产计算</text>
     </view>
   </t-navbar>
-  <t-tabs wx:if="{{userIndex===0}}" bind:change="onForWhoIndexChange" value="{{calcForm.forWhoIndex}}" theme="tag">
+  <!-- <t-tabs wx:if="{{userIndex===0}}" bind:change="onForWhoIndexChange" value="{{calcForm.forWhoIndex}}" theme="tag">
     <t-tab-panel label="给客户算" value="{{0}}" />
     <t-tab-panel label="给业主算" value="{{1}}" />
-  </t-tabs>
+  </t-tabs> -->
   <t-tabs bind:change="onBankTypeChange" value="{{calcForm.bankType}}">
     <t-tab-panel disabled="{{calcForm.exchangeType!==0}}" wx:for="{{tabs}}" wx:key="index" label="{{item.label}}" value="{{index}}" />
   </t-tabs>
@@ -88,16 +88,17 @@
 <!-- 交易信息 -->
 <!-- <l-pages-deal calcForm="{{calcForm}}" shuifeiTypes="{{shuifeiTypes}}" bind:totalPriceChange="onTotalPriceChange" bind:wangqianPriceChange="onWangqianPriceChange" bind:hukouWuyePriceChange="onHukouWuyePriceChange" bind:paymentRateChange="onPaymentRateChange" bind:paymentPriceChange="onPaymentPriceChange" bind:handleHukouWuyeTitleRight="handleHukouWuyeTitleRight"></l-pages-deal> -->
 <l-cell-group wx:if="{{calcForm.unit}}" theme="card" title="交易信息">
-  <l-cell wx:if="{{calcForm.exchangeType!==0}}" title="评估价格" required suffix="{{calcForm.unit}}">
-    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onPingguPriceChange" value="{{calcForm.pingguPrice}}" placeholder="请输入评估价格" type="number"></t-input>
-  </l-cell>
+
   <l-cell wx:if="{{calcForm.exchangeType===0}}" title="交易总价" required suffix="{{calcForm.unit}}">
     <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onTotalPriceChange" value="{{calcForm.totalPrice}}" placeholder="请输入交易总价" type="number"></t-input>
   </l-cell>
   <l-cell suffix="{{calcForm.unit}}" wx:if="{{calcForm.buyIndex===0&&calcForm.exchangeType===0}}" title="网签金额" required>
     <t-input slot="note" borderless customStyle="padding:0" align="right" bind:change="onWangqianPriceChange" value="{{calcForm.wangqianPrice}}" placeholder="请输入网签金额" type="number"></t-input>
   </l-cell>
-  <l-cell suffix="{{calcForm.unit}}" wx:if="{{calcForm.buyIndex===0&&calcForm.exchangeType===0}}" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showHukouWuyeNotice" title="户口物业预留金额">
+  <l-cell title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showNotice" data-content-key="pingguPrice" wx:if="{{calcForm.buyIndex!==1&&calcForm.totalPrice&&calcForm.exchangeType===0||calcForm.buyIndex!==1&&calcForm.exchangeType!==0}}" title="评估价格" required="{{calcForm.exchangeType!==0}}" suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onPingguPriceChange" value="{{calcForm.pingguPrice}}" placeholder="请输入评估价格" type="number"></t-input>
+  </l-cell>
+  <l-cell suffix="{{calcForm.unit}}" wx:if="{{calcForm.buyIndex===0&&calcForm.exchangeType===0&&calcForm.houseType===0}}" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showHukouWuyeNotice" title="户口物业预留金额">
     <t-input slot="note" borderless customStyle="padding:0" align="right" bind:change="onHukouWuyePriceChange" value="{{calcForm.hukouWuyePrice}}" placeholder="请输入户口物业预留金额" type="number"></t-input>
 
   </l-cell>
@@ -194,7 +195,7 @@
 <view style="margin: 32rpx;">
   <t-button disabled="{{calcForm.exchangeType===0&&!calcForm.totalPrice||calcForm.exchangeType!==0&&!calcForm.pingguPrice}}" bind:tap="handleClickStart" theme="primary" size="large" block>开始计算</t-button>
 </view>
-<t-footer text="Copyright © 2021-{{currentYear}} 李长兴 版权所有" links="{{[{url:'/pages/webview/webview?src=https://beian.miit.gov.cn/',name:'陕ICP备2024038256号',openType: 'navigate'}]}}" />
+<t-footer text="Copyright © 2021-{{currentYear}}" links="{{[{url:'/pages/webview/webview?src=https://beian.miit.gov.cn/',name:'陕ICP备2024038256号',openType: 'navigate'}]}}" />
 
 
 <!-- 切换角色 -->

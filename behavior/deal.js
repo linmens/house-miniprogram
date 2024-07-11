@@ -199,6 +199,9 @@
        this.setData({
          'calcForm.pingguPrice': value
        })
+       if (this.data.calcForm.exchangeType === 0) {
+         this.startCalc()
+       }
      },
      /**
       * 交易总价改变

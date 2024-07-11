@@ -29,16 +29,21 @@
        */
       setLoanPrice(type) {
         const {
-          wangqianPrice,
           paymentPrice,
           paymentRate,
           unit,
           bankType,
           loanGroupPrice,
-          loanGjjPrice
+          loanGjjPrice,
+          pingguPrice
         } = this.data.calcForm
         let loanPrice = 0
-        console.log('开始计算商贷贷款金额...')
+        let wangqianPrice = this.data.calcForm.wangqianPrice
+        console.log('开始使用网签价计算商贷贷款金额...')
+        if (pingguPrice) {
+          wangqianPrice = pingguPrice
+          console.log('开始使用评估价计算商贷贷款金额...')
+        }
         switch (type) {
           case 0:
             loanPrice = NP.minus(wangqianPrice, paymentPrice)

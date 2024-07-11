@@ -83,11 +83,12 @@
        const {
          unit,
          buyIndex,
+         houseType,
          hukouWuyePrice
        } = this.data.calcForm
        let price = 0
-       if (buyIndex === 0) {
-         // 二手房
+       if (buyIndex === 0 && houseType === 0) {
+         // 需要户口物业金额
          if (unit === '元') {
            if (hukouWuyePrice) {
              price = hukouWuyePrice * 10000
@@ -164,6 +165,8 @@
        this.setData({
          'calcForm.houseType': index,
        })
+       this.setHukouWuyePrice()
+       this.startCalc()
      },
      onNewHouseTypesChange(e) {
        const {

@@ -1,6 +1,10 @@
 <wxs src="../common/utils.wxs" module="_" />
 
-<view wx:if="{{ title }}" class="{{ classPrefix }}__title {{prefix}}-class-title {{hasBackground?classPrefix+'__hasbg':''}}"> {{ title }} </view>
+<view wx:if="{{ title }}" class="{{ classPrefix }}__title {{prefix}}-class-title {{hasBackground?classPrefix+'__hasbg':''}}"> {{ title }}
+  <view class="{{classPrefix}}__title__right" wx:if="{{rightConfig}}">
+    <t-link suffixIcon="{{rightConfig.suffixIcon}}" content="{{rightConfig.content}}"></t-link>
+  </view>
+</view>
 <view style="{{_._style([style, customStyle])}}" class="{{_.cls(classPrefix, [['bordered', bordered], theme])}}  {{prefix}}-class">
   <slot />
 </view>

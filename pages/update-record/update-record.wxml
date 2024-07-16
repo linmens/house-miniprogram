@@ -1,0 +1,17 @@
+<t-navbar t-class-placeholder="t-navbar-placeholder" title="更新日志" left-arrow t-class-content="t-navbar-content" t-class-title="nav-title"></t-navbar>
+<view class="timeline">
+  <view wx:for="{{records}}" wx:key="index" class="{{item.classname}}">
+    <text wx:if="{{item.version}}">{{item.version}}</text>
+    <text class="code" wx:if="{{item.date}}">{{item.date}}</text>
+    <text>{{item.title}}</text>
+    <view class="li" wx:if="{{item.classname==='ul'}}" wx:for="{{item.list}}" wx:for-item="li">
+      <text class="{{li.classname}}">{{li.text}}</text>
+      <block wx:for="{{li.data}}" wx:key="liDataIndex" wx:for-item="liDataItem" wx:for-index="liDataIndex">
+        <text class="f-24">{{liDataItem.text}}</text>
+      </block>
+    </view>
+  </view>
+</view>
+<!-- <view class="timeline">
+
+</view> -->

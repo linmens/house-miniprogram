@@ -29,4 +29,5 @@
   <l-cell title="家庭缴存情况">
     <l-tabs slot="note" bind:change="onLoanGjjHomeTypesChange" current-index="{{calcForm.loanGjjSaveIndex}}" list="{{loanGjjHomeTypes}}"></l-tabs>
   </l-cell>
+  <l-cell title="借款申请人性别"></l-cell>
 </l-cell-group>

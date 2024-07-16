@@ -20,7 +20,7 @@
     <t-button slot="note" ghost theme="primary" shape="round">业主</t-button>
   </l-cell> -->
 </t-sticky>
-<t-notice-bar bind:click="showDialog" data-key="showNotice" visible="{{calcForm.forWhoIndex===1}}" suffixIcon="chevron-right" prefixIcon="{{false}}" content="计算业主本次二手房产交易所产生的所有费用">
+<t-notice-bar visible="{{true}}" prefixIcon="{{false}}" content="目前适配地区：西安">
   <view slot="prefix-icon">
     <t-icon name="error-circle-filled"></t-icon>
   </view>
@@ -53,6 +53,9 @@
   <l-cell title="房屋类型">
     <l-tabs slot="note" current-index="{{calcForm.houseType}}" bind:change="onHouseTypesChange" list="{{houseTypes}}">
     </l-tabs>
+  </l-cell>
+  <l-cell wx:if="{{calcForm.houseType===1}}" title="是否房屋附属设施" description="包括停车位、机动车库、非机动车库、顶层阁楼、储藏室及其他房屋附属设施">
+    <t-switch slot="note" bind:change="onIsHouseOtherChange" value="{{calcForm.isHouseOther}}"></t-switch>
   </l-cell>
   <l-cell title="成交方式" wx:if="{{calcForm.buyIndex===0&&calcForm.exchangeType===0}}">
     <l-tabs slot="note" current-index="{{calcForm.orderType}}" bind:change="onOrderTypesChange" list="{{orderTypes}}">
@@ -182,8 +185,67 @@
 <!-- 贷款信息 买卖、总价大于0、商业贷款-->
 <l-pages-shangdai calcForm="{{calcForm}}" loanPaidTypes="{{loanPaidTypes}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===0&&calcForm.totalPrice>0&&calcForm.exchangeType===0||calcForm.bankType===2&&calcForm.totalPrice>0&&calcForm.exchangeType===0}}" bind:onLoanPriceChange="onLoanPriceChange" bind:onLoanTypesChange="onLoanTypesChange" bind:onCustomLoanYearInputValChange="onCustomLoanYearInputValChange" bind:onLoanPaidTypeIndexChange="onLoanPaidTypeIndexChange" bind:onLoanPaidChange="onLoanPaidChange"></l-pages-shangdai>
 <!-- 公积金贷款 -->
-<l-pages-gongjijin calcForm="{{calcForm}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanGjjHomeTypes="{{loanGjjHomeTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===1&&calcForm.totalPrice>0&&calcForm.exchangeType===0||calcForm.bankType===2&&calcForm.totalPrice>0&&calcForm.exchangeType===0}}" bind:handleLoanGjjIsFirstChange="handleLoanGjjIsFirstChange" bind:loanPriceChange="onLoanGjjPriceChange" bind:onLoanGjjHomeTypesChange="onLoanGjjHomeTypesChange" bind:onLoanGjjIndexChange="onLoanGjjIndexChange" bind:onCustomLoanGjjYearChange="onCustomLoanGjjYearChange"></l-pages-gongjijin>
+<!-- <l-pages-gongjijin calcForm="{{calcForm}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanGjjHomeTypes="{{loanGjjHomeTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===1&&calcForm.totalPrice>0&&calcForm.exchangeType===0||calcForm.bankType===2&&calcForm.totalPrice>0&&calcForm.exchangeType===0}}" bind:handleLoanGjjIsFirstChange="handleLoanGjjIsFirstChange" bind:loanPriceChange="onLoanGjjPriceChange" bind:onLoanGjjHomeTypesChange="onLoanGjjHomeTypesChange" bind:onLoanGjjIndexChange="onLoanGjjIndexChange" bind:onCustomLoanGjjYearChange="onCustomLoanGjjYearChange"></l-pages-gongjijin> -->
+<l-cell-group wx:if="{{calcForm.bankType===1&&calcForm.totalPrice>0&&calcForm.exchangeType===0||calcForm.bankType===2&&calcForm.totalPrice>0&&calcForm.exchangeType===0}}" theme="card" title="公积金信息" rightConfig="{{loanGjjRightConfig}}">
+  <l-cell title="贷款金额">
+    <view slot="note" class="flex f-col-center">
+      <t-stepper max="{{calcForm.loanGjjMaxPrice}}" step="1" input-width="80" value="{{calcForm.loanGjjPrice}}" size="large" theme="filled" bind:change="onLoanGjjPriceChange" />
+      <text class="m-l-20">{{calcForm.unit}}</text>
+    </view>
+    <view slot="description">
+      {{loanGjjHomeTypes[calcForm.loanGjjSaveIndex].desc}}
+    </view>
+  </l-cell>
+  <l-cell title="贷款利率" suffix="%">
+    <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanRateChange" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="number">
+    </t-input>
+  </l-cell>
 
+  <l-cell title="贷款年限">
+    <l-tabs slot="note" id="loanGjjTabs" current-index="{{calcForm.loanGjjIndex}}" bind:change="onLoanGjjIndexChange" list="{{loanTypes}}"></l-tabs>
+  </l-cell>
+  <!-- 自定义贷款年限 -->
+  <l-cell title="自定义贷款年限" wx:if="{{calcForm.loanGjjIndex===6}}">
+    <t-stepper slot="note" bind:change="onCustomLoanGjjYearChange" value="{{calcForm.loanGjjYear}}" min="1" max="30" step="1" theme="filled" />
+  </l-cell>
+  <l-cell title="还款方式">
+    <l-tabs slot="note" current-index="{{calcForm.loanGjjBackIndex}}" bind:change="onLoanBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
+  </l-cell>
+  <l-cell wx:if="{{calcForm.bankType===1||calcForm.bankType===2}}" title="是否首次使用">
+    <t-switch bindchange="handleLoanGjjIsFirstChange" defaultValue="{{calcForm.loanGjjIsFirst}}" slot="note" />
+  </l-cell>
+  <l-cell title="家庭缴存情况">
+    <l-tabs slot="note" bind:change="onLoanGjjHomeTypesChange" current-index="{{calcForm.loanGjjSaveIndex}}" list="{{loanGjjHomeTypes}}"></l-tabs>
+  </l-cell>
+  <block wx:if="{{calcForm.loanGjjSaveIndex===0||calcForm.loanGjjSaveIndex===2}}">
+    <l-cell title="借款人性别">
+      <l-tabs slot="note" bind:change="onSexTypesChange" current-index="{{calcForm.loanGjjSexIndex}}" list="{{sexTypes}}"></l-tabs>
+    </l-cell>
+    <l-cell title="借款人年龄" suffix="岁" description="借款人申请个人住房公积金贷款时年龄不超过其法定退休年龄（原则上女55岁，男60岁）">
+      <t-stepper slot="note" bind:change="onLoanGjjAgeChange" value="{{calcForm.loanGjjAge}}" min="18" max="{{calcForm.loanGjjSexIndex===0?60:55}}" step="1" theme="filled" />
+    </l-cell>
+    <l-cell title="借款人缴存基数" suffix="{{calcForm.unit}}">
+      <t-input bind:change="onLoanGjjBasicPriceChange" slot="note" placeholder="请输入缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjBasicPrice}}">
+      </t-input>
+    </l-cell>
+  </block>
+  <block wx:if="{{calcForm.loanGjjSaveIndex===1||calcForm.loanGjjSaveIndex===3}}">
+    <l-cell title="男方年龄" suffix="岁">
+      <t-stepper slot="note" bind:change="onLoanGjjMaleAgeChange" value="{{calcForm.loanGjjMaleAge}}" min="18" max="60" step="1" theme="filled" />
+    </l-cell>
+    <l-cell title="男方缴存基数" suffix="{{calcForm.unit}}">
+      <t-input bind:change="onLoanGjjMaleBasicPriceChange" slot="note" placeholder="请输入男方缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjMaleBasicPrice}}">
+      </t-input>
+    </l-cell>
+    <l-cell title="女方年龄" suffix="岁">
+      <t-stepper slot="note" bind:change="onLoanGjjFemaleAgeChange" value="{{calcForm.loanGjjFemaleAge}}" min="18" max="55" step="1" theme="filled" />
+    </l-cell>
+    <l-cell title="女方缴存基数" suffix="{{calcForm.unit}}">
+      <t-input bind:change="onLoanGjjFemaleBasicPriceChange" slot="note" placeholder="请输入女方缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjFemaleBasicPrice}}">
+      </t-input>
+    </l-cell>
+  </block>
+</l-cell-group>
 <!-- 年月日 -->
 <t-date-time-picker title="选择年份" visible="{{yearVisible}}" mode="year" defaultValue="{{defaultDate}}" format="YYYY" start="{{mineDate}}" end="{{maxDate}}" bindchange="onYearConfirm" bindcancel="hidePicker" />
 
@@ -192,9 +254,12 @@
 <!-- <t-dialog visible="{{showCustomAreaInput}}" title="自定义建筑面积" confirm-btn="确定" cancel-btn="取消" bind:confirm="handleConfirmCustomArea" bind:cancel="closeDialog">
   <t-input bind:change="onCustomAreaInputValChange" type="number" value="{{customAreaInputVal}}" borderless class="dialog-input" clearable slot="content" placeholder="请输入面积" suffix="㎡" placeholder-class="placeholder" />
 </t-dialog> -->
-<view style="margin: 32rpx;">
+
+
+<view style="margin: 32rpx;position: sticky;bottom: calc( env(safe-area-inset-bottom) + 112rpx + 32rpx);z-index: 99;">
   <t-button disabled="{{calcForm.exchangeType===0&&!calcForm.totalPrice||calcForm.exchangeType!==0&&!calcForm.pingguPrice}}" bind:tap="handleClickStart" theme="primary" size="large" block>开始计算</t-button>
 </view>
+
 <t-footer text="Copyright © 2021-{{currentYear}}" links="{{[{url:'/pages/webview/webview?src=https://beian.miit.gov.cn/',name:'陕ICP备2024038256号',openType: 'navigate'}]}}" />
 
 
@@ -267,5 +332,8 @@
   </scroll-view>
 </t-dialog>
 <t-toast id="t-toast" />
-
-<l-tabbar></l-tabbar>
+<view class="t-tab-bar--placeholder__wrap">
+  <view class="t-tab-bar--placeholder"></view>
+  <view class="t-tab-bar-safe"></view>
+</view>
+<l-tab-bar id="tabbar"></l-tab-bar>

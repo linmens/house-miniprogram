@@ -1,18 +1,18 @@
-<view class="l-card">
+<wxs src="../common/utils.wxs" module="_" />
+<view class="l-card" style="{{_._style([style, customStyle])}}">
+  <slot name="header"></slot>
   <view class="l-card__header">
-    <text>{{headerTitle}}</text>
-    <view class="flex-1">
-      <text wx:if="{{headerValue&&!info.custom}}">{{headerValue}} {{unit}}</text>
-      <view v-else>
-        <view wx:for="{{info.totalList}}" wx:key="index" class="flex f-col-center">
-          <view class="flex-1 flex " style="justify-content: flex-end;align-items: baseline;">
-            <t-tag size="small" theme="primary" variant="light" style="margin-right: 20rpx;" wx:if="{{item.isCurrent}}">当前推荐算法</t-tag>
-            <t-tag size="small" theme="{{item.tagOptions.type}}">{{item.tagOptions.text}}</t-tag>
-          </view>
-          <view class="flex-1 flex " style="justify-content: flex-end;align-items: baseline">
-            <text>{{item.value}}</text>
-            <text class="l-card__unit">{{unit}}</text>
-          </view>
+    <text wx:if="{{headerTitle}}">{{headerTitle}}</text>
+    <text wx:if="{{headerValue&&!info.custom}}">{{headerValue}} {{unit}}</text>
+    <view class="flex-1" wx:if="{{info.totalList}}">
+      <view wx:for="{{info.totalList}}" wx:key="index" class="flex f-col-center">
+        <view class="flex-1 flex " style="justify-content: flex-end;align-items: baseline;">
+          <t-tag size="small" theme="primary" variant="light" style="margin-right: 20rpx;" wx:if="{{item.isCurrent}}">当前推荐算法</t-tag>
+          <t-tag size="small" theme="{{item.tagOptions.type}}">{{item.tagOptions.text}}</t-tag>
+        </view>
+        <view class="flex-1 flex " style="justify-content: flex-end;align-items: baseline">
+          <text>{{item.value}}</text>
+          <text class="l-card__unit">{{unit}}</text>
         </view>
       </view>
     </view>
@@ -20,6 +20,7 @@
   <t-divider />
 
   <view class="l-card__main">
+    <slot></slot>
     <view wx:if="{{item.value}}" class="" style="margin-bottom: 10rpx;" wx:for="{{info.details}}" wx:key="index">
       <view class="l-card__main--item">
         <view class="l-card__main__label">
@@ -42,6 +43,10 @@
         <text style="font-size: 20rpx;margin-right: 20rpx;">{{descItem.label}}</text>
         <t-tag size="small" wx:if="{{descItem.isLower}}" theme="success">较低</t-tag>
       </view>
+      <!-- 依据 -->
+      <!-- <view wx:if="{{item.extra}}">
+        <t-link wx:for="{{item.extra}}" navigator-props="{{extraItem.to}}" prefixIcon="link" wx:for-item="extraItem" size="small" theme="primary" content="{{extraItem.label}}" hover />
+      </view> -->
     </view>
   </view>
 </view>

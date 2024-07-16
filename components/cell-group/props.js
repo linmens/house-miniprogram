@@ -16,6 +16,9 @@ const props = {
   hasBackground: {
     type: Boolean,
     value: false
+  },
+  rightConfig: {
+    type: Object,
   }
 };
 export default props;

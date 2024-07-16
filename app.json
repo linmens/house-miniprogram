@@ -4,9 +4,14 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/webview/webview",
-    "pages/result/result"
+    "pages/result/result",
+    "pages/user/user",
+    "pages/update-record/update-record",
+    "pages/about/about"
   ],
   "usingComponents": {
+    "t-switch": "tdesign-miniprogram/switch/switch",
+    "t-link": "tdesign-miniprogram/link/link",
     "t-toast": "tdesign-miniprogram/toast/toast",
     "t-divider": "tdesign-miniprogram/divider/divider",
     "t-tag": "tdesign-miniprogram/tag/tag",
@@ -30,9 +35,11 @@
     "t-date-time-picker": "tdesign-miniprogram/date-time-picker/date-time-picker",
     "t-button": "tdesign-miniprogram/button/button",
     "t-message": "tdesign-miniprogram/message/message",
-    "l-tabbar": "/components/tabbar/tabbar",
     "t-tab-bar": "tdesign-miniprogram/tab-bar/tab-bar",
-    "t-tab-bar-item": "tdesign-miniprogram/tab-bar-item/tab-bar-item"
+    "t-tab-bar-item": "tdesign-miniprogram/tab-bar-item/tab-bar-item",
+    "l-tab-bar": "./components/l-tab-bar/index",
+    "t-steps": "tdesign-miniprogram/steps/steps",
+    "t-step-item": "tdesign-miniprogram/step-item/step-item"
   },
   "window": {
     "navigationBarTextStyle": "@navTxtStyle",
@@ -40,6 +47,16 @@
     "navigationBarBackgroundColor": "@navBgColor",
     "backgroundColor": "@bgColor",
     "backgroundColorTop": "@bgColorTop"
+  },
+  "tabBar": {
+    "custom": true,
+    "list": [{
+        "pagePath": "pages/index/index"
+      },
+      {
+        "pagePath": "pages/user/user"
+      }
+    ]
   },
   "themeLocation": "theme.json",
   "componentFramework": "glass-easel",

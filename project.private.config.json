@@ -10,6 +10,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "pages/update-record/update-record",
+          "pathName": "pages/update-record/update-record",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "不满2年",
           "pathName": "pages/result/result",
           "query": "timestamp=1719393698380",

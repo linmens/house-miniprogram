@@ -1,0 +1,20 @@
+<t-navbar t-class-placeholder="t-navbar-placeholder" t-class-content="t-navbar-content" t-class-title="nav-title" fixed="{{false}}">
+
+</t-navbar>
+<view class="user-header">
+  <t-icon name="calculator-1"></t-icon>
+  <text>房产计算助手</text>
+</view>
+<text>{{miniProgram.version}}</text>
+<t-cell-group>
+  <t-cell url="/pages/about/about" left-icon="info-circle" title="关于" arrow hover></t-cell>
+  <t-cell url="/pages/update-record/update-record" left-icon="tree-list" title="更新日志" arrow hover></t-cell>
+  <t-cell left-icon="root-list" title="计算历史" arrow hover></t-cell>
+  <!-- <t-cell left-icon="chat-message" title="意见反馈" arrow hover></t-cell> -->
+
+</t-cell-group>
+<view style="margin:32rpx">
+  <t-button block open-type="feedback">意见反馈</t-button>
+  <t-button class="m-t-20" icon="logo-wechat-stroke" theme="primary" block>联系开发者</t-button>
+</view>
+<l-tab-bar id="tabbar"></l-tab-bar>

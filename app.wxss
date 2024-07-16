@@ -1,19 +1,15 @@
-@import 'miniprogram_npm/tdesign-miniprogram/common/style/theme/_index.wxss';
+@import "miniprogram_npm/tdesign-miniprogram/common/style/theme/_index.wxss";
 
 page {
-  background-color: #f6f6f6;
-}
-
-@media (prefers-color-scheme: dark) {
-  page {
-    background: #181818 !important;
-  }
+  background-color: var(--td-bg-color-page);
 }
 
 .m-l-20 {
   margin-left: 20rpx;
 }
-
+.m-t-20 {
+  margin-top: 20rpx;
+}
 .f-24 {
   font-size: 24rpx;
 }
@@ -35,7 +31,7 @@ page {
 }
 
 .flex-1 {
-  flex: 1
+  flex: 1;
 }
 
 .f-row-center {
@@ -56,4 +52,21 @@ page {
 
 .text-right {
   text-align: right;
+}
+.t-tab-bar--placeholder {
+  height: var(--td-tab-bar-height, 112rpx);
+  box-sizing: border-box;
+  user-select: none;
+  padding: 0 24rpx;
+  position: relative;
+}
+
+.t-tab-bar {
+  z-index: 99;
+}
+
+.t-tab-bar-safe {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+  flex: 1;
 }

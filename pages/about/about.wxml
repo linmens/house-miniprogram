@@ -1,0 +1,27 @@
+<view class="p-20" style="color:var(--td-warning-color)">
+  <text>欢迎使用房产计算助手！</text>
+  <text>计算结果仅供参考，若有计算错误请联系开发者。</text>
+</view>
+<t-divider content="开发问答"></t-divider>
+<t-collapse value="{{activeValues}}" bind:change="handleChange">
+
+  <t-collapse-panel header="本小程序可以计算哪些费用？" value="{{0}}" expandIcon>
+    <view>
+      目前支持计算西安二手房、新房税费+前期需要支付现金费用，以及后期贷款还款信息。
+    </view>
+    <view class="m-t-20">
+      二手房可以根据转让类型(买卖、赠与、继承、婚内更名、离婚分割)、房屋类型(普通住宅、非住宅)等方面计算对应费用。
+    </view>
+    <view class="m-t-20">
+      新房可以跟进房屋类型(普通住宅、非住宅)等方面计算对应费用。
+    </view>
+    <view class="m-t-20">
+      贷款方面可以根据商业贷款、公积金贷款、组合贷款方式计算对应费用。
+    </view>
+  </t-collapse-panel>
+  <t-collapse-panel header="本小程序的开发初衷?" value="{{1}}">
+    <view>闲着没事，出于爱好，索性做点有趣的事吧。</view>
+    <view>方便购房者清晰了解房产交易各个流程所需费用。</view>
+    <view>方便房产从业者可以帮助客户快速计算出交易所需的费用明细，提高沟通效率。</view>
+  </t-collapse-panel>
+</t-collapse>

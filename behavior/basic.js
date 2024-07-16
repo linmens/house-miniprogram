@@ -9,7 +9,8 @@
    fadingTypes,
    fengeTypes,
    newHouseTypes,
-   houseTypes
+   houseTypes,
+   sexTypes
  } from '../utils/constants';
  import {
    calculateBuiltYear,
@@ -27,6 +28,7 @@
      fengeTypes,
      newHouseTypes,
      houseTypes,
+     sexTypes,
      // 显示隐藏年选择器
      yearVisible: false,
 
@@ -61,7 +63,9 @@
        // 楼层电梯
        floorIndex: 2,
        // 房屋类型
-       houseType: 0
+       houseType: 0,
+       // 是否为房屋附属设施
+       isHouseOther: 0
      }
    },
    observers: {
@@ -148,6 +152,14 @@
            //  'calcForm.paymentPrice': paymentPrice / 10000
          })
        }
+     },
+     onIsHouseOtherChange(e) {
+       const {
+         value
+       } = e.detail
+       this.setData({
+         'calcForm.isHouseOther': value
+       })
      },
      onExchangeTypeChange(e) {
        const {

@@ -1,7 +1,7 @@
 const props = {
   headerTitle: {
     type: String,
-    value: '合计金额'
+    value: ''
   },
   headerValue: {
     type: String,

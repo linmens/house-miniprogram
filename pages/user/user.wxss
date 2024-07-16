@@ -1,0 +1,11 @@
+.user-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60rpx;
+  color: var(--td-brand-color);
+  margin: 100rpx 0;
+}
+page {
+  --td-navbar-bg-color: var(--td-bg-color-page);
+}

@@ -23,6 +23,9 @@
     },
     data: {
       loanGjjHomeTypes,
+      loanGjjRightConfig: {
+        content: '个人住房公积金贷款业务指南'
+      },
       calcForm: {
         // 公积金缴存情况
         loanGjjSaveIndex: 0,
@@ -40,7 +43,12 @@
         loanGjjIsFirst: true,
         // 最大贷款额度
         loanGjjMaxPrice: 65,
-
+        // 性别男女
+        loanGjjSexIndex: 0,
+        // 借款人年龄
+        loanGjjAge: 0,
+        // 借款人缴存基数
+        loanGjjBasicPrice: 0
       },
     },
     methods: {
@@ -201,6 +209,30 @@
         // this.setPaymentPrice()
         // this.setPaymentRate(0)
         this.startCalc()
+      },
+      onLoanGjjBasicPriceChange(e) {
+        const {
+          value
+        } = e.detail
+        this.setData({
+          'calcForm.loanGjjBasicPrice': value
+        })
+      },
+      onLoanGjjAgeChange(e) {
+        const {
+          value
+        } = e.detail
+        this.setData({
+          'calcForm.loanGjjAge': value
+        })
+      },
+      onSexTypesChange(e) {
+        const {
+          index
+        } = e.detail
+        this.setData({
+          'calcForm.loanGjjSexIndex': index
+        })
       },
       /**
        * 公积金贷款年限下标改变

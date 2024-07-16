@@ -1,20 +1,17 @@
 {
-  "component": true,
   "navigationStyle": "custom",
   "usingComponents": {
-    
+
     "t-sticky": "tdesign-miniprogram/sticky/sticky",
     "l-pages-gongjijin": "./components/gongjijin/gongjijin",
     "t-footer": "tdesign-miniprogram/footer/footer",
-    "t-link": "tdesign-miniprogram/link/link",
     "t-slider": "tdesign-miniprogram/slider/slider",
-    "t-popup": "tdesign-miniprogram/popup/popup"
+    "t-popup": "tdesign-miniprogram/popup/popup",
+    "l-pages-deal": "./components/deal/deal"
   },
   "componentGenerics": {
 
-    "l-pages-deal": {
-      "default": "./components/deal/deal"
-    },
+
     "l-pages-service": {
       "default": "./components/service/service"
     },

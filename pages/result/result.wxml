@@ -17,50 +17,75 @@
 
 </view>
 
-<!-- <view class="l-result__total" style="margin: 20rpx 32rpx;">
-  <text>前期需支付金额合计</text>
-  <view class="l-result__card" wx:if="{{item.show}}" wx:for="{{result.details}}" wx:key="index">
-    <view class="l-result__card__title">
-      <t-tag theme="{{item.theme}}">{{item.title}}</t-tag>
-    </view>
-    <view class="l-result__card__main">
-      <view wx:if="{{dataItem.show}}" class="l-result__card__main__item" wx:for-item="dataItem" wx:for="{{item.data}}" wx:key="index">
-        <text class="l-result__card__main__item__label">{{dataItem.label}}</text>
-        <text class="l-result__card__main__item__value">{{dataItem.value}} <text class="l-result__card__main__item__label">{{calcForm.unit}}</text></text>
-      </view>
-    </view>
-  </view>
-</view> -->
-<l-cell-group theme="card" wx:if="{{result.totalAll}}">
-  <l-cell title="前期支付金额合计" suffix="{{calcForm.unit}}">
-    <text slot="note" style="font-size: large;font-weight: bold;color:var(--td-primary-color-8)">{{result.totalAll}}</text>
-  </l-cell>
-</l-cell-group>
-<view class="l-card__group" wx:if="{{calcForm.exchangeType===1}}">
-  <l-card headerTitle="赠与方合计" headerValue="{{sender.total}}" info="{{sender}}" unit="{{calcForm.unit}}"></l-card>
-</view>
-<view class="l-card__group" wx:if="{{calcForm.exchangeType===1}}">
-  <l-card headerValue="{{getter.total}}" headerTitle="受赠方合计" info="{{getter}}" unit="{{calcForm.unit}}"></l-card>
-</view>
-<view class="l-card__group" wx:if="{{calcForm.exchangeType===2}}">
-  <l-card headerValue="{{extender.total}}" headerTitle="继承人合计" info="{{extender}}" unit="{{calcForm.unit}}"></l-card>
-</view>
+<t-tabs split="{{false}}" bind:change="onTabsChange" value="{{calcTab}}">
+  <t-tab-panel label="计算结果" value="0">
 
-<view class="l-card__group" wx:if="{{calcForm.exchangeType===3}}">
-  <l-card headerValue="{{marryder.total}}" headerTitle="夫妻双方合计" info="{{marryder}}" unit="{{calcForm.unit}}"></l-card>
-</view>
-<block wx:if="{{calcForm.exchangeType===4}}">
-  <view class="l-card__group">
-    <l-card headerValue="{{divorcer.total}}" headerTitle="夫妻双方合计" info="{{divorcer}}" unit="{{calcForm.unit}}"></l-card>
+  </t-tab-panel>
+  <t-tab-panel label="支付节点" value="1" />
+</t-tabs>
+<block wx:if="{{calcTab==0}}">
+  <l-cell-group theme="card" wx:if="{{result.totalAll}}">
+    <l-cell title="前期支付金额合计" suffix="{{calcForm.unit}}">
+      <text slot="note" style="font-size: large;font-weight: bold;color:var(--td-primary-color-8)">{{result.totalAll}}</text>
+    </l-cell>
+  </l-cell-group>
+  <view class="l-card__group" wx:if="{{calcForm.exchangeType===1}}">
+    <l-card headerTitle="赠与方合计" headerValue="{{sender.total}}" info="{{sender}}" unit="{{calcForm.unit}}"></l-card>
   </view>
+  <view class="l-card__group" wx:if="{{calcForm.exchangeType===1}}">
+    <l-card headerValue="{{getter.total}}" headerTitle="受赠方合计" info="{{getter}}" unit="{{calcForm.unit}}"></l-card>
+  </view>
+  <view class="l-card__group" wx:if="{{calcForm.exchangeType===2}}">
+    <l-card headerValue="{{extender.total}}" headerTitle="继承人合计" info="{{extender}}" unit="{{calcForm.unit}}"></l-card>
+  </view>
+
+  <view class="l-card__group" wx:if="{{calcForm.exchangeType===3}}">
+    <l-card headerValue="{{marryder.total}}" headerTitle="夫妻双方合计" info="{{marryder}}" unit="{{calcForm.unit}}"></l-card>
+  </view>
+  <block wx:if="{{calcForm.exchangeType===4}}">
+    <view class="l-card__group">
+      <l-card headerValue="{{divorcer.total}}" headerTitle="夫妻双方合计" info="{{divorcer}}" unit="{{calcForm.unit}}"></l-card>
+    </view>
+    <view class="l-card__group">
+      <l-card headerValue="{{another.total}}" headerTitle="房屋权属变更后的一方合计" info="{{another}}" unit="{{calcForm.unit}}"></l-card>
+    </view>
+  </block>
+  <view class="l-card__group" wx:if="{{calcForm.exchangeType===0&&calcForm.buyIndex===0}}">
+    <l-card headerValue="{{seller.total}}" headerTitle="卖方合计" info="{{seller}}" unit="{{calcForm.unit}}"></l-card>
+  </view>
+  <view class="l-card__group" wx:if="{{calcForm.exchangeType===0}}">
+    <l-card headerValue="{{seller.total}}" headerTitle="买方合计" info="{{buyer}}" unit="{{calcForm.unit}}"></l-card>
+  </view>
+  <!-- 买方贷款 -->
+  <view class="l-card__group" wx:if="{{calcForm.exchangeType===0}}">
+    <l-card headerTitle="买方贷款" unit="{{calcForm.unit}}"></l-card>
+  </view>
+  <!-- 计税依据 -->
+  <t-divider content="计税依据" />
   <view class="l-card__group">
-    <l-card headerValue="{{another.total}}" headerTitle="房屋权属变更后的一方合计" info="{{another}}" unit="{{calcForm.unit}}"></l-card>
+
+    <l-card custom-style="padding:0;padding-bottom:20rpx">
+
+      <t-tabs value="{{taxTab}}" bind:change="onTaxTabChange" slot="header" split="{{false}}" space-evenly="{{false}}">
+        <t-tab-panel label="个税" value="geshui" />
+        <t-tab-panel label="契税" value="qishui" />
+        <t-tab-panel label="增值税" value="zengzhishui" />
+        <t-tab-panel label="城市维护建设税" value="3" />
+        <t-tab-panel label="教育附加税" value="4" />
+        <t-tab-panel label="地方教育附加税" value="5" />
+        <t-tab-panel label="土地增值税" value="6" />
+        <t-tab-panel label="印花税" value="7" />
+      </t-tabs>
+      <t-cell bind:tap="handleTaxItemClick" url="/pages/webview/webview?src={{item.url}}" wx:for="{{taxListObj[taxTab]}}" wx:key="index" title="{{item.title}}" description="{{item.number?item.number+' '+ item.date:item.date }}" hover>
+        <!-- <navigator url="/pages/webview/webview?src={{item.url}}" style="display: flex;flex-direction: column;padding: 0 20rpx;">
+          <text style="font-size: 28rpx;text-overflow: ellipsis;">{{item.title}}</text>
+          <text style="color: var(--td-gray-color-7);">{{item.date}}</text>
+        </navigator> -->
+
+        <!-- <t-divider wx:if="{{index!==taxListObj[taxTab].length -1}}" /> -->
+      </t-cell>
+    </l-card>
   </view>
 </block>
-<view class="l-card__group" wx:if="{{calcForm.exchangeType===0&&calcForm.buyIndex===0}}">
-  <l-card headerValue="{{seller.total}}" headerTitle="卖方合计" info="{{seller}}" unit="{{calcForm.unit}}"></l-card>
-</view>
-<view class="l-card__group" wx:if="{{calcForm.exchangeType===0}}">
-  <l-card headerValue="{{seller.total}}" headerTitle="买方合计" info="{{buyer}}" unit="{{calcForm.unit}}"></l-card>
-</view>
+
 <t-toast id="t-toast" />

@@ -10,13 +10,16 @@ Component({
   options: {
     virtualHost: true
   },
+  lifetimes: {
+
+  },
   /**
    * 组件的初始数据
    */
   data: {
     value: 'label_1',
     list: [{
-        value: 'label_1',
+        value: 'pages/index/index',
         icon: 'calculator-1',
         ariaLabel: '房产计算'
       },
@@ -26,7 +29,7 @@ Component({
         ariaLabel: '工具箱'
       },
       {
-        value: 'label_4',
+        value: 'pages/user/user',
         icon: 'user',
         ariaLabel: '我的'
       },
@@ -37,6 +40,17 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    onChange(e) {
+      const {
+        value
+      } = e.detail
 
+      // this.setData({
+      //   value: value
+      // })
+      wx.switchTab({
+        url: "/" + value,
+      })
+    }
   }
 })

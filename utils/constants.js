@@ -275,6 +275,13 @@ export const houseTypes = [{
   value: 1,
   label: '非住宅'
 }]
+export const sexTypes = [{
+  value: 0,
+  label: '男'
+}, {
+  value: 1,
+  label: '女'
+}]
 export const NoticeData = {
   yuanzhi: `
   1.商品房：购置该房屋时实际支付的房价款及交纳的相关税费。

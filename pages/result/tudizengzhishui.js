@@ -2,12 +2,15 @@
  export const tudizengzhishuiBehavior = Behavior({
    data: {
      seller: {
-       hdTudizengzhishui: {
+       tudizengzhishui: {
+         label: '土地增值税',
          value: 0,
-         label: '网签价/1.05*0.05'
-       },
-       ceTudizengzhishui: {
-
+         hdValue: 0,
+         ceValue: 0,
+         desc: [],
+         extra: [],
+         tagOptions: {},
+         type: 0,
        }
      }
    },
@@ -57,14 +60,19 @@
          calcName,
          calcPrice
        } = this.data.seller
+       let tudizengzhishui = this.data.seller.tudizengzhishui
        const {
          numPoint
        } = this.data.calcForm
 
-       let sellerDetails = this.data.seller.details
        let canMinusYear = NP.times(oldPrice, NP.plus(1, NP.times(0.05, chanquanYear)))
-       let result = {}
-       result.tudizengzhishui = NP.times(wangqianPrice, 0.05)
+       let result = {
+         canMinusPrice: 0,
+         tudizengzhie: 0,
+         tudizengzhiRate: 0,
+         tudizengzhiRateInfo: {}
+       }
+       tudizengzhishui.hdValue = NP.times(wangqianPrice, 0.05)
 
        if (pingguPrice && oldPrice) {
          //有评估并且有原值
@@ -72,11 +80,11 @@
          result.tudizengzhie = NP.minus(pingguPrice, result.canMinusPrice)
          result.tudizengzhiRate = NP.round(NP.times(NP.divide(result.tudizengzhie, result.canMinusPrice), 100), numPoint)
          result.tudizengzhiRateInfo = this.getRateLevelInfo(result.tudizengzhiRate)
-         result.cetudizengzhishui = NP.round(NP.minus(NP.times(result.tudizengzhie, result.tudizengzhiRateInfo.rate), NP.times(result.canMinusPrice, result.tudizengzhiRateInfo.susuanRate)), numPoint)
+         tudizengzhishui.ceValue = NP.round(NP.minus(NP.times(result.tudizengzhie, result.tudizengzhiRateInfo.rate), NP.times(result.canMinusPrice, result.tudizengzhiRateInfo.susuanRate)), numPoint)
          console.log('有评估并且有原值', result)
-         result.desc = [{
+         tudizengzhishui.desc = [{
            label: '有评估并且有原值',
-           isLower: result.cetudizengzhishui < result.tudizengzhishui
+           isLower: tudizengzhishui.ceValue < tudizengzhishui.hdValue
          }, {
            label: `1.可扣除项目金额=重置成本*成新度折扣率+本次税金（城市维护建设税、教育税附加、地方教育附加税、印花税）结果为${result.canMinusPrice} ${unit}`
          }, {
@@ -84,7 +92,7 @@
          }, {
            label: `3.增值率=土地增值额/可扣除项目金额*100% 结果为 ${result.tudizengzhiRate} ${unit}`
          }, {
-           label: `4.应纳税额=增值额*税率(${result.tudizengzhiRateInfo.rate})-可扣除项目金额*速算扣除系数(${result.tudizengzhiRateInfo.susuanRate}) 结果为 ${result.cetudizengzhishui} ${unit}`
+           label: `4.应纳税额=增值额*税率(${result.tudizengzhiRateInfo.rate})-可扣除项目金额*速算扣除系数(${result.tudizengzhiRateInfo.susuanRate}) 结果为 ${tudizengzhishui.ceValue} ${unit}`
          }]
        }
        if (!pingguPrice && !oldPrice) {
@@ -99,7 +107,7 @@
          result.tudizengzhie = NP.minus(wangqianPrice, result.canMinusPrice)
          if (result.tudizengzhie < 0) {
            result.tudizengzhie = 0
-           result.tudizengzhishui = 0
+           tudizengzhishui.hdValue = 0
            return
          }
          // 增值率 = 土地增值额/可扣除金额*100%
@@ -107,12 +115,12 @@
          // 应纳税额 = 增值额*税率-扣除项目金额*速算扣除系数
          result.tudizengzhiRateInfo = this.getRateLevelInfo(result.tudizengzhiRate)
          console.log('无评估价 并且 有原值 获取税率', result.tudizengzhiRateInfo)
-         result.cetudizengzhishui = NP.minus(NP.times(result.tudizengzhie, result.tudizengzhiRateInfo.rate), NP.times(result.canMinusPrice, result.tudizengzhiRateInfo.susuanRate))
+         tudizengzhishui.ceValue = NP.minus(NP.times(result.tudizengzhie, result.tudizengzhiRateInfo.rate), NP.times(result.canMinusPrice, result.tudizengzhiRateInfo.susuanRate))
          console.log('无评估价 并且 有原值 原值*（1+5%*产权持有年限)+上次契税+本次税金（增值税、增值税附加、印花税）', result)
 
-         result.desc = [{
+         tudizengzhishui.desc = [{
            label: '差额计算无评估价并且有原值',
-           isLower: result.cetudizengzhishui < result.tudizengzhishui
+           isLower: tudizengzhishui.ceValue < tudizengzhishui.hdValue
          }, {
            label: `1.可扣除项目金额=原值*（1+5%*产权持有年限)+上次契税+本次税金（城市维护建设税、教育税附加、地方教育附加税、印花税）结果为${result.canMinusPrice} ${unit}`
          }, {
@@ -120,16 +128,17 @@
          }, {
            label: `3.增值率=土地增值额/可扣除项目金额*100% 结果为 ${result.tudizengzhiRate} ${unit}`
          }, {
-           label: `4.应纳税额=增值额*税率(${result.tudizengzhiRateInfo.rate})-可扣除项目金额*速算扣除系数(${result.tudizengzhiRateInfo.susuanRate}) 结果为 ${result.cetudizengzhishui} ${unit}`
+           label: `4.应纳税额=增值额*税率(${result.tudizengzhiRateInfo.rate})-可扣除项目金额*速算扣除系数(${result.tudizengzhiRateInfo.susuanRate}) 结果为 ${tudizengzhishui.ceValue} ${unit}`
          }]
        }
 
-       result.desc = [{
-         label: `核定计算 网签价*0.05 结果为 ${result.tudizengzhishui} ${unit}`,
-         isLower: result.tudizengzhishui < result.cetudizengzhishui
-       }, ...result.desc]
+       tudizengzhishui.desc = [{
+         label: `核定计算 网签价*0.05 结果为 ${tudizengzhishui.hdValue} ${unit}`,
+         isLower: tudizengzhishui.hdValue < tudizengzhishui.ceValue
+       }, ...tudizengzhishui.desc]
+
        this.setData({
-         'seller.tudizengzhishui': result
+         'seller.tudizengzhishui': tudizengzhishui
        })
      }
    }

@@ -193,3 +193,230 @@
    // 保存更新后的数据
    wx.setStorageSync('result', JSON.stringify(data))
  }
+ export function downloadAndOpenFile(id, path, fileName, fileType) {
+   let url = `https://gitee.com/mklinmens/calc-docs/raw/main/${encodeURIComponent(path)}/${encodeURIComponent(fileName)}.${fileType}`
+   console.log(url, path, fileName, fileType, 'downloadAndOpenFile')
+
+
+   let tempFileListStorage = wx.getStorageSync('tempFileList') || {}
+   console.log(tempFileListStorage[id], 'tempFileListStorage')
+   if (tempFileListStorage[id]) {
+     wx.openDocument({
+       filePath: tempFileListStorage[id],
+       fileType: fileType,
+       success: function (res) {
+         console.log(res, '打开文档成功')
+       },
+       fail: function (res) {
+         console.log(res, '打开文档失败')
+       }
+     })
+   } else {
+     wx.downloadFile({
+       url: url,
+       success: function (res) {
+         console.log(res)
+         let filePath = res.tempFilePath
+         tempFileListStorage[id] = filePath
+         wx.setStorageSync('tempFileList', tempFileListStorage)
+         wx.openDocument({
+           filePath: filePath,
+           fileType: fileType,
+           success: function (res) {
+             console.log(res, '打开文档成功')
+           },
+           fail: function (res) {
+             console.log(res, '打开文档失败')
+           }
+         })
+       }
+     })
+   }
+
+ }
+
+ /**
+  * 计算等额本息还款
+  * @param {number} loanAmount - 贷款金额
+  * @param {number} annualInterestRate - 年利率（小数，例如0.05代表5%）
+  * @param {number} loanTermYears - 贷款年限
+  * @param {string} unit - 结算单位（'元' 或 '万元'）
+  * @returns {object} - 还款详情
+  * loanMonths: 贷款月数。
+  * monthlyPayment: 每月还款金额（ 固定）。
+  * totalInterest: 支付的总利息。
+  * totalPayment: 还款总额。
+  */
+ export function calculateEqualPrincipalAndInterest(loanAmount, annualInterestRate, loanTermYears, unit = '元') {
+   const months = loanTermYears * 12;
+   const monthlyInterestRate = NP.divide(annualInterestRate, 12);
+   console.log(monthlyInterestRate, 'monthlyInterestRate')
+   const monthlyPayment = loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months) / (Math.pow(1 + monthlyInterestRate, months) - 1);
+   const totalPayment = monthlyPayment * months;
+   const totalInterest = totalPayment - loanAmount;
+
+   const precision = unit === '万元' ? 4 : 2;
+
+   return {
+     loanMonths: months,
+     monthlyPayment: Math.round((monthlyPayment) * Math.pow(10, precision)) / Math.pow(10, precision),
+     totalInterest: Math.round((totalInterest) * Math.pow(10, precision)) / Math.pow(10, precision),
+     totalPayment: Math.round((totalPayment) * Math.pow(10, precision)) / Math.pow(10, precision)
+   };
+ }
+ /**
+  * 计算等额本金还款
+  * @param {number} loanAmount - 贷款金额
+  * @param {number} annualInterestRate - 年利率（小数，例如0.05代表5%）
+  * @param {number} loanTermYears - 贷款年限
+  * @param {string} unit - 结算单位（'元' 或 '万元'）
+  * @returns {object} - 还款详情
+  * loanMonths: 贷款月数。
+  * firstMonthPayment: 首月还款金额。
+  * lastMonthPayment: 末月还款金额。
+  * monthlyDecrease: 每月递减金额。
+  * totalInterest: 支付的总利息。
+  * totalPayment: 还款总额。
+  */
+ export function calculateEqualPrincipal(loanAmount, annualInterestRate, loanTermYears, unit = '元') {
+   const months = loanTermYears * 12;
+   const monthlyPrincipal = loanAmount / months;
+   const monthlyInterestRate = annualInterestRate / 12;
+   const firstMonthPayment = monthlyPrincipal + (loanAmount * monthlyInterestRate);
+   const lastMonthPayment = monthlyPrincipal + (monthlyPrincipal * monthlyInterestRate);
+   const monthlyDecrease = monthlyPrincipal * monthlyInterestRate;
+   let totalInterest = 0;
+
+   for (let i = 0; i < months; i++) {
+     totalInterest += (loanAmount - i * monthlyPrincipal) * monthlyInterestRate;
+   }
+
+   const totalPayment = loanAmount + totalInterest;
+
+   const precision = unit === '万元' ? 4 : 2;
+
+   return {
+     loanMonths: months,
+     firstMonthPayment: Math.round((firstMonthPayment) * Math.pow(10, precision)) / Math.pow(10, precision),
+     lastMonthPayment: Math.round((lastMonthPayment) * Math.pow(10, precision)) / Math.pow(10, precision),
+     monthlyDecrease: Math.round((monthlyDecrease) * Math.pow(10, precision)) / Math.pow(10, precision),
+     totalInterest: Math.round((totalInterest) * Math.pow(10, precision)) / Math.pow(10, precision),
+     totalPayment: Math.round((totalPayment) * Math.pow(10, precision)) / Math.pow(10, precision)
+   };
+ }
+
+ /**
+  * 获取首付比例
+  * @param bankType - 贷款类型（0, 1, 2）
+  * @param purchaseType - 是否首次使用（0, 1） || 买方家庭下标 （0,1,2）
+  * @returns 首付比例
+  */
+ export function getDownPaymentRatio(bankType, purchaseType) {
+   const downPaymentRatios = {
+     0: {
+       0: 15,
+       1: 25,
+       2: 25
+     },
+     1: {
+       0: 20,
+       1: 25
+     },
+     2: {
+       0: 20,
+       1: 25
+     }
+   };
+
+   return downPaymentRatios[bankType][purchaseType];
+ }
+
+
+ /**
+  * 获取首付比例和利率
+  * @param {number} loanType - 贷款类型（0: 商业贷款, 1: 公积金贷款, 2: 组合贷款）
+  * @param {number} purchaseType - 购房类型（0: 首套, 1: 二套）
+  * @param {number} commercialLoanYears - 商业贷款年限
+  * @param {number} providentFundLoanYears - 公积金贷款年限
+  * @returns {object} - 包含首付比例和利率的对象
+  */
+ export function getLoanDetails(loanType, purchaseType, commercialLoanYears, providentFundLoanYears) {
+   const loanTypes = ['commercial', 'providentFund', 'combination'];
+   const purchaseTypes = ['first', 'second'];
+
+   const downPaymentRatios = {
+     commercial: {
+       first: 15,
+       second: 25
+     },
+     providentFund: {
+       first: 20,
+       second: 25
+     },
+     combination: {
+       first: 20,
+       second: 25
+     }
+   };
+
+   const interestRates = {
+     first: {
+       withinFiveYears: 2.35,
+       overFiveYears: 2.85
+     },
+     second: {
+       withinFiveYears: 2.775,
+       overFiveYears: 3.325
+     }
+   };
+
+
+   const commercialRateAdjustments = {
+     first: {
+       oneYear: 3.55,
+       overFiveYears: 3.55
+     },
+     second: {
+       oneYear: 3.9,
+       overFiveYears: 3.9
+     }
+   };
+
+   const loanTypeKey = loanTypes[loanType];
+   const purchaseTypeKey = purchaseTypes[purchaseType];
+
+   let commercialDownPaymentRatio = 0;
+   let commercialInterestRate = 0;
+   let providentFundDownPaymentRatio = 0;
+   let providentFundInterestRate = 0;
+
+   if (loanTypeKey === 'commercial' || loanTypeKey === 'combination') {
+     commercialDownPaymentRatio = downPaymentRatios.commercial[purchaseTypeKey];
+     commercialInterestRate = commercialLoanYears <= 5 ? commercialRateAdjustments[purchaseTypeKey].oneYear : commercialRateAdjustments[purchaseTypeKey].overFiveYears;
+   }
+
+   if (loanTypeKey === 'providentFund' || loanTypeKey === 'combination') {
+     providentFundDownPaymentRatio = downPaymentRatios.providentFund[purchaseTypeKey];
+     providentFundInterestRate = providentFundLoanYears <= 5 ? interestRates[purchaseTypeKey].withinFiveYears : interestRates[purchaseTypeKey].overFiveYears;
+   }
+
+   return {
+     commercial: {
+       downPaymentRatio: commercialDownPaymentRatio,
+       interestRate: commercialInterestRate
+     },
+     providentFund: {
+       downPaymentRatio: providentFundDownPaymentRatio,
+       interestRate: providentFundInterestRate
+     }
+   };
+ }
+ /**
+  * 判断贷款到期时的年龄是否超过法定退休年龄后 5 年
+  * @param loanEndAge 当前年龄 + 贷款年限制 = 到期时的年龄
+  * @param retirementAge 退休年龄
+  */
+ const RETIREMENT_EXTENSION_YEARS = 5;
+ export function isBeyondRetirementExtension(loanEndAge, retirementAge) {
+   return loanEndAge > (retirementAge + RETIREMENT_EXTENSION_YEARS);
+ }

@@ -5,7 +5,7 @@ App({
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-
+    wx.hideTabBar()
     // 登录
     wx.login({
       success: res => {

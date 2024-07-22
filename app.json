@@ -7,9 +7,11 @@
     "pages/result/result",
     "pages/user/user",
     "pages/update-record/update-record",
-    "pages/about/about"
+    "pages/about/about",
+    "pages/article/article"
   ],
   "usingComponents": {
+    "t-sticky": "tdesign-miniprogram/sticky/sticky",
     "t-switch": "tdesign-miniprogram/switch/switch",
     "t-link": "tdesign-miniprogram/link/link",
     "t-toast": "tdesign-miniprogram/toast/toast",

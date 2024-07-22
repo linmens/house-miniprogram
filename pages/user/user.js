@@ -1,11 +1,12 @@
-// pages/user/user.js
+import Message from 'tdesign-miniprogram/message/index';
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    miniProgram: {}
+    miniProgram: {},
+    showDeveloper: false
   },
 
   /**
@@ -17,7 +18,53 @@ Page({
       miniProgram: appInfo.miniProgram
     })
   },
-
+  handleCopy(e) {
+    const {
+      copy
+    } = e.currentTarget.dataset
+    console.log(copy)
+    let t = this
+    wx.setClipboardData({
+      data: copy,
+      success(res) {
+        wx.getClipboardData({
+          success(res) {
+            console.log(res.data, '2') // data
+          }
+        })
+      },
+      fail(res) {
+        console.log(res)
+      }
+      // success: () => {
+      //   console.log(Message)
+      //   Message.success({
+      //     context: t,
+      //     offset: [90, 32],
+      //     duration: 5000,
+      //     content: '复制成功！',
+      //   });
+      // }
+    })
+  },
+  showDialog(e) {
+    const {
+      key,
+      contentKey
+    } = e.currentTarget.dataset;
+    this.setData({
+      [key]: true,
+      dialogKey: key,
+    });
+  },
+  closeDialog() {
+    const {
+      dialogKey
+    } = this.data;
+    this.setData({
+      [dialogKey]: false
+    });
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

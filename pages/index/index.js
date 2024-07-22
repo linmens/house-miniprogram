@@ -223,6 +223,28 @@ Page({
     const {
       value
     } = e.detail
+    const {
+      houseType
+    } = this.data.calcForm
+    if (value === 1 && houseType === 1) {
+
+      Message.warning({
+        context: this,
+        offset: [90, 32],
+        duration: 5000,
+        content: '非住宅暂不支持公积金计算',
+      });
+      return
+    }
+    if (value === 2 && houseType === 1) {
+      Message.warning({
+        context: this,
+        offset: [90, 32],
+        duration: 5000,
+        content: '非住宅暂不支持组合贷计算',
+      });
+      return
+    }
     this.setData({
       'calcForm.bankType': value,
     })
@@ -246,6 +268,13 @@ Page({
       pingguPrice
     } = this.data.calcForm;
     await this.setWangqianPrice()
+    await this.setPaymentRate()
+    console.log('计算条件', {
+      '网签金额': wangqianPrice,
+      '首付比例': paymentRate,
+      '贷款方式': bankType,
+      '房屋新旧': buyIndex
+    })
     switch (bankType) {
       case 0:
         console.log('开始计算商业贷款部分...')

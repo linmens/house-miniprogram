@@ -45,6 +45,9 @@ let CellGroup = class CellGroup extends SuperComponent {
           isLastChild: index === items.length - 1
         }));
       },
+      onTitleRightClick(e) {
+        this.triggerEvent('title-right-click', e.detail);
+      }
     };
   }
 };

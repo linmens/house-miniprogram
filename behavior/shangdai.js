@@ -94,6 +94,14 @@
           'calcForm.loanYear': value
         })
       },
+      onLoanBackTypesChange(e) {
+        const {
+          index
+        } = e.detail
+        this.setData({
+          'calcForm.loanBackIndex': index
+        })
+      },
       /**
        * 提前还款方式改变
        * @param {*} e 

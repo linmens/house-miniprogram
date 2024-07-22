@@ -6,6 +6,103 @@ Page({
    */
   data: {
     records: [{
+      version: '0.6.0',
+      date: '2024-07-22',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '新增功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '添加公积金计算结果贷款预贷款校验',
+          type: 'text'
+        }]
+      }, {
+        text: '系统',
+        theme: 'success',
+        data: [{
+          text: '添加联系开发者功能',
+          type: 'text'
+        }]
+      }]
+    }, {
+      version: '0.5.0',
+      date: '2024-07-19',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '新增功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '添加计算结果快捷滑动至指定模块',
+          type: 'text'
+        }]
+      }]
+    }, {
+      classname: 'h3',
+      title: '其他',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '调整公积金贷款利率生成规则、首付比例逻辑',
+          type: 'text'
+        }]
+      }]
+    }, {
+      version: '0.4.0',
+      date: '2024-07-18',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '新增功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '新增商业贷款月供、利息等结果计算逻辑',
+          type: 'text'
+        }]
+      }]
+    }, {
+      classname: 'h3',
+      title: '其他',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '调整文档查看方式,优化缓存文档逻辑',
+          type: 'text'
+        }]
+      }, {
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '调整非住宅不可使用公积金、组合贷',
+          type: 'text'
+        }]
+      }]
+    }, {
       version: '0.3.0',
       date: '2024-07-16',
       classname: 'h2',
@@ -18,14 +115,14 @@ Page({
       classname: 'ul',
       list: [{
         text: '系统',
-        classname: 'highlight',
+        theme: 'success',
         data: [{
           text: '新增联系开发者、反馈入口',
           type: 'text'
         }]
       }, {
         text: '个人房产计算',
-        classname: 'highlight',
+        theme: 'primary',
         data: [{
           text: '新增公积金借款人性别、年龄、基数自定义',
           type: 'text'
@@ -44,40 +141,40 @@ Page({
       classname: 'ul',
       list: [{
         text: '系统',
-        classname: 'highlight',
+        theme: 'success',
         data: [{
           text: '新增关于功能',
           type: 'text'
         }]
       }, {
         text: '系统',
-        classname: 'highlight',
+        theme: 'success',
         data: [{
           text: '新增暗黑模式适配',
           type: 'text'
         }]
       }, {
         text: '系统',
-        classname: 'highlight',
+        theme: 'success',
         data: [{
           text: '新增更新日志功能',
           type: 'text'
         }]
       }, {
         text: '个人房产计算',
-        classname: 'highlight',
+        theme: 'primary',
         data: [{
           text: '新增新房、二手房相关计算逻辑'
         }]
       }, {
         text: '个人房产计算',
-        classname: 'highlight',
+        theme: 'primary',
         data: [{
           text: '新增商业贷款、公积金贷款、组合贷款计算逻辑'
         }]
       }, {
         text: '个人房产计算',
-        classname: 'highlight',
+        theme: 'primary',
         data: [{
           text: '新增计算结果、费用明细、计算依据'
         }]
@@ -89,7 +186,7 @@ Page({
       classname: 'ul',
       list: [{
         text: '系统',
-        classname: 'highlight',
+        theme: 'success',
         data: [{
           text: '初始化系统功能'
         }]
@@ -107,28 +204,28 @@ Page({
       classname: 'ul',
       list: [{
         text: '个人房产计算',
-        classname: 'highlight',
+        theme: 'primary',
         data: [{
           text: '支持商业贷款、公积金、组合贷、全款切换',
           type: 'text',
         }]
       }, {
         text: '个人房产计算',
-        classname: 'highlight',
+        theme: 'primary',
         data: [{
           text: '支持计算单位元、万元切换',
           type: 'text'
         }]
       }, {
         text: '个人房产计算',
-        classname: 'highlight',
+        theme: 'primary',
         data: [{
           text: '支持买卖、赠与、继承、婚内更名税费计算',
           type: 'text'
         }]
       }, {
         text: '个人房产计算',
-        classname: 'highlight',
+        theme: 'primary',
         data: [{
           text: '支持交易总价、网签金额、户口物业预留金额、首付比例、原值、产证持有、是否唯一住房、买方家庭、居间服务费比例、贷款服务费自定义',
           type: 'text'

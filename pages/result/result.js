@@ -1,15 +1,12 @@
 import {
-  getCurrentCachedData
+  getCurrentCachedData,
+  downloadAndOpenFile
 } from '../../utils/util'
+
 import {
-  buyTypes,
   chanquanTypes,
-  selfHouseTypes,
-  unitTypes,
-  areaTypes,
   orderTypes,
   tabs,
-  houseTypes
 }
 from '../../utils/constants';
 import NP from 'number-precision'
@@ -37,7 +34,16 @@ import {
 import {
   geshuiBehavior
 } from './geshui'
-import taxListObj from '../../constants/taxList'
+import {
+  shangdaiBehavior
+} from './shangdai'
+import {
+  gongjijinBehavior
+} from './gongjijin'
+import {
+  documentsGroupBykey
+} from '../../constants/taxList'
+console.log(documentsGroupBykey, 'documentsGroupBykey..documentsGroupBykey')
 import Toast, {
   hideToast
 } from 'tdesign-miniprogram/toast/index';
@@ -46,16 +52,44 @@ Page({
   /**
    * 页面的初始数据
    */
-  behaviors: [sendBehavior, basicBehavior, extendBehavior, marryBehavior, divorceBehavior, newerBehavior, tudizengzhishuiBehavior, geshuiBehavior],
+  behaviors: [sendBehavior, basicBehavior, extendBehavior, marryBehavior, divorceBehavior, newerBehavior, tudizengzhishuiBehavior, geshuiBehavior, shangdaiBehavior, gongjijinBehavior],
   data: {
     orderTypes,
     tabs,
     chanquanTypes,
     // 计税依据
-    taxListObj: taxListObj,
+    taxListObj: documentsGroupBykey,
     taxTab: 'geshui',
     calcTab: 0,
+    calcTabs: [{
+        label: '简要信息',
+        value: 0
+      },
+      {
+        label: '税费信息',
+        value: 1
+      },
+      {
+        label: '贷款信息',
+        value: 2
+      },
+      {
+        label: '计税依据',
+        value: 3
+      },
+      // {
+      //   label: '支付节点',
+      //   value: 4
+      // }
+    ],
+    sectionTops: [],
+    scrollTop: 0,
+    heightArr: [],
+    distance: 0,
     calcForm: {},
+    list: [{
+      index: 1,
+    }],
     // 税费比率
     shuifeiRate: {
       // 增值税
@@ -134,7 +168,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
+  async onLoad(options) {
     let data = {}
     if (options.timestamp) {
       data = getCurrentCachedData(options.timestamp)
@@ -146,8 +180,33 @@ Page({
     this.setData({
       calcForm: data
     })
-    this.initResult()
+    await this.initResult()
+    this.calcTabItemHeight();
+
   },
+  createSelectorQuery(selector, all) {
+    return new Promise((resolve) => {
+      wx.createSelectorQuery()[all ? 'selectAll' : 'select'](selector).boundingClientRect((rect) => {
+        resolve(rect)
+      }).exec()
+    })
+  },
+
+  async calcTabItemHeight() {
+    let heightArr = [];
+    let h = 0;
+    const queryData = (await this.createSelectorQuery('.section', true))
+    queryData.forEach((item) => {
+
+      h += item.height
+      heightArr.push(h)
+    })
+    this.setData({
+      heightArr: heightArr
+    })
+  },
+
+
   /**
    * 计算结果
    */
@@ -158,8 +217,16 @@ Page({
     const {
       buyIndex,
       wangqianPrice,
-      pingguPrice
+      pingguPrice,
+      bankType
     } = this.data.calcForm
+    if (bankType === 3) {
+      let calcTabs = this.data.calcTabs
+      calcTabs.splice(2, 1)
+      this.setData({
+        calcTabs: calcTabs
+      })
+    }
     switch (buyIndex) {
       case 0:
         // 二手房
@@ -200,8 +267,20 @@ Page({
         console.log('开始生成新房基本信息')
         this.initNewBasicData()
         this.calcNewer()
-      default:
-        break;
+        // 判断贷款方式
+        if (bankType === 0) {
+          this.startShangdai()
+        }
+        if (bankType === 1) {
+          this.startGongjijin()
+        }
+        if (bankType === 2) {
+          this.startShangdai()
+          this.startGongjijin()
+        }
+
+        default:
+          break;
     }
   },
   /**
@@ -211,7 +290,8 @@ Page({
     // 判断变更类型
     const {
       exchangeType,
-      orderType
+      orderType,
+      bankType
     } = this.data.calcForm
     switch (exchangeType) {
       case 0:
@@ -225,6 +305,17 @@ Page({
         await this.calcSeller()
         await this.calcTotal();
         this.initBuyList()
+        // 判断贷款方式
+        if (bankType === 0) {
+          this.startShangdai()
+        }
+        if (bankType === 1) {
+          this.startGongjijin()
+        }
+        if (bankType === 2) {
+          this.startShangdai()
+          this.startGongjijin()
+        }
         break;
       case 1:
         // 赠与
@@ -773,12 +864,20 @@ Page({
       'seller.ceTotal': ceTotal,
     })
   },
-  onTabsChange(e) {
+  async onTabsChange(e) {
     const {
       value
     } = e.detail
     this.setData({
       calcTab: value
+    })
+    const headerOffset = await this.createSelectorQuery('.h-sticky', false)
+    const currentItem = await wx.getSystemInfo()
+    console.log(currentItem, 'currentItem')
+    wx.pageScrollTo({
+      offsetTop: -headerOffset.height,
+      selector: `#section-${value}`,
+      // scrollTop: currentItem.top
     })
   },
   onTaxTabChange(e) {
@@ -791,7 +890,18 @@ Page({
     })
   },
   handleTaxItemClick(e) {
+    const {
+      taxTab
+    } = this.data
+    console.log(e)
+    const {
+      id,
+      path,
+      filetype,
+      filename
+    } = e.currentTarget.dataset
 
+    downloadAndOpenFile(id, path, filename, filetype)
   },
   /**
    * 判断契税走哪个计算逻辑
@@ -918,6 +1028,36 @@ Page({
       this.checkQishuiIndex(2)
     }
 
+  },
+  onToTop(e) {
+    console.log(e, 'onToTop')
+  },
+  onPageScroll(e) {
+    const {
+      calcTab,
+      distance
+    } = this.data;
+    const {
+      scrollTop
+    } = e
+    if (scrollTop >= distance) {
+      if (calcTab + 1 < this.data.heightArr.length && scrollTop >= this.data.heightArr[calcTab]) {
+        this.setData({
+          calcTab: calcTab + 1
+        })
+      }
+    } else {
+      if (calcTab - 1 >= 0 && scrollTop < this.data.heightArr[calcTab - 1]) {
+        this.setData({
+          calcTab: calcTab - 1
+        })
+      }
+    }
+
+    this.setData({
+      scrollTop: scrollTop,
+      distance: scrollTop
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

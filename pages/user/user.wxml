@@ -15,6 +15,21 @@
 </t-cell-group>
 <view style="margin:32rpx">
   <t-button block open-type="feedback">意见反馈</t-button>
-  <t-button class="m-t-20" icon="logo-wechat-stroke" theme="primary" block>联系开发者</t-button>
+  <t-button bind:tap="showDialog" data-key="showDeveloper" class="m-t-20" icon="logo-wechat-stroke" theme="primary" block>联系开发者</t-button>
 </view>
+
 <l-tab-bar id="tabbar"></l-tab-bar>
+<t-dialog t-class-content="custom-dialog-content" visible="{{showDeveloper}}" title="联系开发者" close-on-overlay-click close-btn bind:close="closeDialog">
+  <t-cell-group slot="content">
+    <t-cell left-icon="mail" title="邮箱" note="linmens@163.com">
+      <t-button bind:tap="handleCopy" data-copy="linmens@163.com" theme="primary" slot="right-icon" size="small">复制</t-button>
+    </t-cell>
+    <t-cell left-icon="logo-wechat-stroke" title="微信号" note="linmens">
+      <t-button bind:tap="handleCopy" theme="primary" slot="right-icon" size="small">复制</t-button>
+    </t-cell>
+    <!-- <t-image show-menu-by-longpress src="{{'/static/wechat.jpg'}}" width="200" height="200" aria-label="一个放置在墙角的黄色行李箱" /> -->
+  </t-cell-group>
+
+</t-dialog>
+
+<t-message id="t-message" />

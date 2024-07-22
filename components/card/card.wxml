@@ -12,7 +12,7 @@
         </view>
         <view class="flex-1 flex " style="justify-content: flex-end;align-items: baseline">
           <text>{{item.value}}</text>
-          <text class="l-card__unit">{{unit}}</text>
+          <text class="l-card__unit">{{item.unit?item.unit:unit}}</text>
         </view>
       </view>
     </view>
@@ -20,7 +20,7 @@
   <t-divider />
 
   <view class="l-card__main">
-    <slot></slot>
+
     <view wx:if="{{item.value}}" class="" style="margin-bottom: 10rpx;" wx:for="{{info.details}}" wx:key="index">
       <view class="l-card__main--item">
         <view class="l-card__main__label">
@@ -35,18 +35,20 @@
 
           <view>
             <text>{{item.value}}</text>
-            <text class="l-card__unit">{{unit}}</text>
+            <text wx:if="{{!item.hideUnit}}" class="l-card__unit">{{item.unit?item.unit:unit}}</text>
           </view>
         </view>
       </view>
       <view class="l-card__main--desc" wx:if="{{item.desc}}" wx:for-item="descItem" wx:for="{{item.desc}}" wx:key="index">
         <text style="font-size: 20rpx;margin-right: 20rpx;">{{descItem.label}}</text>
         <t-tag size="small" wx:if="{{descItem.isLower}}" theme="success">较低</t-tag>
+        <t-tag size="small" wx:if="{{descItem.tagOptions}}" theme="{{descItem.tagOptions.theme}}" variant="light">{{descItem.tagOptions.text}}</t-tag>
       </view>
       <!-- 依据 -->
       <!-- <view wx:if="{{item.extra}}">
         <t-link wx:for="{{item.extra}}" navigator-props="{{extraItem.to}}" prefixIcon="link" wx:for-item="extraItem" size="small" theme="primary" content="{{extraItem.label}}" hover />
       </view> -->
     </view>
+    <slot></slot>
   </view>
 </view>

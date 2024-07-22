@@ -1,3 +1,6 @@
+page {
+  background-color: var(--td-bg-color-container);
+}
 .timeline {
   padding-left: 32px;
   position: relative;
@@ -50,8 +53,8 @@
   width: 8px;
   height: 8px;
   border: 2px solid var(--td-brand-color);
-  background: var(--td-bg-color-page);
-  outline: 8px solid var(--td-bg-color-page);
+  background: var(--td-bg-color-container);
+  outline: 8px solid var(--td-bg-color-container);
   box-sizing: border-box;
   border-radius: 50%;
   z-index: 10;
@@ -92,5 +95,5 @@
   z-index: 10;
   width: 8px;
   height: 9999px;
-  background: var(--td-bg-color-page);
+  background: var(--td-bg-color-container);
 }

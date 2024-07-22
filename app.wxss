@@ -10,6 +10,9 @@ page {
 .m-t-20 {
   margin-top: 20rpx;
 }
+.m-b-20 {
+  margin-bottom: 20rpx;
+}
 .f-24 {
   font-size: 24rpx;
 }
@@ -33,7 +36,9 @@ page {
 .flex-1 {
   flex: 1;
 }
-
+.font-20 {
+  font-size: 20rpx;
+}
 .f-row-center {
   justify-content: center;
 }
@@ -52,6 +57,9 @@ page {
 
 .text-right {
   text-align: right;
+}
+.text-blod {
+  font-weight: bold;
 }
 .t-tab-bar--placeholder {
   height: var(--td-tab-bar-height, 112rpx);

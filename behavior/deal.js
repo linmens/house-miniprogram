@@ -2,8 +2,8 @@
  import Message from 'tdesign-miniprogram/message/index';
 
  import {
-   calculatePlus,
-   calculateLoan
+   getDownPaymentRatio,
+   getLoanDetails
  } from '../utils/util';
  export const dealBehavior = Behavior({
    data: {
@@ -136,19 +136,69 @@
      },
      /**
       * 设置首付比例
-      * @param type 0 首付/网签
+      * @param type 0  商业贷款 1公积金 2 组合贷 3全款
       */
-     setPaymentRate(type) {
+     setPaymentRate() {
        const {
-
+         bankType,
+         buyerIndex,
          paymentPrice,
-         wangqianPrice
+         wangqianPrice,
+         loanGjjIsFirst,
+         loanYear,
+         loanGjjYear
        } = this.data.calcForm
-       const paymentRate = NP.round(NP.times(NP.divide(paymentPrice, wangqianPrice), 100), 0)
-       this.setData({
-         'calcForm.paymentRate': paymentRate
-       })
-       console.log('设置首付比例:', paymentRate)
+       let paymentRate = 0
+       let loanRate = 0
+       let loanGjjRate = 0
+       let loanDetails = {}
+       // paymentRate = NP.round(NP.times(NP.divide(paymentPrice, wangqianPrice), 100), 0)
+       // break;
+       switch (bankType) {
+         case 0:
+           //  paymentRate = getDownPaymentRatio(bankType, buyerIndex);
+           loanDetails = getLoanDetails(bankType, buyerIndex, loanYear, loanGjjYear)
+           paymentRate = loanDetails.commercial.downPaymentRatio
+           loanRate = loanDetails.commercial.interestRate
+           this.setData({
+             'calcForm.paymentRate': paymentRate,
+             'calcForm.loanRate': loanRate
+           })
+           console.log('设置商业贷款首付比例:', paymentRate)
+           console.log('设置商业贷款贷款利率:', loanRate)
+           break;
+         case 1:
+           loanDetails = getLoanDetails(bankType, loanGjjIsFirst ? 0 : 1, loanYear, loanGjjYear)
+           paymentRate = loanDetails.providentFund.downPaymentRatio
+           loanGjjRate = loanDetails.providentFund.interestRate
+           this.setData({
+             'calcForm.paymentRate': paymentRate,
+             'calcForm.loanGjjRate': loanGjjRate
+           })
+           console.log('设置公积金贷款首付比例:', paymentRate)
+           console.log('设置公积金贷款贷款利率:', loanGjjRate)
+           break;
+         case 2:
+           loanDetails = getLoanDetails(bankType, loanGjjIsFirst ? 0 : 1, loanYear, loanGjjYear)
+           paymentRate = loanDetails.providentFund.downPaymentRatio
+           loanRate = loanDetails.commercial.interestRate
+           loanGjjRate = loanDetails.providentFund.interestRate
+           this.setData({
+             'calcForm.paymentRate': paymentRate,
+             'calcForm.loanRate': loanRate,
+             'calcForm.loanGjjRate': loanGjjRate
+           })
+           console.log('设置组合贷贷款首付比例为公积金首付比例:', paymentRate)
+           console.log('设置组合贷公积金贷款贷款利率:', loanGjjRate)
+           console.log('设置组合贷商业贷款贷款利率:', loanRate)
+           break;
+         case 3:
+           break;
+         default:
+           break;
+       }
+
+
      },
      /**
       * 设置首付金额

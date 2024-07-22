@@ -3,8 +3,13 @@
     loanGjjHomeTypes
   } from '../utils/constants'
   import {
-    calculateLoan
+    calculateLoan,
+    downloadAndOpenFile,
+    getDownPaymentRatio
   } from '../utils/util'
+  import {
+    findByKeyname
+  } from '../constants/taxList'
   export const gongjijinBehavior = Behavior({
     lifetimes: {
       ready() {
@@ -24,7 +29,9 @@
     data: {
       loanGjjHomeTypes,
       loanGjjRightConfig: {
-        content: '个人住房公积金贷款业务指南'
+        content: '个人住房公积金贷款业务指南',
+        suffixIcon: 'file-pdf',
+        theme: 'primary'
       },
       calcForm: {
         // 公积金缴存情况
@@ -36,7 +43,7 @@
         // 公积金还款方式
         loanGjjBackIndex: 0,
         // 公积金贷款利率
-        loanGjjRate: 3.55,
+        loanGjjRate: 2.85,
         // 公积金贷款金额
         loanGjjPrice: '',
         // 是否首次使用公积金
@@ -46,9 +53,17 @@
         // 性别男女
         loanGjjSexIndex: 0,
         // 借款人年龄
-        loanGjjAge: 0,
+        loanGjjAge: 18,
         // 借款人缴存基数
-        loanGjjBasicPrice: 0
+        loanGjjBasicPrice: 0,
+        // 女方年龄
+        loanGjjFemaleAge: 18,
+        // 男方年龄
+        loanGjjMaleAge: 18,
+        // 男方缴存基数
+        loanGjjMaleBasicPrice: 0,
+        // 女方缴存基数
+        loanGjjFemaleBasicPrice: 0
       },
     },
     methods: {
@@ -73,15 +88,15 @@
         const {
           bankType,
           loanGjjYear,
-          loanGjjIsFirst
+          buyerIndex
         } = this.data.calcForm
         let loanGjjRate = 0
         if (bankType === 1 || bankType === 2) {
-          if (loanGjjIsFirst) {
-            // 首次使用
+          if (buyerIndex) {
+            // 首套房
             loanGjjRate = loanGjjYear <= 5 ? 2.35 : 2.85
           } else {
-            // 二次使用
+            // 二套房
             loanGjjRate = loanGjjYear <= 5 ? 2.775 : 3.325
           }
         }
@@ -146,7 +161,7 @@
           houseAge,
           loanGjjIndex
         } = this.data.calcForm
-        console.log('开始计算公积金贷款年限...', loanGjjIndex)
+
         if (houseAge) {
           let loanGjjYear = NP.minus(40, houseAge);
           if (loanGjjYear > 30) {
@@ -180,17 +195,42 @@
         this.setPaymentPrice()
         this.setPaymentRate()
       },
+      handleLoanGjjTitleRightClick(e) {
+        const findByKeynameRes = findByKeyname('title', this.data.loanGjjRightConfig.content)
+        console.log(findByKeynameRes, 'findByKeynameRes')
+        if (findByKeynameRes) {
+          downloadAndOpenFile(findByKeynameRes.id, findByKeynameRes.prefixPath, findByKeynameRes.title, findByKeynameRes.fileType)
+        }
+      },
       handleLoanGjjIsFirstChange(e) {
         const {
-          value
+          value,
+
         } = e.detail
 
         this.setData({
           'calcForm.loanGjjIsFirst': value
         })
         this.setPaymentRate()
-        this.setLoanGjjPrice()
+        // this.setLoanGjjPrice()
         this.setLoanGjjRate()
+        this.startCalc()
+      },
+      onLoanGjjRateChange(e) {
+        const {
+          value
+        } = e.detail
+        this.setData({
+          'calcForm.loanGjjRate': value
+        })
+      },
+      onLoanGjjBackTypesChange(e) {
+        const {
+          index
+        } = e.detail
+        this.setData({
+          'calcForm.loanGjjBackIndex': index
+        })
       },
       /**
        * 家庭缴存情况改变
@@ -218,6 +258,38 @@
           'calcForm.loanGjjBasicPrice': value
         })
       },
+      onLoanGjjMaleBasicPriceChange(e) {
+        const {
+          value
+        } = e.detail
+        this.setData({
+          'calcForm.loanGjjMaleBasicPrice': value
+        })
+      },
+      onLoanGjjFemaleBasicPriceChange(e) {
+        const {
+          value
+        } = e.detail
+        this.setData({
+          'calcForm.loanGjjFemaleBasicPrice': value
+        })
+      },
+      onLoanGjjMaleAgeChange(e) {
+        const {
+          value
+        } = e.detail
+        this.setData({
+          'calcForm.loanGjjMaleAge': value
+        })
+      },
+      onLoanGjjFemaleAgeChange(e) {
+        const {
+          value
+        } = e.detail
+        this.setData({
+          'calcForm.loanGjjFemaleAge': value
+        })
+      },
       onLoanGjjAgeChange(e) {
         const {
           value
@@ -239,16 +311,16 @@
        * @param {*} e 
        */
       onLoanGjjIndexChange(e) {
-        console.log(e, 'onLoanGjjIndexChange')
         const {
           value,
           index
         } = e.detail
         this.setData({
-          'calcForm.loanGjjIndex': index
+          'calcForm.loanGjjIndex': index,
+          'calcForm.loanGjjYear': value
         })
-        this.setLoanGjjYear()
-        this.setLoanGjjRate()
+        // this.setLoanGjjYear()
+        // this.setLoanGjjRate()
       },
       onCustomLoanGjjYearChange(e) {
         const {

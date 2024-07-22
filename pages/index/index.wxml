@@ -27,7 +27,7 @@
 </t-notice-bar>
 
 <!-- 基本信息 -->
-<!-- <l-pages-basic id="basicRef" exchangeTypes="{{exchangeTypes}}" orderTypes="{{orderTypes}}" calcForm="{{calcForm}}" unitTypes="{{unitTypes}}" buyTypes="{{buyTypes}}" areaTypes="{{areaTypes}}" chanquanTypes="{{chanquanTypes}}" bind:typesChange="onTypesChange" bind:buyTypesChange="onBuyTypesChange" bind:areaTypesChange="onAreaTypesChange" bind:chanquanTypesChange="onChanquanTypesChange" bind:houseAgeChange="onHouseAgeChange" bind:showYearPicker="showYearPicker" bind:onCustomAreaChange="onCustomAreaChange" bind:onChanquanTypesChange="onChanquanTypesChange" bind:onOrderTypesChange="onOrderTypesChange" bind:onExchangeTypeChange="onExchangeTypeChange"></l-pages-basic> -->
+
 <l-cell-group wx:if="{{calcForm.unit}}" id="basicRef" theme="card" title="基本信息">
   <l-cell title="变更类型">
     <l-tabs disabled="{{calcForm.buyIndex!==0}}" slot="note" current-index="{{calcForm.exchangeType}}" bind:change="onExchangeTypeChange" list="{{exchangeTypes}}">
@@ -144,7 +144,7 @@
     </l-tabs>
   </l-cell>
 </l-cell-group>
-<!-- 买方 -->
+<!-- 买方家庭 -->
 <l-cell-group wx:if="{{calcForm.exchangeType===0}}" title="买方属性" theme="card">
   <l-cell title="买方家庭">
     <l-tabs slot="note" current-index="{{calcForm.buyerIndex}}" bind:change="onBuyerTypesChange" list="{{buyerTypes}}">
@@ -162,7 +162,7 @@
 
     </l-cell>
     <l-cell suffix="{{calcForm.unit}}" wx:if="{{calcForm.totalPrice}}" title="居间服务费">
-      <t-input slot="note" borderless customStyle="padding:0" bind:change="onServiceFeeChange" value="{{calcForm.serviceFee}}" align="right">
+      <t-input slot="note" borderless customStyle="padding:0" bind:change="onServiceFeeChange" value="{{calcForm.serviceFee}}" type="number" align="right">
       </t-input>
     </l-cell>
     <l-cell wx:if="{{calcForm.totalPrice||calcForm.wangqianPrice}}" title="费用承担方">
@@ -176,17 +176,50 @@
       <t-stepper step="{{calcForm.unitRate}}" slot="note" bind:change="onServiceSellerChange" value="{{calcForm.serviceSeller}}" theme="filled" max="{{calcForm.serviceFee}}" />
     </l-cell>
     <l-cell wx:if="{{calcForm.bankType!==3&&calcForm.forWhoIndex!==1}}" title="贷款服务费" suffix="{{calcForm.unit}}">
-      <t-input slot="note" borderless customStyle="padding:0" align="right" value="{{calcForm.bankPrice}}">
+      <t-input slot="note" type="number" borderless customStyle="padding:0" align="right" value="{{calcForm.bankPrice}}">
       </t-input>
     </l-cell>
   </l-cell-group>
 </view>
 
 <!-- 贷款信息 买卖、总价大于0、商业贷款-->
-<l-pages-shangdai calcForm="{{calcForm}}" loanPaidTypes="{{loanPaidTypes}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===0&&calcForm.totalPrice>0&&calcForm.exchangeType===0||calcForm.bankType===2&&calcForm.totalPrice>0&&calcForm.exchangeType===0}}" bind:onLoanPriceChange="onLoanPriceChange" bind:onLoanTypesChange="onLoanTypesChange" bind:onCustomLoanYearInputValChange="onCustomLoanYearInputValChange" bind:onLoanPaidTypeIndexChange="onLoanPaidTypeIndexChange" bind:onLoanPaidChange="onLoanPaidChange"></l-pages-shangdai>
+<!-- <l-pages-shangdai calcForm="{{calcForm}}" loanPaidTypes="{{loanPaidTypes}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===0&&calcForm.totalPrice>0&&calcForm.exchangeType===0||calcForm.bankType===2&&calcForm.totalPrice>0&&calcForm.exchangeType===0}}" bind:onLoanPriceChange="onLoanPriceChange" bind:onLoanTypesChange="onLoanTypesChange" bind:onCustomLoanYearInputValChange="onCustomLoanYearInputValChange" bind:onLoanPaidTypeIndexChange="onLoanPaidTypeIndexChange" bind:onLoanPaidChange="onLoanPaidChange"></l-pages-shangdai> -->
+<l-cell-group theme="card" title="商贷信息" wx:if="{{calcForm.bankType===0&&calcForm.totalPrice>0&&calcForm.exchangeType===0||calcForm.bankType===2&&calcForm.totalPrice>0&&calcForm.exchangeType===0}}">
+  <l-cell title="贷款金额" suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanPriceChange" value="{{calcForm.loanPrice}}" align="right" placeholder="请输入贷款金额" type="number">
+    </t-input>
+  </l-cell>
+  <l-cell title="贷款利率" suffix="%">
+    <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanRateChange" value="{{calcForm.loanRate}}" align="right" placeholder="请输入贷款利率" type="number">
+    </t-input>
+  </l-cell>
+
+  <l-cell title="{{'贷款年限'+'('+calcForm.loanYear*12+'期)'}}">
+    <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanTypes}}"></l-tabs>
+  </l-cell>
+  <!-- 自定义贷款年限 -->
+  <l-cell title="自定义贷款年限" wx:if="{{calcForm.loanIndex===6}}">
+    <t-stepper slot="note" bind:change="onCustomLoanYearInputValChange" value="{{calcForm.loanYear}}" min="1" max="30" step="1" theme="filled" />
+  </l-cell>
+  <l-cell title="还款方式">
+    <l-tabs slot="note" current-index="{{calcForm.loanBackIndex}}" bind:change="onLoanBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
+  </l-cell>
+  <block wx:if="{{calcForm.forWhoIndex===1}}">
+    <l-cell title="提前还款方式">
+      <l-tabs slot="note" current-index="{{calcForm.loanPaidTypeIndex}}" bind:change="onLoanPaidTypeIndexChange" list="{{loanPaidTypes}}"></l-tabs>
+    </l-cell>
+    <l-cell wx:if="{{calcForm.loanPaidTypeIndex===1}}" title="提前还款金额" suffix="{{calcForm.unit}}">
+      <t-stepper slot="note" bind:change="onCustomLoanYearInputValChange" value="{{calcForm.loanPaidPrice}}" min="0" max="{{calcForm.loanPrice}}" step="1" theme="filled" />
+    </l-cell>
+    <l-cell title="已还期数" suffix="期">
+      <t-stepper slot="note" bind:change="onLoanPaidChange" value="{{calcForm.loanPaid}}" min="0" max="360" step="1" theme="filled" />
+    </l-cell>
+  </block>
+
+</l-cell-group>
 <!-- 公积金贷款 -->
-<!-- <l-pages-gongjijin calcForm="{{calcForm}}" loanTypes="{{loanTypes}}" loanBackTypes="{{loanBackTypes}}" loanGjjHomeTypes="{{loanGjjHomeTypes}}" loanRateTypes="{{loanRateTypes}}" wx:if="{{calcForm.bankType===1&&calcForm.totalPrice>0&&calcForm.exchangeType===0||calcForm.bankType===2&&calcForm.totalPrice>0&&calcForm.exchangeType===0}}" bind:handleLoanGjjIsFirstChange="handleLoanGjjIsFirstChange" bind:loanPriceChange="onLoanGjjPriceChange" bind:onLoanGjjHomeTypesChange="onLoanGjjHomeTypesChange" bind:onLoanGjjIndexChange="onLoanGjjIndexChange" bind:onCustomLoanGjjYearChange="onCustomLoanGjjYearChange"></l-pages-gongjijin> -->
-<l-cell-group wx:if="{{calcForm.bankType===1&&calcForm.totalPrice>0&&calcForm.exchangeType===0||calcForm.bankType===2&&calcForm.totalPrice>0&&calcForm.exchangeType===0}}" theme="card" title="公积金信息" rightConfig="{{loanGjjRightConfig}}">
+
+<l-cell-group bind:title-right-click="handleLoanGjjTitleRightClick" wx:if="{{calcForm.bankType===1&&calcForm.totalPrice>0&&calcForm.exchangeType===0||calcForm.bankType===2&&calcForm.totalPrice>0&&calcForm.exchangeType===0}}" theme="card" title="公积金信息" rightConfig="{{loanGjjRightConfig}}">
   <l-cell title="贷款金额">
     <view slot="note" class="flex f-col-center">
       <t-stepper max="{{calcForm.loanGjjMaxPrice}}" step="1" input-width="80" value="{{calcForm.loanGjjPrice}}" size="large" theme="filled" bind:change="onLoanGjjPriceChange" />
@@ -197,7 +230,7 @@
     </view>
   </l-cell>
   <l-cell title="贷款利率" suffix="%">
-    <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanRateChange" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="number">
+    <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanGjjRateChange" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="number">
     </t-input>
   </l-cell>
 
@@ -209,7 +242,7 @@
     <t-stepper slot="note" bind:change="onCustomLoanGjjYearChange" value="{{calcForm.loanGjjYear}}" min="1" max="30" step="1" theme="filled" />
   </l-cell>
   <l-cell title="还款方式">
-    <l-tabs slot="note" current-index="{{calcForm.loanGjjBackIndex}}" bind:change="onLoanBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
+    <l-tabs slot="note" current-index="{{calcForm.loanGjjBackIndex}}" bind:change="onLoanGjjBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
   </l-cell>
   <l-cell wx:if="{{calcForm.bankType===1||calcForm.bankType===2}}" title="是否首次使用">
     <t-switch bindchange="handleLoanGjjIsFirstChange" defaultValue="{{calcForm.loanGjjIsFirst}}" slot="note" />
@@ -225,7 +258,7 @@
       <t-stepper slot="note" bind:change="onLoanGjjAgeChange" value="{{calcForm.loanGjjAge}}" min="18" max="{{calcForm.loanGjjSexIndex===0?60:55}}" step="1" theme="filled" />
     </l-cell>
     <l-cell title="借款人缴存基数" suffix="{{calcForm.unit}}">
-      <t-input bind:change="onLoanGjjBasicPriceChange" slot="note" placeholder="请输入缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjBasicPrice}}">
+      <t-input bind:change="onLoanGjjBasicPriceChange" slot="note" placeholder="请输入缴存基数" borderless customStyle="padding:0" align="right" type="number" value="{{calcForm.loanGjjBasicPrice}}">
       </t-input>
     </l-cell>
   </block>
@@ -234,14 +267,14 @@
       <t-stepper slot="note" bind:change="onLoanGjjMaleAgeChange" value="{{calcForm.loanGjjMaleAge}}" min="18" max="60" step="1" theme="filled" />
     </l-cell>
     <l-cell title="男方缴存基数" suffix="{{calcForm.unit}}">
-      <t-input bind:change="onLoanGjjMaleBasicPriceChange" slot="note" placeholder="请输入男方缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjMaleBasicPrice}}">
+      <t-input type="number" bind:change="onLoanGjjMaleBasicPriceChange" slot="note" placeholder="请输入男方缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjMaleBasicPrice}}">
       </t-input>
     </l-cell>
     <l-cell title="女方年龄" suffix="岁">
       <t-stepper slot="note" bind:change="onLoanGjjFemaleAgeChange" value="{{calcForm.loanGjjFemaleAge}}" min="18" max="55" step="1" theme="filled" />
     </l-cell>
     <l-cell title="女方缴存基数" suffix="{{calcForm.unit}}">
-      <t-input bind:change="onLoanGjjFemaleBasicPriceChange" slot="note" placeholder="请输入女方缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjFemaleBasicPrice}}">
+      <t-input type="number" bind:change="onLoanGjjFemaleBasicPriceChange" slot="note" placeholder="请输入女方缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjFemaleBasicPrice}}">
       </t-input>
     </l-cell>
   </block>
@@ -332,6 +365,7 @@
   </scroll-view>
 </t-dialog>
 <t-toast id="t-toast" />
+<l-privacy />
 <view class="t-tab-bar--placeholder__wrap">
   <view class="t-tab-bar--placeholder"></view>
   <view class="t-tab-bar-safe"></view>

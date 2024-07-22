@@ -4,9 +4,9 @@
     <text wx:if="{{item.version}}">{{item.version}}</text>
     <text class="code" wx:if="{{item.date}}">{{item.date}}</text>
     <text>{{item.title}}</text>
-    <view class="li" wx:if="{{item.classname==='ul'}}" wx:for="{{item.list}}" wx:for-item="li">
-      <text class="{{li.classname}}">{{li.text}}</text>
-      <block wx:for="{{li.data}}" wx:key="liDataIndex" wx:for-item="liDataItem" wx:for-index="liDataIndex">
+    <view class="li" wx:if="{{item.classname==='ul'}}" wx:key="liDataIndex" wx:for-index="liDataIndex" wx:for="{{item.list}}" wx:for-item="li">
+      <t-tag theme="{{li.theme}}" size="small" style="margin-right: 20rpx;">{{li.text}}</t-tag>
+      <block wx:for="{{li.data}}" wx:key="liDataItemIndex" wx:for-index="liDataItemIndex" wx:for-item="liDataItem">
         <text class="f-24">{{liDataItem.text}}</text>
       </block>
     </view>

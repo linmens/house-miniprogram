@@ -9,3 +9,7 @@
 page {
   --td-navbar-bg-color: var(--td-bg-color-page);
 }
+.custom-dialog-content {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}

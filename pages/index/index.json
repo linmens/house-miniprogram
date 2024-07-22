@@ -2,8 +2,8 @@
   "navigationStyle": "custom",
   "usingComponents": {
 
-    "t-sticky": "tdesign-miniprogram/sticky/sticky",
-    "l-pages-gongjijin": "./components/gongjijin/gongjijin",
+
+    "l-privacy": "/components/privacy/privacy",
     "t-footer": "tdesign-miniprogram/footer/footer",
     "t-slider": "tdesign-miniprogram/slider/slider",
     "t-popup": "tdesign-miniprogram/popup/popup",
@@ -14,10 +14,8 @@
 
     "l-pages-service": {
       "default": "./components/service/service"
-    },
-
-    "l-pages-shangdai": {
-      "default": "./components/shangdai/shangdai"
     }
+
+
   }
 }

@@ -2,6 +2,9 @@
   "navigationStyle": "custom",
   "styleIsolation": "apply-shared",
   "usingComponents": {
-    "l-card": "/components/card/card"
+    "l-card": "/components/card/card",
+    "t-back-top": "tdesign-miniprogram/back-top/back-top",
+    "t-indexes": "tdesign-miniprogram/indexes/indexes",
+    "t-indexes-anchor": "tdesign-miniprogram/indexes-anchor/indexes-anchor"
   }
 }

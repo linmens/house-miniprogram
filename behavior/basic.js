@@ -10,7 +10,8 @@
    fengeTypes,
    newHouseTypes,
    houseTypes,
-   sexTypes
+   sexTypes,
+   tabs
  } from '../utils/constants';
  import {
    calculateBuiltYear,
@@ -170,12 +171,18 @@
          'calcForm.buyIndex': 0
        })
      },
+     /**
+      * 房屋类型
+      * @param {*} e 
+      */
      onHouseTypesChange(e) {
        const {
          index
        } = e.detail
+
        this.setData({
          'calcForm.houseType': index,
+         'calcForm.bankType': 0
        })
        this.setHukouWuyePrice()
        this.startCalc()

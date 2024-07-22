@@ -1,34 +1,95 @@
-<t-navbar left-arrow title="计算结果">
+<view class="h-sticky">
+  <t-sticky>
+    <t-navbar left-arrow title="计算结果">
 
-</t-navbar>
-<t-notice-bar visible="{{true}}" content="计算结果仅供参考，若有计算错误请联系开发者。"></t-notice-bar>
-
-<view class="l-card__group">
-  <t-row style="background-color: var(--td-cell-bg-color, var(--td-bg-color-container, var(--td-font-white-1, #ffffff)));">
-    <t-col span="12" wx:if="{{item.show}}" wx:for="{{list}}" wx:key="index">
-      <view class="row-tag">
-        <t-tag theme="primary" variant="light-outline">{{item.label}}</t-tag>
-        <text class="m-l-20 f-24">{{item.value}}</text>
-      </view>
-    </t-col>
-  </t-row>
-
-
-
+    </t-navbar>
+    <t-tabs split="{{false}}" bind:change="onTabsChange" value="{{calcTab}}">
+      <t-tab-panel label="{{item.label}}" value="{{item.value}}" wx:for="{{calcTabs}}" wx:key="index"></t-tab-panel>
+      <!-- <t-tab-panel label="税费信息" value="1" />
+    <t-tab-panel label="贷款信息" value="2" />
+    <t-tab-panel label="计税依据" value="3" />
+    <t-tab-panel label="支付节点" value="4" /> -->
+    </t-tabs>
+  </t-sticky>
 </view>
+<view id="section-0" class="section" data-margin="{{53}}">
+  <t-notice-bar visible="{{true}}" content="计算结果仅供参考，若有计算错误请联系开发者。"></t-notice-bar>
+  <t-divider content="简要信息" />
 
-<t-tabs split="{{false}}" bind:change="onTabsChange" value="{{calcTab}}">
-  <t-tab-panel label="计算结果" value="0">
-
-  </t-tab-panel>
-  <t-tab-panel label="支付节点" value="1" />
-</t-tabs>
-<block wx:if="{{calcTab==0}}">
+  <view class="l-card__group">
+    <t-row style="background-color: var(--td-cell-bg-color, var(--td-bg-color-container, var(--td-font-white-1, #ffffff)));">
+      <t-col span="12" wx:if="{{item.show}}" wx:for="{{list}}" wx:key="index">
+        <view class="row-tag">
+          <t-tag theme="primary" variant="light-outline">{{item.label}}</t-tag>
+          <text class="m-l-20 f-24">{{item.value}}</text>
+        </view>
+      </t-col>
+    </t-row>
+  </view>
   <l-cell-group theme="card" wx:if="{{result.totalAll}}">
+    <!-- 商贷等额本息 -->
+    <l-cell wx:if="{{shangdaiDebx&&calcForm.loanBackIndex===0&&shangdaiDebx.monthlyPayment}}" suffix="{{calcForm.unit}}">
+      <view slot="note">
+        <text class="total-price">{{shangdaiDebx.monthlyPayment}}</text>
+      </view>
+      <view slot="description" class="m-t-20">
+
+        <t-tag style="margin-right: 20rpx;">商贷{{calcForm.loanPrice}}{{calcForm.unit}}</t-tag>
+      </view>
+      <view slot="title">
+        <text style="margin-right: 20rpx;">月均还款</text>
+        <t-tag theme="primary" variant="dark">等额本息</t-tag>
+      </view>
+    </l-cell>
+    <!-- 公积金贷等额本息 -->
+    <l-cell wx:if="{{gongjijinDebx&&calcForm.loanGjjBackIndex===0&&gongjijinDebx.monthlyPayment}}" suffix="{{calcForm.unit}}">
+      <view slot="title">
+        <text style="margin-right: 20rpx;">月均还款</text>
+        <t-tag theme="primary" variant="dark">等额本息</t-tag>
+      </view>
+      <view slot="note">
+        <text class="total-price">{{gongjijinDebx.monthlyPayment}}</text>
+      </view>
+      <view slot="description" class="m-t-20">
+        <t-tag style="margin-right: 20rpx;">公积金贷{{calcForm.loanGjjPrice}}{{calcForm.unit}}</t-tag>
+      </view>
+    </l-cell>
+    <!-- 商贷等额本金 -->
+    <l-cell wx:if="{{shangdaiDebj&&calcForm.loanBackIndex===1&&shangdaiDebj.firstMonthPayment}}" suffix="{{calcForm.unit}}">
+      <view slot="title">
+        <text style="margin-right: 20rpx;">首月还款</text>
+        <t-tag theme="success" variant="dark">等额本金</t-tag>
+      </view>
+      <text slot="note" class="total-price">{{shangdaiDebj.firstMonthPayment}}</text>
+      <view slot="description" class="m-t-20">
+        <t-tag style="margin-right: 20rpx;">商贷{{calcForm.loanPrice}}{{calcForm.unit}}</t-tag>
+        <t-tag class="m-l-20">逐月递减{{shangdaiDebj.monthlyDecrease}}{{calcForm.unit}}</t-tag>
+      </view>
+    </l-cell>
+    <l-cell wx:if="{{gongjijinDebj&&calcForm.loanGjjBackIndex===1&&gongjijinDebj.firstMonthPayment}}" suffix="{{calcForm.unit}}">
+      <view slot="title">
+        <text style="margin-right: 20rpx;">首月还款</text>
+        <t-tag theme="success" variant="dark">等额本金</t-tag>
+      </view>
+      <view slot="note">
+        <text class="total-price">{{gongjijinDebj.firstMonthPayment}}</text>
+      </view>
+
+      <view slot="description" class="m-t-20">
+        <t-tag style="margin-right: 20rpx;">公积金{{calcForm.loanGjjPrice}}{{calcForm.unit}}</t-tag>
+        <t-tag>逐月递减{{gongjijinDebj.monthlyDecrease}}{{calcForm.unit}}</t-tag>
+      </view>
+    </l-cell>
+    <!-- <l-cell title="末月还款（月供）" description="等额本金" wx:if="{{shangdai&&shangdai[calcForm.loanBackIndex]&&calcForm.loanBackIndex===1&&shangdai[calcForm.loanBackIndex].lastMonthPayment}}" suffix="{{calcForm.unit}}">
+        <text slot="note" class="total-price">{{shangdai[calcForm.loanBackIndex].lastMonthPayment}}</text>
+      </l-cell> -->
     <l-cell title="前期支付金额合计" suffix="{{calcForm.unit}}">
-      <text slot="note" style="font-size: large;font-weight: bold;color:var(--td-primary-color-8)">{{result.totalAll}}</text>
+      <text slot="note" class="total-price">{{result.totalAll}}</text>
     </l-cell>
   </l-cell-group>
+</view>
+<view id="section-1" class="section">
+  <t-divider content="税费信息" />
   <view class="l-card__group" wx:if="{{calcForm.exchangeType===1}}">
     <l-card headerTitle="赠与方合计" headerValue="{{sender.total}}" info="{{sender}}" unit="{{calcForm.unit}}"></l-card>
   </view>
@@ -56,10 +117,129 @@
   <view class="l-card__group" wx:if="{{calcForm.exchangeType===0}}">
     <l-card headerValue="{{seller.total}}" headerTitle="买方合计" info="{{buyer}}" unit="{{calcForm.unit}}"></l-card>
   </view>
-  <!-- 买方贷款 -->
-  <view class="l-card__group" wx:if="{{calcForm.exchangeType===0}}">
-    <l-card headerTitle="买方贷款" unit="{{calcForm.unit}}"></l-card>
+</view>
+<view id="section-2" class="section" wx:if="{{calcForm.bankType!==3}}">
+  <t-divider content="贷款信息" />
+  <!-- 商业贷款 -->
+  <view class="l-card__group" wx:if="{{calcForm.exchangeType===0&&shangdai.length}}">
+    <l-card headerTitle="商业贷款" info="{{shangdaiInfo}}" unit="{{calcForm.unit}}">
+      <t-notice-bar visible="{{true}}" content="月均收入需覆盖{{shangdai[calcForm.loanBackIndex].monthlyPayment*2}}{{calcForm.unit}}"></t-notice-bar>
+      <view class="loan__group m-t-20">
+        <view class="loan__group__item {{item.icon?'loan__group__item__active':''}}" wx:for="{{shangdai}}" wx:key="index">
+          <view class="flex f-col-center f-row-between m-b-20">
+            <t-tag theme="primary" variant="{{item.icon?'dark':'outline'}}" icon="{{item.icon}}">{{item.title}}</t-tag>
+            <text style="color: var(--td-brand-color);">明细</text>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.monthlyPayment}}">
+            <text>月均还款</text>
+            <view>
+              <text class="text-blod">{{item.monthlyPayment}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.firstMonthPayment}}">
+            <text>首月还款</text>
+            <view>
+              <text class="text-blod">{{item.firstMonthPayment}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.lastMonthPayment}}">
+            <text>末月还款</text>
+            <view>
+              <text class="text-blod">{{item.lastMonthPayment}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.monthlyDecrease}}">
+            <text>逐月递减</text>
+            <view>
+              <text class="text-blod">{{item.monthlyDecrease}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.totalPayment}}">
+            <text>还款总额</text>
+            <view>
+              <text class="text-blod">{{item.totalPayment}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.totalInterest}}">
+            <text>支付利息款</text>
+            <view>
+              <text class="text-blod">{{item.totalInterest}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </l-card>
   </view>
+  <!-- 公积金 -->
+  <view class="l-card__group" wx:if="{{calcForm.exchangeType===0&&gongjijin.length}}">
+    <l-card headerTitle="公积金贷款" info="{{gongjijinInfo}}" unit="{{calcForm.unit}}">
+
+      <view class="loan__group">
+        <view class="loan__group__item {{item.icon?'loan__group__item__active':''}}" wx:for="{{gongjijin}}" wx:key="index">
+          <view class="flex f-col-center f-row-between m-b-20">
+            <t-tag theme="primary" variant="{{item.icon?'dark':'outline'}}" icon="{{item.icon}}">{{item.title}}</t-tag>
+            <text style="color: var(--td-brand-color);">明细</text>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.monthlyPayment}}">
+            <text>月均还款</text>
+            <view>
+              <text class="text-blod">{{item.monthlyPayment}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.firstMonthPayment}}">
+            <text>首月还款</text>
+            <view>
+              <text class="text-blod">{{item.firstMonthPayment}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.lastMonthPayment}}">
+            <text>末月还款</text>
+            <view>
+              <text class="text-blod">{{item.lastMonthPayment}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.monthlyDecrease}}">
+            <text>逐月递减</text>
+            <view>
+              <text class="text-blod">{{item.monthlyDecrease}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.totalPayment}}">
+            <text>还款总额</text>
+            <view>
+              <text class="text-blod">{{item.totalPayment}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+          <view class="loan__group__item__list" wx:if="{{item.totalInterest}}">
+            <text>支付利息款</text>
+            <view>
+              <text class="text-blod">{{item.totalInterest}}</text>
+              <text class="font-20">{{calcForm.unit}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="m-t-20" wx:if="{{noticeInfo.content.length}}">
+        <t-notice-bar visible="{{true}}" content="{{noticeInfo.content}}"></t-notice-bar>
+      </view>
+
+    </l-card>
+  </view>
+</view>
+
+
+<view id="section-3" class="section">
   <!-- 计税依据 -->
   <t-divider content="计税依据" />
   <view class="l-card__group">
@@ -76,16 +256,18 @@
         <t-tab-panel label="土地增值税" value="6" />
         <t-tab-panel label="印花税" value="7" />
       </t-tabs>
-      <t-cell bind:tap="handleTaxItemClick" url="/pages/webview/webview?src={{item.url}}" wx:for="{{taxListObj[taxTab]}}" wx:key="index" title="{{item.title}}" description="{{item.number?item.number+' '+ item.date:item.date }}" hover>
-        <!-- <navigator url="/pages/webview/webview?src={{item.url}}" style="display: flex;flex-direction: column;padding: 0 20rpx;">
-          <text style="font-size: 28rpx;text-overflow: ellipsis;">{{item.title}}</text>
-          <text style="color: var(--td-gray-color-7);">{{item.date}}</text>
-        </navigator> -->
-
-        <!-- <t-divider wx:if="{{index!==taxListObj[taxTab].length -1}}" /> -->
+      <t-cell bordered="{{index!==taxListObj[taxTab].length-1}}" data-filename="{{item.title}}" data-id="{{item.id}}" data-path="{{item.prefixPath}}" data-filetype="{{item.fileType}}" bind:click="handleTaxItemClick" wx:for="{{taxListObj[taxTab]}}" wx:key="index" title="{{item.title}}" description="{{item.number?item.number+' '+ item.date:item.date }}" hover>
       </t-cell>
     </l-card>
   </view>
-</block>
+</view>
+<view id="section-4" class="section">
 
+</view>
+
+<view class="t-tab-bar--placeholder__wrap">
+  <view class="t-tab-bar-safe"></view>
+</view>
 <t-toast id="t-toast" />
+
+<t-back-top style="z-index: 99;" theme="round" scroll-top="{{scrollTop}}"></t-back-top>

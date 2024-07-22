@@ -1,8 +1,9 @@
 <wxs src="../common/utils.wxs" module="_" />
 
 <view wx:if="{{ title }}" class="{{ classPrefix }}__title {{prefix}}-class-title {{hasBackground?classPrefix+'__hasbg':''}}"> {{ title }}
-  <view class="{{classPrefix}}__title__right" wx:if="{{rightConfig}}">
-    <t-link suffixIcon="{{rightConfig.suffixIcon}}" content="{{rightConfig.content}}"></t-link>
+  <view class="{{classPrefix}}__title__right" bind:tap="onTitleRightClick" wx:if="{{rightConfig}}">
+    <text class="{{classPrefix+'__title__'+rightConfig.theme}}">{{rightConfig.content}}</text>
+    <t-icon name="{{rightConfig.suffixIcon}}" color="var(--td-brand-color)"></t-icon>
   </view>
 </view>
 <view style="{{_._style([style, customStyle])}}" class="{{_.cls(classPrefix, [['bordered', bordered], theme])}}  {{prefix}}-class">

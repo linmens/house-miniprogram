@@ -1,0 +1,21 @@
+/* component/privacy/privacy.wxss */
+
+.title {
+  text-align: center;
+  color: #333;
+  font-weight: bold;
+  font-size: 32rpx;
+}
+
+.des {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 40rpx;
+  text-align: justify;
+  line-height: 1.6;
+}
+
+.des .link {
+  color: #07c160;
+  text-decoration: underline;
+}

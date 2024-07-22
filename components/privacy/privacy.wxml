@@ -1,0 +1,9 @@
+<!--component/privacy/privacy.wxml-->
+<t-dialog visible="{{showPrivacy}}" catchtouchmove="handleCatchtouchMove" confirm-btn="{{confirmBtn}}" cancel-btn="{{cancelBtn}}" bind:cancel="exitMiniProgram">
+  <view slot="content">
+    <view class="title">隐私保护指引</view>
+    <view class="des">
+      在使用当前小程序服务之前，请仔细阅读<text class="link" bind:tap="openPrivacyContract">{{privacyContractName}}</text>。如你同意{{privacyContractName}}，请点击“同意”开始使用。
+    </view>
+  </view>
+</t-dialog>

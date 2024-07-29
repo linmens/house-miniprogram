@@ -1,11 +1,51 @@
+.header-wrapper {
+  position: relative;
+  height: 400rpx; /* 根据需要调整高度 */
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 32rpx;
+}
+
+.header-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* filter: blur(2px); */
+  z-index: 1;
+  /* background-image: linear-gradient(#0f172a, #1e293b); */
+  background: var(
+    --td-button-default-bg-color,
+    var(--td-bg-color-component, var(--td-gray-color-3, #e7e7e7))
+  );
+}
+
 .user-header {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  /* color: var(--td-font-white-1); */
+  z-index: 2;
+  /* text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3); */
+  height: 100%;
   font-size: 60rpx;
-  color: var(--td-brand-color);
-  margin: 100rpx 0;
+
+  /* background-image: linear-gradient(
+    107deg,
+    var(--td-primary-color-9) 6.9%,
+    var(--td-primary-color-2) 19.23%,
+    var(--td-primary-color-6) 63.69%,
+    var(--td-primary-color-7) 68.84%,
+    var(--td-primary-color-7) 110%
+  ); */
+  /* background-clip: text; */
+  /* -webkit-background-clip: text; */
+  /* color: transparent; */
 }
+
 page {
   --td-navbar-bg-color: var(--td-bg-color-page);
 }

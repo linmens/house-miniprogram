@@ -12,6 +12,6 @@
     </view>
   </view>
 </view>
-<!-- <view class="timeline">
-
-</view> -->
+<view class="t-tab-bar--placeholder__wrap">
+  <view class="t-tab-bar-safe"></view>
+</view>

@@ -28,7 +28,7 @@
   </view>
   <l-cell-group theme="card" wx:if="{{result.totalAll}}">
     <!-- 商贷等额本息 -->
-    <l-cell wx:if="{{shangdaiDebx&&calcForm.loanBackIndex===0&&shangdaiDebx.monthlyPayment}}" suffix="{{calcForm.unit}}">
+    <!-- <l-cell wx:if="{{shangdaiDebx&&calcForm.loanBackIndex===0&&shangdaiDebx.monthlyPayment}}" suffix="{{calcForm.unit}}">
       <view slot="note">
         <text class="total-price">{{shangdaiDebx.monthlyPayment}}</text>
       </view>
@@ -40,9 +40,9 @@
         <text style="margin-right: 20rpx;">月均还款</text>
         <t-tag theme="primary" variant="dark">等额本息</t-tag>
       </view>
-    </l-cell>
+    </l-cell> -->
     <!-- 公积金贷等额本息 -->
-    <l-cell wx:if="{{gongjijinDebx&&calcForm.loanGjjBackIndex===0&&gongjijinDebx.monthlyPayment}}" suffix="{{calcForm.unit}}">
+    <!-- <l-cell wx:if="{{gongjijinDebx&&calcForm.loanBackIndex===0&&gongjijinDebx.monthlyPayment}}" suffix="{{calcForm.unit}}">
       <view slot="title">
         <text style="margin-right: 20rpx;">月均还款</text>
         <t-tag theme="primary" variant="dark">等额本息</t-tag>
@@ -53,9 +53,9 @@
       <view slot="description" class="m-t-20">
         <t-tag style="margin-right: 20rpx;">公积金贷{{calcForm.loanGjjPrice}}{{calcForm.unit}}</t-tag>
       </view>
-    </l-cell>
+    </l-cell> -->
     <!-- 商贷等额本金 -->
-    <l-cell wx:if="{{shangdaiDebj&&calcForm.loanBackIndex===1&&shangdaiDebj.firstMonthPayment}}" suffix="{{calcForm.unit}}">
+    <!-- <l-cell wx:if="{{shangdaiDebj&&calcForm.loanBackIndex===1&&shangdaiDebj.firstMonthPayment}}" suffix="{{calcForm.unit}}">
       <view slot="title">
         <text style="margin-right: 20rpx;">首月还款</text>
         <t-tag theme="success" variant="dark">等额本金</t-tag>
@@ -65,8 +65,8 @@
         <t-tag style="margin-right: 20rpx;">商贷{{calcForm.loanPrice}}{{calcForm.unit}}</t-tag>
         <t-tag class="m-l-20">逐月递减{{shangdaiDebj.monthlyDecrease}}{{calcForm.unit}}</t-tag>
       </view>
-    </l-cell>
-    <l-cell wx:if="{{gongjijinDebj&&calcForm.loanGjjBackIndex===1&&gongjijinDebj.firstMonthPayment}}" suffix="{{calcForm.unit}}">
+    </l-cell> -->
+    <!-- <l-cell wx:if="{{gongjijinDebj&&calcForm.loanBackIndex===1&&gongjijinDebj.firstMonthPayment}}" suffix="{{calcForm.unit}}">
       <view slot="title">
         <text style="margin-right: 20rpx;">首月还款</text>
         <t-tag theme="success" variant="dark">等额本金</t-tag>
@@ -79,7 +79,7 @@
         <t-tag style="margin-right: 20rpx;">公积金{{calcForm.loanGjjPrice}}{{calcForm.unit}}</t-tag>
         <t-tag>逐月递减{{gongjijinDebj.monthlyDecrease}}{{calcForm.unit}}</t-tag>
       </view>
-    </l-cell>
+    </l-cell> -->
     <!-- <l-cell title="末月还款（月供）" description="等额本金" wx:if="{{shangdai&&shangdai[calcForm.loanBackIndex]&&calcForm.loanBackIndex===1&&shangdai[calcForm.loanBackIndex].lastMonthPayment}}" suffix="{{calcForm.unit}}">
         <text slot="note" class="total-price">{{shangdai[calcForm.loanBackIndex].lastMonthPayment}}</text>
       </l-cell> -->
@@ -123,7 +123,7 @@
   <!-- 商业贷款 -->
   <view class="l-card__group" wx:if="{{calcForm.exchangeType===0&&shangdai.length}}">
     <l-card headerTitle="商业贷款" info="{{shangdaiInfo}}" unit="{{calcForm.unit}}">
-      <t-notice-bar visible="{{true}}" content="月均收入需覆盖{{shangdai[calcForm.loanBackIndex].monthlyPayment*2}}{{calcForm.unit}}"></t-notice-bar>
+      <!-- <t-notice-bar visible="{{true}}" content="月均收入需覆盖{{shangdai[calcForm.loanBackIndex].monthlyPayment*2}}{{calcForm.unit}}"></t-notice-bar> -->
       <view class="loan__group m-t-20">
         <view class="loan__group__item {{item.icon?'loan__group__item__active':''}}" wx:for="{{shangdai}}" wx:key="index">
           <view class="flex f-col-center f-row-between m-b-20">

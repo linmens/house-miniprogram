@@ -6,6 +6,38 @@ Page({
    */
   data: {
     records: [{
+      version: '0.7.0',
+      date: '2024-07-25',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '新增功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '系统',
+        theme: 'success',
+        data: [{
+          text: '首页新增模块快捷计算入口',
+          type: 'text'
+        }]
+      }]
+    }, {
+      classname: 'h3',
+      title: '其他',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '二手房、新房交易费用计算整体计算流程调整为步骤计算模式',
+          type: 'text'
+        }]
+      }]
+    }, {
       version: '0.6.0',
       date: '2024-07-22',
       classname: 'h2',
@@ -28,6 +60,13 @@ Page({
         theme: 'success',
         data: [{
           text: '添加联系开发者功能',
+          type: 'text'
+        }]
+      }, {
+        text: '系统',
+        theme: 'success',
+        data: [{
+          text: '添加隐私协议弹框功能',
           type: 'text'
         }]
       }]

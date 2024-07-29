@@ -106,7 +106,7 @@
      // 计算商贷结果
      startGongjijin() {
        const {
-         loanGjjBackIndex,
+         loanBackIndex,
          loanGjjYear,
          loanGjjPrice,
          loanGjjRate,
@@ -125,11 +125,11 @@
        console.log(debxResult, debjResult, 'result')
        let gongjijin = [{
          title: '等额本息',
-         icon: loanGjjBackIndex === 0 ? 'check-circle' : '',
+         icon: loanBackIndex === 0 ? 'check-circle' : '',
          ...debxResult
        }, {
          title: '等额本金',
-         icon: loanGjjBackIndex === 1 ? 'check-circle' : '',
+         icon: loanBackIndex === 1 ? 'check-circle' : '',
          ...debjResult
        }]
        let sex = sexTypes[loanGjjSexIndex].label
@@ -189,7 +189,7 @@
 
            let loanGjjMaxAge = loanGjjSexIndex === 0 ? 60 : 55
            this.calcSexResult(loanGjjAge, loanGjjMaxAge, sexResult, noticeInfo)
-           this.calcJiaocunResult(gongjijin[loanGjjBackIndex].monthlyPayment, loanGjjBasicPrice * 0.5, noticeInfo, unit, jiaocunResult)
+           this.calcJiaocunResult(gongjijin[loanBackIndex].monthlyPayment, loanGjjBasicPrice * 0.5, noticeInfo, unit, jiaocunResult)
            this.calcYearsResult(loanGjjAge, loanGjjYear, yearResult, noticeInfo)
            gongjijinInfo.details = gongjijinInfo.details.concat([{
                label: '性别',
@@ -246,8 +246,8 @@
          this.calcSexResult(loanGjjFemaleAge, 55, femaleAge, noticeInfo)
          this.calcSexResult(loanGjjMaleAge, 60, maleAge, noticeInfo)
          if (loanGjjMaleBasicPrice) {
-           this.calcJiaocunResult(gongjijin[loanGjjBackIndex].monthlyPayment, NP.plus(loanGjjMaleBasicPrice, loanGjjFemaleBasicPrice) * 0.5, noticeInfo, unit, maleJiaocunResult)
-           this.calcJiaocunResult(gongjijin[loanGjjBackIndex].monthlyPayment, NP.plus(loanGjjMaleBasicPrice, loanGjjFemaleBasicPrice) * 0.5, noticeInfo, unit, femaleJiaocunResult)
+           this.calcJiaocunResult(gongjijin[loanBackIndex].monthlyPayment, NP.plus(loanGjjMaleBasicPrice, loanGjjFemaleBasicPrice) * 0.5, noticeInfo, unit, maleJiaocunResult)
+           this.calcJiaocunResult(gongjijin[loanBackIndex].monthlyPayment, NP.plus(loanGjjMaleBasicPrice, loanGjjFemaleBasicPrice) * 0.5, noticeInfo, unit, femaleJiaocunResult)
          }
 
 

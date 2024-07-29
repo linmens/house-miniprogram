@@ -1,0 +1,7 @@
+.calc-bottom-btn {
+  display: flex;
+  margin: 0 32rpx;
+  position: sticky;
+  bottom: calc(env(safe-area-inset-bottom) + 32rpx);
+  z-index: 99;
+}

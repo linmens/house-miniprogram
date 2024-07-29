@@ -3,7 +3,19 @@
 page {
   background-color: var(--td-bg-color-page);
 }
+@media (prefers-color-scheme: dark) {
+  page,
+  .page {
+    --td-text-card-color: rgb(194, 215, 239);
+  }
+}
 
+.bg-main {
+  background-color: var(
+    --td-navbar-bg-color,
+    var(--td-bg-color-container, var(--td-font-white-1, #ffffff))
+  );
+}
 .m-l-20 {
   margin-left: 20rpx;
 }
@@ -13,6 +25,11 @@ page {
 .m-b-20 {
   margin-bottom: 20rpx;
 }
+.my-20 {
+  margin-top: 20rpx;
+  margin-bottom: 20rpx;
+}
+
 .f-24 {
   font-size: 24rpx;
 }
@@ -28,7 +45,10 @@ page {
 .p-b-20 {
   padding-bottom: 20rpx;
 }
-
+.py-20 {
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+}
 .flex {
   display: flex;
 }

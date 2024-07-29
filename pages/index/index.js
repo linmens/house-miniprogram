@@ -1,43 +1,122 @@
-import {
-  tabs,
-  loanTypes,
-  loanBackTypes,
-  loanRateTypes,
-  loanPaidTypes,
-  serviceFeeTypes,
-  shuifeiTypes,
-  NoticeData
-} from '../../utils/constants';
+// import {
+//   tabs,
+//   loanTypes,
+//   loanBackTypes,
+//   loanRateTypes,
+//   loanPaidTypes,
+//   serviceFeeTypes,
+//   shuifeiTypes,
+//   NoticeData
+// } from '../../utils/constants';
 import {
   getOldYearTimestamp,
   calculateLoan,
   addDataToCache
 } from '../../utils/util';
 // import SellerMethods from './seller'
-import {
-  basicBehavior,
-  dealBehavior,
-  serviceBehavior,
-  gongjijinBehavior,
-  shangdaiBehavior,
-  sellerBehavior,
-  buyerBehavior
-} from '../../behavior/index'
+// import {
+//   basicBehavior,
+//   dealBehavior,
+//   serviceBehavior,
+//   gongjijinBehavior,
+//   shangdaiBehavior,
+//   sellerBehavior,
+//   buyerBehavior
+// } from '../../behavior/index'
 
 import NP from 'number-precision'
 import Toast from 'tdesign-miniprogram/toast/index';
 import Message from 'tdesign-miniprogram/message/index';
-import {
-  createClient
-}
-from 'supabase-wechat-stable-v2'
+// import {
+//   createClient
+// }
+// from 'supabase-wechat-stable-v2'
 Page({
-  behaviors: [basicBehavior, dealBehavior, serviceBehavior, gongjijinBehavior, shangdaiBehavior, sellerBehavior, buyerBehavior],
+  // behaviors: [basicBehavior, dealBehavior, serviceBehavior, gongjijinBehavior, shangdaiBehavior, sellerBehavior, buyerBehavior],
   options: {
     styleIsolation: 'apply-shared',
   },
 
   data: {
+    currentYear: new Date().getFullYear(),
+    cateMenu: [{
+      text: '二手房计算',
+      url: "/pages/calc/calc",
+      params: {
+        buyIndex: 0,
+        title: '二手房交易费用计算'
+      },
+      icon: {
+        color: 'var(--td-font-gray-1)',
+        name: 'houses-2'
+      }
+    }, {
+      text: '新房计算',
+      url: "/pages/calc/calc",
+      params: {
+        buyIndex: 1,
+        title: '新房交易费用计算'
+      },
+      icon: {
+        color: 'var(--td-font-gray-1)',
+        name: 'city-3'
+      }
+    }, {
+      text: '房贷计算',
+      url: "/pages/calc/calc",
+      params: {
+        buyIndex: 1,
+        title: '房贷费用计算'
+      },
+      icon: {
+        color: 'var(--td-font-gray-1)',
+        name: 'city-3'
+      }
+    }, {
+      text: '赠与',
+      url: "/pages/calc/calc",
+      params: {
+        buyIndex: 1,
+        title: '赠与费用计算'
+      },
+      icon: {
+        color: 'var(--td-font-gray-1)',
+        name: 'city-3'
+      }
+    }, {
+      text: '继承',
+      url: "/pages/calc/calc",
+      params: {
+        buyIndex: 1,
+        title: '继承费用计算'
+      },
+      icon: {
+        color: 'var(--td-font-gray-1)',
+        name: 'city-3'
+      }
+    }, {
+      text: '婚内更名',
+      url: "/pages/calc/calc",
+      params: {
+        buyIndex: 1,
+        title: '婚内更名费用计算'
+      },
+      icon: {
+        color: 'var(--td-font-gray-1)',
+        name: 'city-3'
+      }
+    }, {
+      text: '离婚分割',
+      url: "/pages/calc/calc",
+      params: {
+        buyIndex: 1,
+        title: '离婚分割费用计算'
+      },
+      icon: {
+        color: 'var(--td-font-gray-1)',
+        name: 'city-3'
+      }
+    }],
     userList: ['居间机构', '购房者', '业主', '新房置业顾问'],
     userIndex: '',
     userIndexRember: false,
@@ -51,10 +130,10 @@ Page({
     },
     priceError: false,
     showCustomAreaInput: false,
-    currentYear: new Date().getFullYear(),
-    defaultDate: new Date().getTime(),
-    mineDate: getOldYearTimestamp(50),
-    maxDate: getOldYearTimestamp(0),
+    // currentYear: new Date().getFullYear(),
+    // defaultDate: new Date().getTime(),
+    // mineDate: getOldYearTimestamp(50),
+    // maxDate: getOldYearTimestamp(0),
     customAreaInputVal: '',
     calcForm: {
       // 组合贷款合计金额
@@ -65,13 +144,13 @@ Page({
       numPoint: 4,
 
     },
-    tabs,
-    loanTypes,
-    loanBackTypes,
-    loanRateTypes,
-    loanPaidTypes,
-    serviceFeeTypes,
-    shuifeiTypes
+    // tabs,
+    // loanTypes,
+    // loanBackTypes,
+    // loanRateTypes,
+    // loanPaidTypes,
+    // serviceFeeTypes,
+    // shuifeiTypes
   },
   onShow() {
     const page = getCurrentPages().pop();
@@ -80,10 +159,10 @@ Page({
     })
   },
   onLoad() {
-    const supabaseUrl = 'https://cq29rba5g6h0s3o5amt0.baseapi.memfiredb.com'
-    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiZXhwIjozMjk2NzY3MTQ5LCJpYXQiOjE3MTk5NjcxNDksImlzcyI6InN1cGFiYXNlIn0.RWr3S2joN1HS8kCHWi38pZ6p9kcFAb9yfAh6c7ollUM"
-    const supabase = createClient(supabaseUrl, supabaseKey)
-    console.log(supabase, 'supabase')
+    // const supabaseUrl = 'https://cq29rba5g6h0s3o5amt0.baseapi.memfiredb.com'
+    // const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiZXhwIjozMjk2NzY3MTQ5LCJpYXQiOjE3MTk5NjcxNDksImlzcyI6InN1cGFiYXNlIn0.RWr3S2joN1HS8kCHWi38pZ6p9kcFAb9yfAh6c7ollUM"
+    // const supabase = createClient(supabaseUrl, supabaseKey)
+    // console.log(supabase, 'supabase')
   },
 
   handleClickStart() {

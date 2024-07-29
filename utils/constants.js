@@ -65,16 +65,16 @@ export const areaTypes = [{
 ];
 
 export const tabs = [{
-  value: 1,
+  value: 0,
   label: '商业贷款'
 }, {
-  value: 2,
+  value: 1,
   label: '公积金'
 }, {
-  value: 3,
+  value: 2,
   label: '组合贷'
 }, {
-  value: 4,
+  value: 3,
   label: '全款'
 }]
 

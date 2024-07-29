@@ -7,15 +7,8 @@
     "t-footer": "tdesign-miniprogram/footer/footer",
     "t-slider": "tdesign-miniprogram/slider/slider",
     "t-popup": "tdesign-miniprogram/popup/popup",
-    "l-pages-deal": "./components/deal/deal"
-  },
-  "componentGenerics": {
-
-
-    "l-pages-service": {
-      "default": "./components/service/service"
-    }
-
-
+    "t-grid": "tdesign-miniprogram/grid/grid",
+    "t-grid-item": "tdesign-miniprogram/grid-item/grid-item"
   }
+
 }

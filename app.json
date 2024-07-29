@@ -8,7 +8,7 @@
     "pages/user/user",
     "pages/update-record/update-record",
     "pages/about/about",
-    "pages/article/article"
+    "pages/calc/calc"
   ],
   "usingComponents": {
     "t-sticky": "tdesign-miniprogram/sticky/sticky",
@@ -63,5 +63,6 @@
   "themeLocation": "theme.json",
   "componentFramework": "glass-easel",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "__usePrivacyCheck__": true
 }

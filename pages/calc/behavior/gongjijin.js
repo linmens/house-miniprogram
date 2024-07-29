@@ -1,15 +1,17 @@
   import NP from 'number-precision'
   import {
     loanGjjHomeTypes
-  } from '../utils/constants'
+  }
+  from '../../../utils/constants'
   import {
     calculateLoan,
     downloadAndOpenFile,
     getDownPaymentRatio
-  } from '../utils/util'
+  } from '../../../utils/util'
   import {
     findByKeyname
-  } from '../constants/taxList'
+  }
+  from '../../../constants/taxList'
   export const gongjijinBehavior = Behavior({
     lifetimes: {
       ready() {
@@ -106,7 +108,7 @@
       },
       /**
        * 更新公积金贷款金额
-       * @param type 0 网签金额*贷款比例 1 首付改变 2 组合贷款金额 - 商贷金额
+       * @param type 0 网签金额*贷款比例 1  2 组合贷款金额 - 商贷金额
        */
       setLoanGjjPrice(type) {
         const {
@@ -120,13 +122,15 @@
           loanGroupPrice,
           loanPrice,
           paymentPrice,
-          loanGjjMaxPrice
+          loanGjjMaxPrice,
+          loanGjjPrice,
+          loanLowPrice
         } = this.data.calcForm
+        let _loanGjjPrice = 0
         // const loanGjjMaxPrice = loanGjjHomeTypes[loanGjjSaveIndex].max * unitCount
         // console.log('设置公积金贷款最大金额:', loanGjjMaxPrice)
-        let _loanGjjPrice = 0
-        switch (bankType) {
-          case 1:
+        switch (type) {
+          case 0:
             _loanGjjPrice = calculateLoan(wangqianPrice, paymentRate, unit)
             console.log('开始计算公积金贷款金额(网签*贷款比例):', _loanGjjPrice)
             console.log('开始计算公积金贷款金额(网签金额):', wangqianPrice)
@@ -137,8 +141,13 @@
             //   console.log('开始计算公积金贷款金额(首付改变):', wangqianPrice, paymentPrice, _loanGjjPrice)
             //   break;
           case 2:
+
             _loanGjjPrice = loanGroupPrice
-            console.log('开始计算公积金贷款金额(组合贷款金额):', _loanGjjPrice, loanGroupPrice, loanPrice)
+            // _loanGjjPrice = NP.minus(loanGroupPrice, loanPrice)
+            console.log('开始计算公积金贷款金额(组合贷款金额):', _loanGjjPrice, '组合贷合计金额' + loanGroupPrice, '商贷金额' + loanPrice)
+            break;
+          case 3:
+            _loanGjjPrice = NP.minus(loanGroupPrice, loanPrice)
             break;
           default:
             break;
@@ -212,7 +221,6 @@
           'calcForm.loanGjjIsFirst': value
         })
         this.setPaymentRate()
-      
         this.setLoanGjjRate()
         this.startCalc()
       },
@@ -245,8 +253,8 @@
         this.setData({
           'calcForm.loanGjjSaveIndex': index
         })
-      
-        this.startCalc()
+
+        this.switchBankType()
       },
       onLoanGjjBasicPriceChange(e) {
         const {

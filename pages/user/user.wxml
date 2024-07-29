@@ -1,11 +1,22 @@
-<t-navbar t-class-placeholder="t-navbar-placeholder" t-class-content="t-navbar-content" t-class-title="nav-title" fixed="{{false}}">
+<!-- <t-navbar t-class-placeholder="t-navbar-placeholder" t-class-content="t-navbar-content" t-class-title="nav-title" fixed="{{false}}">
 
-</t-navbar>
-<view class="user-header">
+</t-navbar> -->
+<view class="header-wrapper">
+  <!-- <image class="header-background" src="https://s3.bmp.ovh/imgs/2024/07/25/0885416237873a30.png" mode="aspectFill"></image> -->
+  <view class="header-background">
+  </view>
+  <view class="user-header">
+    <!-- <t-icon name="calculator-1"></t-icon> -->
+    <text>房产计算助手</text>
+    <text>{{miniProgram.version}}</text>
+  </view>
+</view>
+<!-- <view class="user-header">
+<view class="header-background"></view>
   <t-icon name="calculator-1"></t-icon>
   <text>房产计算助手</text>
-</view>
-<text>{{miniProgram.version}}</text>
+</view> -->
+
 <t-cell-group>
   <t-cell url="/pages/about/about" left-icon="info-circle" title="关于" arrow hover></t-cell>
   <t-cell url="/pages/update-record/update-record" left-icon="tree-list" title="更新日志" arrow hover></t-cell>

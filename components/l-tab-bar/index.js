@@ -20,8 +20,8 @@ Component({
     value: 'label_1',
     list: [{
         value: 'pages/index/index',
-        icon: 'calculator-1',
-        ariaLabel: '房产计算'
+        icon: 'home',
+        ariaLabel: '首页'
       },
       {
         value: 'label_2',

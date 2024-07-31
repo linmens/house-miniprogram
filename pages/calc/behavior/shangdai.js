@@ -3,6 +3,7 @@
     calculateLoan
   }
   from '../../../utils/util'
+  import Message from 'tdesign-miniprogram/message/index';
   export const shangdaiBehavior = Behavior({
     data: {
       calcForm: {
@@ -10,6 +11,8 @@
         loanIndex: 5,
         // 贷款年限（年）
         loanYear: 30,
+        // 最高贷款年限
+        loanMaxYear: 30,
         // 还款方式
         loanBackIndex: 0,
         // 贷款利率
@@ -83,11 +86,17 @@
         if (loanYear > 30) {
           loanYear = 30
         }
+        if (loanYear <= 0) {
+          loanYear = 0;
+        }
+        if (loanYear >= 0) {
+          this.setData({
+            'calcForm.loanYear': loanYear,
+            'calcForm.loanIndex': 6,
+            'calcForm.loanMaxYear': loanYear
+          })
+        }
 
-        this.setData({
-          'calcForm.loanYear': loanYear,
-          'calcForm.loanIndex': 6
-        })
       },
       onCustomLoanYearInputValChange(e) {
         const {
@@ -130,16 +139,35 @@
        * @param {*} e 
        */
       onLoanTypesChange(e) {
-        console.log(e, 'e')
         const {
           value,
           index
         } = e.detail
+        const {
+          loanMaxYear
+        } = this.data.calcForm
+        let loanTypes = this.data.loanTypes
+        if (value > loanMaxYear) {
+          Message.warning({
+            context: this,
+            offset: [90, 32],
+            duration: 3000,
+            content: '当前最大贷款年限为' + loanMaxYear + '年',
+          });
+          loanTypes[index].disabled = true
+          this.setData({
+            loanTypes: loanTypes
+          })
+          return
+        }
         this.setData({
-          'calcForm.loanYear': value,
           'calcForm.loanIndex': index
         })
-
+        if (index !== 6) {
+          this.setData({
+            'calcForm.loanYear': value,
+          })
+        }
       },
       /**
        * 贷款利率改变

@@ -1,4 +1,3 @@
-// component/privacy/privacy.js
 Component({
   /**
    * 组件的初始数据

@@ -9,7 +9,8 @@ import {
   chanquanTypes,
   loanBackTypes,
   newHouseTypes,
-  sexTypes
+  sexTypes,
+  NoticeData
 } from '../../utils/constants';
 import Message from 'tdesign-miniprogram/message/index';
 import {
@@ -24,7 +25,9 @@ import {
 import {
   getOldYearTimestamp,
   calculateLoan,
-  addDataToCache
+  addDataToCache,
+  createSelectorQuery,
+  createSelectViewport
 } from '../../utils/util';
 import NP from 'number-precision'
 Page({
@@ -56,7 +59,16 @@ Page({
     currentYear: '',
     mineDate: getOldYearTimestamp(50),
     maxDate: getOldYearTimestamp(0),
-    options: {}
+    options: {},
+    // 显示隐藏计算说明
+    showNotice: false,
+    noticeContent: '',
+    confirmBtn: {
+      content: '知道了',
+      variant: 'base'
+    },
+    guideCurrent: -1,
+    guideSteps: [],
   },
 
   /**
@@ -72,6 +84,173 @@ Page({
       options: options,
       'calcForm.buyIndex': Number(buyIndex)
     })
+    this.initGuide()
+
+  },
+  initGuide() {
+    const isGuideSkip = wx.getStorageSync('guide-skip')
+    if (!isGuideSkip) {
+      const {
+        buyIndex
+      } = this.data.calcForm
+      const {
+        stepIndex
+      } = this.data
+      if (buyIndex === 0) {
+        this.setData({
+          guideCurrent: 0,
+          guideSteps: [{
+              element: () =>
+                createSelectorQuery(`#guide--step-0`, false),
+
+              title: '输入建筑面积',
+              body: '此次交易的房屋产证面积。',
+              placement: 'top'
+            },
+            {
+              element: () =>
+                createSelectorQuery(`#guide--step-1`, false),
+              title: '选择买方家庭属性',
+              body: '此次购买第几套房产。',
+              placement: 'top'
+            },
+            {
+              element: () =>
+                createSelectorQuery(`#guide--step-2`, false),
+              title: '选择卖方属性',
+              body: '此次卖方的房屋是否家庭唯一住房、产证持有年限、是否有契税购房发票等信息。',
+              placement: 'top'
+            },
+            {
+              element: () =>
+                createSelectorQuery(`#guide--step-3`, false),
+              title: '录入交易信息',
+              body: '录入交易总价或网签金额，如有户口预留金额请修改金额，默认为10000元。如有银行出具的评估价格，请在评估价格处录入，此次贷款将按网签价与评估价孰低原则计价，默认以网签价计算。',
+              placement: 'bottom'
+            },
+            {
+              element: () =>
+                createSelectorQuery(`#guide--step-4`, false),
+              title: '选择支付方式',
+              body: '选择此次购买房产如何支付房款，目前支持商业贷款、公积金、组合贷、全款，如贷款请完善对应贷款信息，系统默认会以现行政策自动计算出此次交易的贷款金额、首付金额、贷款年限、贷款利率等，如需调整请修改即可。',
+              placement: 'bottom'
+            },
+            {
+              element: () =>
+                createSelectorQuery(`#guide--step-5`, false),
+              title: '选择成交方式',
+              body: '选择此次购买房产通过何种方式成交，默认为三方成交，目前支持选择三方成交（买卖双方、居间方）、自行成交（买卖双方），如选择三方成交，请完善居间机构信息，居间服务费比例（默认3%）、费用承担方（默认买卖双方各一半,支持选择全部由买方或者卖方承担,或者自定义各方承担的具体金额）。',
+              placement: 'top'
+            },
+            {
+              element: () =>
+                createSelectorQuery(`#guide--step-5`, false),
+              title: '开始计算',
+              body: '已经知道怎么操作了，开始尝试计算一次吧！',
+              placement: 'top'
+            }
+          ],
+        });
+      }
+      if (buyIndex === 1) {
+        this.setData({
+          guideCurrent: 0,
+          guideSteps: [{
+            element: () =>
+              createSelectorQuery(`#guide--step-0`, false),
+
+            title: '输入建筑面积',
+            body: '此次交易的房屋产证面积。',
+            placement: 'top'
+          }, {
+            element: () =>
+              createSelectorQuery(`#guide--step-1`, false),
+            title: '选择买方家庭属性',
+            body: '此次购买第几套房产。',
+            placement: 'top'
+          }, {
+            element: () =>
+              createSelectorQuery(`#guide--step-3`, false),
+            title: '录入交易信息',
+            body: '录入交易总价。',
+            placement: 'bottom'
+          }, {
+            element: () =>
+              createSelectorQuery(`#guide--step-4`, false),
+            title: '选择支付方式',
+            body: '选择此次购买房产如何支付房款，目前支持商业贷款、公积金、组合贷、全款，如贷款请完善对应贷款信息，系统默认会以现行政策自动计算出此次交易的贷款金额、首付金额、贷款年限、贷款利率等，如需调整请修改即可。',
+            placement: 'bottom'
+          }, {
+            element: () =>
+              createSelectorQuery(`#guide--step-4`, false),
+            title: '开始计算',
+            body: '已经知道怎么操作了，开始尝试计算一次吧！',
+            placement: 'bottom'
+          }]
+        })
+      }
+    }
+  },
+  async guideChange(e) {
+    const {
+      current
+    } = e.detail
+    // const rect = await createSelectViewport(`#guide--step-${current}`, false)
+    // console.log(rect, '`#guide--step-${current}`')
+  },
+  guideBack() {
+    this.setData({
+      guideCurrent: 0,
+      stepIndex: 0
+    });
+  },
+  guideSkip() {
+    wx.setStorageSync('guide-skip', true)
+    this.guideFinish()
+  },
+  async guideNextClick(e) {
+
+    const {
+      current,
+      next,
+      total
+    } = e.detail
+    const {
+      buyIndex
+    } = this.data.calcForm
+    console.log(current,
+      next,
+      total, 's')
+    if (buyIndex === 0) {
+      if (current === 2) {
+        this.setData({
+          stepIndex: 1
+        })
+      }
+      if (current === 3) {
+        this.setData({
+          stepIndex: 2
+        })
+      }
+    }
+    if (buyIndex === 1) {
+      if (current === 1) {
+        this.setData({
+          stepIndex: 1
+        })
+      }
+      if (current === 2) {
+        this.setData({
+          stepIndex: 2
+        })
+      }
+    }
+  },
+  guideFinish() {
+    this.setData({
+      guideCurrent: -1,
+      stepIndex: 0
+    });
   },
   /**
    * 设置组合贷贷款总金额
@@ -130,12 +309,13 @@ Page({
     } = e.detail
     const {
       houseType,
-      buyerIndex
+      buyerIndex,
+      loanYear
     } = this.data.calcForm
-
+    let tabs = this.data.tabs
     if (value === 1 && houseType === 1) {
 
-      Message.warning({
+      Message.info({
         context: this,
         offset: [0, 32],
         duration: 3000,
@@ -143,9 +323,24 @@ Page({
       });
       return
     }
+    if (loanYear <= 0) {
+      Message.info({
+        context: this,
+        offset: [90, 32],
+        duration: 3000,
+        content: '该房屋房龄过旧,仅支持全款购买',
+      });
+      tabs[0].disabled = true
+      tabs[1].disabled = true
+      tabs[2].disabled = true
+      this.setData({
+        tabs: tabs
+      })
+      return
+    }
     if (value === 2 && houseType === 1) {
 
-      Message.warning({
+      Message.info({
         context: this,
         offset: [90, 32],
         duration: 3000,
@@ -155,7 +350,7 @@ Page({
     }
     if (value !== 3 && buyerIndex === 2) {
 
-      Message.warning({
+      Message.info({
         context: this,
         offset: [90, 32],
         duration: 3000,
@@ -185,11 +380,9 @@ Page({
     const {
       stepIndex
     } = this.data
-    if (stepIndex >= 0) {
-      this.setData({
-        stepIndex: stepIndex - 1
-      })
-    }
+    this.setData({
+      stepIndex: stepIndex - 1
+    })
   },
   async handleNext() {
     const {
@@ -215,12 +408,13 @@ Page({
       houseType,
       exchangeType,
       oldPriceIndex,
-      oldPrice
+      oldPrice,
+      loanYear
     } = this.data.calcForm
     let tabs = this.data.tabs
     return new Promise((resolve, reject) => {
       if (!area) {
-        Message.warning({
+        Message.info({
           context: this,
           offset: [90, 32],
           duration: 3000,
@@ -231,9 +425,10 @@ Page({
           msg: '请输入建筑面积'
         })
       }
+
       if (oldPriceIndex === 0 && exchangeType === 0) {
         if (!oldPrice) {
-          Message.warning({
+          Message.info({
             context: this,
             offset: [90, 32],
             duration: 3000,
@@ -271,11 +466,13 @@ Page({
     const {
       buyIndex,
       totalPrice,
-      wangqianPrice
+      wangqianPrice,
+      loanYear
     } = this.data.calcForm
+    let tabs = this.data.tabs
     return new Promise(async (resolve, reject) => {
       if (!totalPrice || totalPrice <= 0) {
-        Message.warning({
+        Message.info({
           context: this,
           offset: [90, 32],
           duration: 3000,
@@ -287,8 +484,23 @@ Page({
         })
         return
       }
+      if (loanYear <= 0) {
+        Message.info({
+          context: this,
+          offset: [90, 32],
+          duration: 3000,
+          content: '该房屋房龄过旧,仅支持全款购买',
+        });
+        tabs[0].disabled = true
+        tabs[1].disabled = true
+        tabs[2].disabled = true
+        this.setData({
+          'calcForm.bankType': 3,
+          tabs: tabs
+        })
+      }
       if (wangqianPrice <= 0 || !wangqianPrice) {
-        Message.warning({
+        Message.info({
           context: this,
           offset: [90, 32],
           duration: 3000,
@@ -344,9 +556,9 @@ Page({
         this.setLoanGjjMaxPrice()
         await this.setLoanGjjPrice(0)
         // 设置贷款年限
-        if (loanGjjIndex === 6) {
-          await this.setLoanGjjYear();
-        }
+        // if (loanGjjIndex === 6) {
+        //   await this.setLoanGjjYear();
+        // }
         this.setPaymentPrice()
         break;
       case 2:
@@ -362,9 +574,9 @@ Page({
         if (loanIndex === 6) {
           await this.setLoanYear();
         }
-        if (loanGjjIndex === 6) {
-          await this.setLoanGjjYear();
-        }
+        // if (loanGjjIndex === 6) {
+        //   await this.setLoanGjjYear();
+        // }
         this.setPaymentPrice()
         break;
       default:
@@ -377,6 +589,26 @@ Page({
     //   '房屋新旧': buyIndex
     // })
 
+  },
+  showDialog(e) {
+    const {
+      key,
+      contentKey
+    } = e.currentTarget.dataset;
+    console.log(contentKey, 'contentKey')
+    this.setData({
+      [key]: true,
+      dialogKey: key,
+      noticeContent: NoticeData[contentKey]
+    });
+  },
+  closeDialog() {
+    const {
+      dialogKey
+    } = this.data;
+    this.setData({
+      [dialogKey]: false
+    });
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

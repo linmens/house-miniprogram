@@ -1,10 +1,11 @@
 .l-card {
-  /* margin: 32rpx; */
-  background-color: var(
-    --td-cell-bg-color,
-    var(--td-bg-color-container, var(--td-font-white-1, #ffffff))
-  );
+  background-color: var(--color-bg-b1-white);
   padding: var(--td-input-vertical-padding, 32rpx);
+  border: 0.5px solid var(--color-line-l3);
+  overflow: hidden;
+  box-shadow: 0 0 0.5px 0 var(--color-secondary-default);
+  border-radius: 20rpx;
+  margin: var(--margin-32);
 }
 
 .l-card__header {

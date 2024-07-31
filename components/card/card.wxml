@@ -7,8 +7,8 @@
     <view class="flex-1" wx:if="{{info.totalList}}">
       <view wx:for="{{info.totalList}}" wx:key="index" class="flex f-col-center">
         <view class="flex-1 flex " style="justify-content: flex-end;align-items: baseline;">
-          <t-tag size="small" theme="primary" variant="light" style="margin-right: 20rpx;" wx:if="{{item.isCurrent}}">当前推荐算法</t-tag>
-          <t-tag size="small" theme="{{item.tagOptions.type}}">{{item.tagOptions.text}}</t-tag>
+          <t-tag size="small" variant="dark" theme="primary" variant="dark" style="margin-right: 20rpx;" wx:if="{{item.isCurrent}}">当前推荐算法</t-tag>
+          <t-tag size="small" variant="dark" theme="{{item.tagOptions.type}}">{{item.tagOptions.text}}</t-tag>
         </view>
         <view class="flex-1 flex " style="justify-content: flex-end;align-items: baseline">
           <text>{{item.value}}</text>
@@ -17,7 +17,7 @@
       </view>
     </view>
   </view>
-  <t-divider />
+  <t-divider wx:if="{{headerTitle}}" />
 
   <view class="l-card__main">
 
@@ -26,7 +26,7 @@
         <view class="l-card__main__label">
           <text>{{item.label}}</text>
         </view>
-        <t-tag wx:if="{{item.tagOptions}}" size="small" variant="light" theme="{{item.tagOptions.type}}">{{item.tagOptions.text}}</t-tag>
+        <t-tag wx:if="{{item.tagOptions}}" size="small" variant="dark" theme="{{item.tagOptions.type}}">{{item.tagOptions.text}}</t-tag>
         <view class="l-card__main__value">
           <!-- <view wx:if="{{item.type===0}}">
             <text>{{item.value}}</text>
@@ -42,7 +42,7 @@
       <view class="l-card__main--desc" wx:if="{{item.desc}}" wx:for-item="descItem" wx:for="{{item.desc}}" wx:key="index">
         <text style="font-size: 20rpx;margin-right: 20rpx;">{{descItem.label}}</text>
         <t-tag size="small" wx:if="{{descItem.isLower}}" theme="success">较低</t-tag>
-        <t-tag size="small" wx:if="{{descItem.tagOptions}}" theme="{{descItem.tagOptions.theme}}" variant="light">{{descItem.tagOptions.text}}</t-tag>
+        <t-tag size="small" wx:if="{{descItem.tagOptions}}" theme="{{descItem.tagOptions.theme}}" variant="dark">{{descItem.tagOptions.text}}</t-tag>
       </view>
       <!-- 依据 -->
       <!-- <view wx:if="{{item.extra}}">

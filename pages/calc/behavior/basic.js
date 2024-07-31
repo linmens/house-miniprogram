@@ -2,7 +2,7 @@ import {
   calculateBuiltYear,
 } from '../../../utils/util';
 export const basicBehavior = Behavior({
-  
+
   data: {
     // 显示隐藏年选择器
     yearVisible: false,
@@ -26,13 +26,13 @@ export const basicBehavior = Behavior({
       // 贷款方式 0 商业 1 公积金 2 组合贷 3 全款
       bankType: 0,
       // 房屋建成年份
-      houseYear: new Date().getFullYear(),
+      houseYear: new Date().getFullYear().toString(),
       // 房屋年龄
       houseAge: '',
       houseDescMsg: '',
       // 成交方式 0 三方成交 1 自行成交
       orderType: 0,
-      // 变更类型
+      // 变更类型 0 买卖 1赠与 2继承 3婚内更名 4离婚分割
       exchangeType: 0,
       // 楼层电梯
       floorIndex: 2,
@@ -216,11 +216,18 @@ export const basicBehavior = Behavior({
         currentYear: value,
         'calcForm.houseYear': value,
         'calcForm.houseAge': houseAge,
-        'calcForm.loanIndex': 6,
-        'calcForm.loanGjjIndex': 6
+
       });
-      this.setLoanYear()
-      this.setLoanGjjYear()
+
+      if (houseAge > 0) {
+        this.setData({
+          'calcForm.loanIndex': 6,
+          'calcForm.loanGjjIndex': 6
+        })
+        this.setLoanYear()
+        // this.setLoanGjjYear()
+      }
+
     },
     handleConfirmCustomArea(e) {
 
@@ -284,16 +291,22 @@ export const basicBehavior = Behavior({
       } = e.detail
       if (value) {
         const result = calculateBuiltYear(value);
-        console.log(result, 'calculateBuiltYear')
+
+        let builtYear = result.builtYear.toString()
+        console.log(result, builtYear, 'onHouseAgeChange')
         this.setData({
-          'calcForm.houseYear': result.builtYear,
+          'calcForm.houseYear': builtYear,
           'calcForm.houseAge': value,
           'calcForm.houseDescMsg': result.message,
-          'calcForm.loanIndex': 6,
-          'calcForm.loanGjjIndex': 6
         })
-        this.setLoanYear()
-        this.setLoanGjjYear()
+        if (value > 0) {
+          this.setData({
+            'calcForm.loanIndex': 6,
+            'calcForm.loanGjjIndex': 6
+          })
+          this.setLoanYear()
+          // this.setLoanGjjYear()
+        }
       }
     },
   },

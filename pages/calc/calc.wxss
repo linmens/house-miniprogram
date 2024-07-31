@@ -1,7 +1,9 @@
-.calc-bottom-btn {
-  display: flex;
-  margin: 0 32rpx;
-  position: sticky;
-  bottom: calc(env(safe-area-inset-bottom) + 32rpx);
-  z-index: 99;
+.long-content .content-container {
+  white-space: pre-line;
+}
+.long-content {
+  height: 576rpx;
+  margin-top: 16rpx;
+  font-size: 32rpx;
+  color: var(--color-text-t1);
 }

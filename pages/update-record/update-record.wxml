@@ -1,4 +1,5 @@
-<t-navbar t-class-placeholder="t-navbar-placeholder" title="更新日志" left-arrow t-class-content="t-navbar-content" t-class-title="nav-title"></t-navbar>
+<t-navbar title="更新日志" left-arrow t-class-title="nav-title">
+</t-navbar>
 <view class="timeline">
   <view wx:for="{{records}}" wx:key="index" class="{{item.classname}}">
     <text wx:if="{{item.version}}">{{item.version}}</text>

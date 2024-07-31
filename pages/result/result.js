@@ -218,15 +218,17 @@ Page({
       buyIndex,
       wangqianPrice,
       pingguPrice,
-      bankType
+      bankType,
+      exchangeType
     } = this.data.calcForm
-    if (bankType === 3) {
-      let calcTabs = this.data.calcTabs
+    let calcTabs = this.data.calcTabs
+    if (bankType === 3 || exchangeType !== 0) {
       calcTabs.splice(2, 1)
-      this.setData({
-        calcTabs: calcTabs
-      })
     }
+
+    this.setData({
+      calcTabs: calcTabs
+    })
     switch (buyIndex) {
       case 0:
         // 二手房
@@ -873,7 +875,7 @@ Page({
     })
     const headerOffset = await this.createSelectorQuery('.h-sticky', false)
     const currentItem = await wx.getSystemInfo()
-    console.log(currentItem, 'currentItem')
+    console.log(currentItem, headerOffset, 'currentItem')
     wx.pageScrollTo({
       offsetTop: -headerOffset.height,
       selector: `#section-${value}`,

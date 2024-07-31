@@ -2,6 +2,10 @@ const props = {
   bordered: {
     type: Boolean,
   },
+  borderedAll: {
+    type: Boolean,
+    value: true,
+  },
   externalClasses: {
     type: Array,
   },

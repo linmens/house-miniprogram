@@ -176,9 +176,16 @@
           if (loanGjjYear > 30) {
             loanGjjYear = 30
           }
-          this.setData({
-            'calcForm.loanGjjYear': loanGjjYear,
-          })
+          if (loanGjjYear <= 0) {
+            loanGjjYear = 0
+          }
+          if (loanGjjYear >= 0) {
+            this.setData({
+              'calcForm.loanGjjYear': loanGjjYear,
+              'calcForm.loanGjjIndex': 6
+            })
+          }
+
 
         }
       },

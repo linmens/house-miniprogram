@@ -1,6 +1,6 @@
 .header-wrapper {
   position: relative;
-  height: 400rpx; /* 根据需要调整高度 */
+  height: 500rpx;
   width: 100%;
   overflow: hidden;
   margin-bottom: 32rpx;
@@ -32,7 +32,7 @@
   /* text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3); */
   height: 100%;
   font-size: 60rpx;
-
+  color: var(--color-text-t0);
   /* background-image: linear-gradient(
     107deg,
     var(--td-primary-color-9) 6.9%,

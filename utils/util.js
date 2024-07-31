@@ -420,3 +420,40 @@
  export function isBeyondRetirementExtension(loanEndAge, retirementAge) {
    return loanEndAge > (retirementAge + RETIREMENT_EXTENSION_YEARS);
  }
+
+ export function fixPrice(property, t) {
+   const {
+     unitIndex
+   } = t.data.calcForm
+   let price = t.data.calcForm[property]
+   if (price) {
+     let fixedPrice = unitIndex === 1 ? price / 10000 : price * 10000;
+     t.setData({
+       [`calcForm.${property}`]: fixedPrice
+     });
+   }
+ }
+ export function createSelectorQuery(selector, all) {
+   return new Promise((resolve) => {
+     wx.createSelectorQuery()[all ? 'selectAll' : 'select'](selector).boundingClientRect((rect) => {
+       resolve(rect)
+     }).exec()
+   })
+ }
+ export function createSelectViewport(selector, all) {
+   return new Promise((resolve) => {
+     const query = wx.createSelectorQuery();
+     query.select(selector).boundingClientRect();
+     query.selectViewport().scrollOffset();
+     query.exec(function (res) {
+       console.log("打印demo的元素的信息", res);
+       resolve(res)
+
+     });
+
+     //  wx.createSelectorQuery()[all ? 'selectAll' : 'select'](selector).scrollOffset()((scrollOffset) => {
+     //    console.log(scrollOffset)
+     //    resolve(scrollOffset)
+     //  }).exec()
+   })
+ }

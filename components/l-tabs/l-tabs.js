@@ -103,10 +103,8 @@ Component({
         scrollLeft,
       });
     },
-    changeIndex(index) {
-      if (this.data.disabled) {
-        return;
-      }
+    async changeIndex(index) {
+
       const currentTab = this.data.list[index];
       // const {
       //   value,
@@ -118,6 +116,8 @@ Component({
         disabled,
         message
       } = currentTab;
+
+
       // 触发 change 事件，传递一个回调函数
       this.triggerEvent('change', {
         index,
@@ -129,7 +129,7 @@ Component({
         value,
         label
       });
-      if (disabled) {
+      if (this.data.list[index].disabled) {
         return;
       }
 

@@ -2,13 +2,13 @@
   "darkmode": true,
   "pages": [
     "pages/index/index",
-    "pages/logs/logs",
     "pages/webview/webview",
     "pages/result/result",
     "pages/user/user",
     "pages/update-record/update-record",
     "pages/about/about",
-    "pages/calc/calc"
+    "pages/calc/calc",
+    "pages/calc-other/calc-other"
   ],
   "usingComponents": {
     "t-sticky": "tdesign-miniprogram/sticky/sticky",
@@ -45,14 +45,15 @@
   },
   "window": {
     "navigationBarTextStyle": "@navTxtStyle",
-    "navigationBarTitleText": "税费计算",
+    "navigationBarTitleText": "房产计算助手",
     "navigationBarBackgroundColor": "@navBgColor",
     "backgroundColor": "@bgColor",
     "backgroundColorTop": "@bgColorTop"
   },
   "tabBar": {
     "custom": true,
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/index/index"
       },
       {

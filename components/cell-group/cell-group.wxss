@@ -34,7 +34,11 @@
 .l-cell-group {
   position: relative;
 }
-
+.l-cell-group-borderall {
+  border: 0.5px solid var(--color-line-l3);
+  box-shadow: 0 0 0.5px 0 var(--color-secondary-default);
+  background: var(--color-bg-b1-white);
+}
 .l-cell-group__title {
   display: flex;
   justify-content: space-between;

@@ -1,6 +1,6 @@
 {
   "name": "miniprogram-5",
-  "version": "1.0.0",
+  "version": "0.8.0",
   "description": "",
   "main": ".eslintrc.js",
   "scripts": {
@@ -13,6 +13,6 @@
     "lodash": "^4.17.21",
     "number-precision": "^1.6.0",
     "supabase-wechat-stable-v2": "^2.2.0",
-    "tdesign-miniprogram": "^1.4.5"
+    "tdesign-miniprogram": "^1.5.0"
   }
 }

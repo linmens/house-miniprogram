@@ -6,6 +6,25 @@ Page({
    */
   data: {
     records: [{
+      version: '0.8.0',
+      date: '2024-07-29',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '其他',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '优化公积金、组合贷业务逻辑',
+          type: 'text'
+        }]
+      }]
+    }, {
       version: '0.7.0',
       date: '2024-07-25',
       classname: 'h2',

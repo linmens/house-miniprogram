@@ -1,30 +1,3 @@
-// import {
-//   tabs,
-//   loanTypes,
-//   loanBackTypes,
-//   loanRateTypes,
-//   loanPaidTypes,
-//   serviceFeeTypes,
-//   shuifeiTypes,
-//   NoticeData
-// } from '../../utils/constants';
-import {
-  getOldYearTimestamp,
-  calculateLoan,
-  addDataToCache
-} from '../../utils/util';
-// import SellerMethods from './seller'
-// import {
-//   basicBehavior,
-//   dealBehavior,
-//   serviceBehavior,
-//   gongjijinBehavior,
-//   shangdaiBehavior,
-//   sellerBehavior,
-//   buyerBehavior
-// } from '../../behavior/index'
-
-import NP from 'number-precision'
 import Toast from 'tdesign-miniprogram/toast/index';
 import Message from 'tdesign-miniprogram/message/index';
 // import {
@@ -32,91 +5,14 @@ import Message from 'tdesign-miniprogram/message/index';
 // }
 // from 'supabase-wechat-stable-v2'
 Page({
-  // behaviors: [basicBehavior, dealBehavior, serviceBehavior, gongjijinBehavior, shangdaiBehavior, sellerBehavior, buyerBehavior],
+
   options: {
     styleIsolation: 'apply-shared',
   },
 
   data: {
     currentYear: new Date().getFullYear(),
-    cateMenu: [{
-      text: '二手房计算',
-      url: "/pages/calc/calc",
-      params: {
-        buyIndex: 0,
-        title: '二手房交易费用计算'
-      },
-      icon: {
-        color: 'var(--td-font-gray-1)',
-        name: 'houses-2'
-      }
-    }, {
-      text: '新房计算',
-      url: "/pages/calc/calc",
-      params: {
-        buyIndex: 1,
-        title: '新房交易费用计算'
-      },
-      icon: {
-        color: 'var(--td-font-gray-1)',
-        name: 'city-3'
-      }
-    }, {
-      text: '房贷计算',
-      url: "/pages/calc/calc",
-      params: {
-        buyIndex: 1,
-        title: '房贷费用计算'
-      },
-      icon: {
-        color: 'var(--td-font-gray-1)',
-        name: 'city-3'
-      }
-    }, {
-      text: '赠与',
-      url: "/pages/calc/calc",
-      params: {
-        buyIndex: 1,
-        title: '赠与费用计算'
-      },
-      icon: {
-        color: 'var(--td-font-gray-1)',
-        name: 'city-3'
-      }
-    }, {
-      text: '继承',
-      url: "/pages/calc/calc",
-      params: {
-        buyIndex: 1,
-        title: '继承费用计算'
-      },
-      icon: {
-        color: 'var(--td-font-gray-1)',
-        name: 'city-3'
-      }
-    }, {
-      text: '婚内更名',
-      url: "/pages/calc/calc",
-      params: {
-        buyIndex: 1,
-        title: '婚内更名费用计算'
-      },
-      icon: {
-        color: 'var(--td-font-gray-1)',
-        name: 'city-3'
-      }
-    }, {
-      text: '离婚分割',
-      url: "/pages/calc/calc",
-      params: {
-        buyIndex: 1,
-        title: '离婚分割费用计算'
-      },
-      icon: {
-        color: 'var(--td-font-gray-1)',
-        name: 'city-3'
-      }
-    }],
+
     userList: ['居间机构', '购房者', '业主', '新房置业顾问'],
     userIndex: '',
     userIndexRember: false,
@@ -130,10 +26,7 @@ Page({
     },
     priceError: false,
     showCustomAreaInput: false,
-    // currentYear: new Date().getFullYear(),
-    // defaultDate: new Date().getTime(),
-    // mineDate: getOldYearTimestamp(50),
-    // maxDate: getOldYearTimestamp(0),
+
     customAreaInputVal: '',
     calcForm: {
       // 组合贷款合计金额
@@ -144,13 +37,7 @@ Page({
       numPoint: 4,
 
     },
-    // tabs,
-    // loanTypes,
-    // loanBackTypes,
-    // loanRateTypes,
-    // loanPaidTypes,
-    // serviceFeeTypes,
-    // shuifeiTypes
+
   },
   onShow() {
     const page = getCurrentPages().pop();
@@ -165,44 +52,17 @@ Page({
     // console.log(supabase, 'supabase')
   },
 
-  handleClickStart() {
-    const {
-      oldPriceIndex,
-      oldPrice,
-      areaIndex,
-      area,
-      exchangeType,
-      unit
-    } = this.data.calcForm
-    this.setData({
-      'calcForm.numPoint': unit === '元' ? 2 : 4
-    })
-    const timestamp = new Date().getTime();
-    addDataToCache(this.data.calcForm, timestamp)
+  handleNavbarLeft() {
+    // wx.showToast({
+    //   title: '其他区域暂未适配,敬请期待',
+    // })
 
-    if (oldPriceIndex === 0 && exchangeType === 0) {
-      if (!oldPrice) {
-        Message.warning({
-          context: this,
-          offset: [90, 32],
-          duration: 5000,
-          content: '请输入原值',
-        });
-        return
-      }
-    }
-    if (areaIndex === 2 && !area) {
-      Message.warning({
-        context: this,
-        offset: [90, 32],
-        duration: 5000,
-        content: '请输入自定义面积',
-      });
-      return
-    }
-    wx.navigateTo({
-      url: `/pages/result/result?timestamp=${timestamp}`,
-    })
+    Message.info({
+      context: this,
+      offset: [90, 32],
+      duration: 3000,
+      content: '其他区域暂未适配,敬请期待！',
+    });
   },
   handleClickNoticebar(e) {
     this.setData({
@@ -297,134 +157,8 @@ Page({
       userListVisible: true
     })
   },
-  // 贷款方式 0 商业贷款 1 公积金 2组合贷 3全款
-  onBankTypeChange(e) {
-    const {
-      value
-    } = e.detail
-    const {
-      houseType
-    } = this.data.calcForm
-    if (value === 1 && houseType === 1) {
 
-      Message.warning({
-        context: this,
-        offset: [90, 32],
-        duration: 5000,
-        content: '非住宅暂不支持公积金计算',
-      });
-      return
-    }
-    if (value === 2 && houseType === 1) {
-      Message.warning({
-        context: this,
-        offset: [90, 32],
-        duration: 5000,
-        content: '非住宅暂不支持组合贷计算',
-      });
-      return
-    }
-    this.setData({
-      'calcForm.bankType': value,
-    })
-    console.log('贷款方式发生改变')
-    console.log('设置贷款方式：', value)
-    // this.setBankPrice()
-    this.startCalc()
-  },
-  /**
-   * 开始计算
-   */
-  async startCalc() {
-    const {
-      wangqianPrice,
-      unit,
-      paymentRate,
-      bankType,
-      buyIndex,
-      loanIndex,
-      loanGjjIndex,
-      pingguPrice
-    } = this.data.calcForm;
-    await this.setWangqianPrice()
-    await this.setPaymentRate()
-    console.log('计算条件', {
-      '网签金额': wangqianPrice,
-      '首付比例': paymentRate,
-      '贷款方式': bankType,
-      '房屋新旧': buyIndex
-    })
-    switch (bankType) {
-      case 0:
-        console.log('开始计算商业贷款部分...')
-        await this.setLoanPrice(1)
-        // 设置贷款年限
-        if (loanIndex === 6) {
-          await this.setLoanYear();
-        }
-        break;
-      case 1:
-        console.log('开始计算公积金贷款部分...')
-        console.log('开始计算公积金贷款金额...')
-        this.setLoanGjjMaxPrice()
-        await this.setLoanGjjPrice(0)
-        this.setData({
-          'calcForm.loanPrice': 0
-        })
-        // 设置贷款年限
-        if (loanGjjIndex === 6) {
-          await this.setLoanGjjYear();
-        }
 
-        break;
-      case 2:
-        console.log('开始计算组合贷部分...')
-        console.log('开始计算组合贷金额...')
-        this.setLoanGjjMaxPrice()
-        const groupLoanPrice = calculateLoan(wangqianPrice, paymentRate, unit)
-        this.setData({
-          'calcForm.loanGroupPrice': groupLoanPrice,
-        })
-        console.log('设置组合贷总金额', groupLoanPrice)
-        await this.setLoanGjjPrice(0);
-        const {
-          loanGjjPrice,
-        } = this.data.calcForm
-
-        let newLoanPrice = NP.minus(groupLoanPrice, loanGjjPrice)
-        this.setData({
-          'calcForm.loanPrice': newLoanPrice
-        })
-
-        console.log('设置组合贷商业贷款部分', newLoanPrice)
-        // 设置贷款年限
-        if (loanIndex === 6) {
-          await this.setLoanYear();
-        }
-        if (loanGjjIndex === 6) {
-          await this.setLoanGjjYear();
-        }
-
-        break;
-      case 3:
-        // 全款
-        this.setData({
-          'calcForm.loanPrice': 0,
-          'calcForm.loanGjjPrice': 0
-        })
-        break;
-      default:
-        break;
-    }
-
-    if (buyIndex === 0) {
-      await this.setBankPrice()
-      await this.setServiceFee()
-    }
-
-    await this.setPaymentPrice()
-    // this.setPaymentRate()
-  },
   showDialog(e) {
     const {
       key,

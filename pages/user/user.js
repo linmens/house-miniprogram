@@ -1,4 +1,5 @@
 import Message from 'tdesign-miniprogram/message/index';
+import envConfig from '../../env.config'
 Page({
 
   /**
@@ -6,7 +7,8 @@ Page({
    */
   data: {
     miniProgram: {},
-    showDeveloper: false
+    showDeveloper: false,
+    envConfig: envConfig
   },
 
   /**

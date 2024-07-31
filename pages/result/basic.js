@@ -97,23 +97,15 @@
      // 初始化赠与列表
      initSendList() {
        const {
-         buyIndex,
+
          unit,
          pingguPrice,
          exchangeType,
-         houseType
+
        } = this.data.calcForm
        let list = [{
          label: '变更类型',
          value: exchangeTypes[exchangeType].label,
-         show: 1
-       }, {
-         label: '房屋类型',
-         value: houseTypes[houseType].label,
-         show: 1
-       }, {
-         label: '房屋新旧',
-         value: buyTypes[buyIndex].label,
          show: 1
        }, {
          label: '评估价格',
@@ -127,24 +119,14 @@
      // 初始化继承列表
      initExtendList() {
        const {
-         buyIndex,
          unit,
          pingguPrice,
          exchangeType,
          fadingIndex,
-         houseType
        } = this.data.calcForm
        let list = [{
          label: '变更类型',
          value: exchangeTypes[exchangeType].label,
-         show: 1
-       }, {
-         label: '房屋新旧',
-         value: buyTypes[buyIndex].label,
-         show: 1
-       }, {
-         label: '房屋类型',
-         value: houseTypes[houseType].label,
          show: 1
        }, {
          label: '继承类型',
@@ -173,14 +155,6 @@
          value: exchangeTypes[exchangeType].label,
          show: 1
        }, {
-         label: '房屋类型',
-         value: houseTypes[houseType].label,
-         show: 1
-       }, {
-         label: '房屋新旧',
-         value: buyTypes[buyIndex].label,
-         show: 1
-       }, {
          label: '评估价格',
          value: pingguPrice + unit,
          show: pingguPrice ? 1 : 0
@@ -202,14 +176,6 @@
        let list = [{
          label: '变更类型',
          value: exchangeTypes[exchangeType].label,
-         show: 1
-       }, {
-         label: '房屋新旧',
-         value: buyTypes[buyIndex].label,
-         show: 1
-       }, {
-         label: '房屋类型',
-         value: houseTypes[houseType].label,
          show: 1
        }, {
          label: '分割条件',

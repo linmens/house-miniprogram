@@ -41,7 +41,7 @@
         // 公积金贷款年限下标
         loanGjjIndex: 5,
         // 公积金贷款年限（年）
-        loanGjjYear: 30,
+        // loanGjjYear: 30,
         // 公积金还款方式
         loanGjjBackIndex: 0,
         // 公积金贷款利率
@@ -89,17 +89,17 @@
       setLoanGjjRate() {
         const {
           bankType,
-          loanGjjYear,
+          loanYear,
           buyerIndex
         } = this.data.calcForm
         let loanGjjRate = 0
         if (bankType === 1 || bankType === 2) {
           if (buyerIndex) {
             // 首套房
-            loanGjjRate = loanGjjYear <= 5 ? 2.35 : 2.85
+            loanGjjRate = loanYear <= 5 ? 2.35 : 2.85
           } else {
             // 二套房
-            loanGjjRate = loanGjjYear <= 5 ? 2.775 : 3.325
+            loanGjjRate = loanYear <= 5 ? 2.775 : 3.325
           }
         }
         this.setData({
@@ -172,16 +172,16 @@
         } = this.data.calcForm
 
         if (houseAge) {
-          let loanGjjYear = NP.minus(40, houseAge);
-          if (loanGjjYear > 30) {
-            loanGjjYear = 30
+          let loanYear = NP.minus(40, houseAge);
+          if (loanYear > 30) {
+            loanYear = 30
           }
-          if (loanGjjYear <= 0) {
-            loanGjjYear = 0
+          if (loanYear <= 0) {
+            loanYear = 0
           }
           if (loanGjjYear >= 0) {
             this.setData({
-              'calcForm.loanGjjYear': loanGjjYear,
+              'calcForm.loanYear': loanYear,
               'calcForm.loanGjjIndex': 6
             })
           }

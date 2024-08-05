@@ -107,7 +107,7 @@
      startGongjijin() {
        const {
          loanBackIndex,
-         loanGjjYear,
+         loanYear,
          loanGjjPrice,
          loanGjjRate,
          unit,
@@ -120,8 +120,8 @@
          loanGjjMaleAge,
          loanGjjFemaleAge
        } = this.data.calcForm
-       const debxResult = calculateEqualPrincipalAndInterest(loanGjjPrice, loanGjjRate / 100, loanGjjYear, unit)
-       const debjResult = calculateEqualPrincipal(loanGjjPrice, loanGjjRate / 100, loanGjjYear, unit)
+       const debxResult = calculateEqualPrincipalAndInterest(loanGjjPrice, loanGjjRate / 100, loanYear, unit)
+       const debjResult = calculateEqualPrincipal(loanGjjPrice, loanGjjRate / 100, loanYear, unit)
        console.log(debxResult, debjResult, 'result')
        let gongjijin = [{
          title: '等额本息',
@@ -140,7 +140,7 @@
              text: '贷款月数',
              type: 'success'
            },
-           value: loanGjjYear * 12,
+           value: loanYear * 12,
            unit: '月'
          }, {
            tagOptions: {
@@ -181,7 +181,7 @@
          }
          let yearResult = {
            label: '贷款年限',
-           value: loanGjjYear,
+           value: loanYear,
            type: 0,
            unit: '年'
          }
@@ -190,7 +190,7 @@
            let loanGjjMaxAge = loanGjjSexIndex === 0 ? 60 : 55
            this.calcSexResult(loanGjjAge, loanGjjMaxAge, sexResult, noticeInfo)
            this.calcJiaocunResult(gongjijin[loanBackIndex].monthlyPayment, loanGjjBasicPrice * 0.5, noticeInfo, unit, jiaocunResult)
-           this.calcYearsResult(loanGjjAge, loanGjjYear, yearResult, noticeInfo)
+           this.calcYearsResult(loanGjjAge, loanYear, yearResult, noticeInfo)
            gongjijinInfo.details = gongjijinInfo.details.concat([{
                label: '性别',
                value: sex,
@@ -230,18 +230,18 @@
          }
          let maleYears = {
            label: '男方贷款年限',
-           value: loanGjjYear,
+           value: loanYear,
            type: 0,
            unit: '年'
          }
          let femaleYears = {
            label: '女方贷款年限',
-           value: loanGjjYear,
+           value: loanYear,
            type: 0,
            unit: '年'
          }
-         this.calcYearsResult(loanGjjMaleAge, loanGjjYear, maleYears, noticeInfo)
-         this.calcYearsResult(loanGjjFemaleAge, loanGjjYear, femaleYears, noticeInfo)
+         this.calcYearsResult(loanGjjMaleAge, loanYear, maleYears, noticeInfo)
+         this.calcYearsResult(loanGjjFemaleAge, loanYear, femaleYears, noticeInfo)
 
          this.calcSexResult(loanGjjFemaleAge, 55, femaleAge, noticeInfo)
          this.calcSexResult(loanGjjMaleAge, 60, maleAge, noticeInfo)

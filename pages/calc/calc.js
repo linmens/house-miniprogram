@@ -310,7 +310,8 @@ Page({
     const {
       houseType,
       buyerIndex,
-      loanYear
+      loanYear,
+      wangqianPrice
     } = this.data.calcForm
     let tabs = this.data.tabs
     if (value === 1 && houseType === 1) {
@@ -357,6 +358,14 @@ Page({
         content: '买方家庭3套及以上无法贷款',
       });
       return
+    }
+    if (value === 3) {
+      this.setData({
+        'calcForm.bankPrice': 0,
+        'calcForm.loanPrice': 0,
+        'calcForm.loanGjjPrice': 0,
+        'calcForm.paymentPrice': wangqianPrice
+      })
     }
     this.setData({
       'calcForm.bankType': value,
@@ -520,7 +529,7 @@ Page({
         await this.setBankPrice()
         await this.setServiceFee()
       }
-      // 新房
+      // 一手房
       if (buyIndex === 1) {
         await this.setPaymentRate()
         await this.switchBankType()

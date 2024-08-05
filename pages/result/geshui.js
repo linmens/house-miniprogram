@@ -24,10 +24,7 @@
 
        } = this.data.calcForm
        const {
-         ceZengzhishui,
-         ceCityshui,
-         ceEdushui,
-         ceLocalshui,
+         zengzhishui,
          calcPrice,
          calcName,
          tudizengzhishui
@@ -52,7 +49,7 @@
            }
            console.log('不超过原值10%的住房装修费用', peroldHouseStylePrice)
          }
-         let minprice = NP.minus(calcPrice, oldPrice, peroldHouseStylePrice, oldOtherPrice, oldBankPrice, ceZengzhishui, ceCityshui, ceEdushui, ceLocalshui, tudizengzhishui.ceValue)
+         let minprice = NP.minus(calcPrice, oldPrice, peroldHouseStylePrice, oldOtherPrice, oldBankPrice, zengzhishui.ceValue, zengzhishui.cityshui, zengzhishui.edushui, zengzhishui.localshui, tudizengzhishui.ceValue)
          console.log(`${calcName}-原值-合理费用-转让住房过程中缴纳的税金`, minprice)
          if (minprice < 0) {
            geshui.ceValue = 0
@@ -83,7 +80,6 @@
        }
        this.setData({
          'seller.geshui': geshui,
-         //  'seller.ceGeshui': ceResult,
        })
      },
    }

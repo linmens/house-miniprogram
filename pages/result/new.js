@@ -1,7 +1,7 @@
  import NP from 'number-precision'
  export const newerBehavior = Behavior({
    data: {
-     // 新房买方
+     // 一手房买方
      newder: {
        qishui: 0,
        details: [],
@@ -39,7 +39,7 @@
          area,
          houseType
        } = this.data.calcForm
-       console.log('开始计算新房税费...')
+       console.log('开始计算一手房税费...')
        this.calcQishui()
        let houseBookPrice = unit === '元' ? 80 : 80 / 10000
        switch (houseType) {
@@ -88,7 +88,7 @@
          value: houseBookPrice,
          type: 0
        }, {
-         label: '首付',
+         label: '首付（含定金2万）',
          value: paymentPrice,
          type: 0
        }, {
@@ -110,7 +110,7 @@
        let withoutTotal = NP.plus(this.data.buyer.qishui.value, paymentPrice, houseBookPrice, floorPrice)
        let totalList = [{
          tagOptions: {
-           text: '落地房价',
+           text: '总房款',
            type: 'primary'
          },
          value: total
@@ -126,7 +126,8 @@
          'buyer.total': total,
          'buyer.withoutTotal': withoutTotal,
          'result.totalAll': withoutTotal,
-         'buyer.totalList': totalList
+         'buyer.totalList': totalList,
+         'buyer.floorPrice': floorPrice
        })
      },
    }

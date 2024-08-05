@@ -11,9 +11,28 @@ Page({
   },
 
   data: {
+    cateMenu: [{
+      title: '购买一手房全流程费用计算',
+      label: '贷款、全款、税费、支付节点',
+      icon: 'city-3',
+      backgroundClass: 'bg2',
+      url: '/pages/calc/calc?buyIndex=1&title=一手房交易费用计算'
+    }, {
+      title: '购买二手房全流程费用计算',
+      label: '贷款、全款、税费、交易费用、支付节点',
+      icon: 'houses-2',
+      backgroundClass: 'bg1',
+      url: '/pages/calc/calc?buyIndex=0&title=二手房交易费用计算'
+    }, {
+      title: '房贷计算',
+      label: '商贷、公积金、组合贷',
+      icon: 'calculation-1',
+      backgroundClass: 'bg3',
+      url: '/pages/calc-bank/calc-bank'
+    }],
     currentYear: new Date().getFullYear(),
 
-    userList: ['居间机构', '购房者', '业主', '新房置业顾问'],
+    userList: ['居间机构', '购房者', '业主', '一手房置业顾问'],
     userIndex: '',
     userIndexRember: false,
     userListVisible: false,
@@ -51,7 +70,14 @@ Page({
     // const supabase = createClient(supabaseUrl, supabaseKey)
     // console.log(supabase, 'supabase')
   },
-
+  openCalc(e) {
+    const {
+      url
+    } = e.currentTarget.dataset
+    wx.navigateTo({
+      url,
+    })
+  },
   handleNavbarLeft() {
     // wx.showToast({
     //   title: '其他区域暂未适配,敬请期待',
@@ -101,7 +127,7 @@ Page({
         })
         break;
       case 3:
-        // 新房置业顾问
+        // 一手房置业顾问
         this.setData({
           'calcForm.buyIndex': 1,
           'calcForm.hukouWuyePrice': 0,

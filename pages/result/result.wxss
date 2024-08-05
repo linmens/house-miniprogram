@@ -13,29 +13,14 @@
 .total-price {
   font-size: large;
   font-weight: bold;
-  color: var(--td-primary-color-8);
-}
-.loan__group {
-  display: flex;
-}
-.loan__group__item {
-  flex: 1;
-  padding: 12rpx;
-}
-.loan__group__item__active {
-  background-color: var(--color-bg-b2);
-  border-radius: 10rpx;
+  color: var(--td-brand-color);
 }
 
-.loan__group__item__list {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15rpx;
+.t-steps-item__title {
+  position: relative;
+  line-height: var(--td-step-item-circle-size, 44rpx);
+  font-size: var(--td-font-size-base, 28rpx);
 }
-.loan__group__item__list:last-child {
-  margin-bottom: 0;
-}
-.loan__group__item__list .font-20 {
-  margin-left: 10rpx;
+.borderless {
+  border: none !important;
 }

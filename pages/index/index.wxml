@@ -6,41 +6,51 @@
 
 </t-navbar>
 
-<view style="margin-top: 32rpx;">
+
+<!-- <view class="cate-menu">
+  <view class="cate-menu-item l-cate-card">
+    <image class="cate-menu-item__image" src="/static/goufang-bg.png"></image>
+    <view class="cate-menu-item__pos">
+      <text class="cate-menu-item__title">房产流程</text>
+      <text class="cate-menu-item__label">各类流程一览</text>
+      <view class="cate-menu-item__btn">查看详情</view>
+    </view>
+  </view>
+  <view class="cate-menu-item l-cate-card">
+    <image class="cate-menu-item__image" src="/static/zhengce-bg.png"></image>
+    <view class="cate-menu-item__pos">
+      <text class="cate-menu-item__title">房产政策</text>
+      <text class="cate-menu-item__label">各类政策一览</text>
+      <view class="cate-menu-item__btn">查看详情</view>
+    </view>
+
+  </view>
+</view> -->
+<view class="l-cate-card m-32" bind:tap="openCalc" data-url="{{item.url}}" wx:for="{{cateMenu}}" wx:key="index">
+  <view class="l-cate-card__bg l-cate-card__{{item.backgroundClass}}">
+    <view class="l-cate-card__icon">
+      <t-icon size="20" name="{{item.icon}}"></t-icon>
+      <view class="l-cate-card__icon--shadow"></view>
+    </view>
+    <view class="l-cate-card__content">
+      <text class="l-cate-card__title">{{item.title}}</text>
+      <text class="l-cate-card__label font-24">{{item.label}}</text>
+    </view>
+  </view>
+</view>
+
+<view style="margin-top: 32rpx;margin-bottom: 32rpx;">
   <t-grid hover="{{true}}" column="{{4}}" theme="card" custom-style="border:0.5px solid var(--color-line-l3)">
     <!-- <t-grid-item wx:for="{{cateMenu}}" text="{{item.text}}" url="{{item.url+'?buyIndex='+item.params.buyIndex+'&'+'title='+item.params.title}}" icon="{{item.icon}}" /> -->
-    <t-grid-item badge-props="{{ { count: '全程费用',color:'#FE2C55' } }}" t-class-content="t-grid-item-content" text="二手房" url="/pages/calc/calc?buyIndex=0&title=二手房交易费用计算" icon="houses-2" />
-    <t-grid-item badge-props="{{ { count: '全程费用',color:'#FE2C55' } }}" t-class-content="t-grid-item-content" text="新房" url="/pages/calc/calc?buyIndex=1&title=新房交易费用计算" icon="city-3" />
-    <t-grid-item t-class-content="t-grid-item-content" text="房贷计算" icon="calculation-1" />
+    <!-- <t-grid-item badge-props="{{ { count: '全程费用',color:'#FE2C55' } }}" t-class-content="t-grid-item-content" text="二手房" url="/pages/calc/calc?buyIndex=0&title=二手房交易费用计算" icon="houses-2" /> -->
+    <!-- <t-grid-item badge-props="{{ { count: '全程费用',color:'#FE2C55' } }}" t-class-content="t-grid-item-content" text="一手房" url="/pages/calc/calc?buyIndex=1&title=一手房交易费用计算" icon="city-3" /> -->
+    <!-- <t-grid-item t-class-content="t-grid-item-content" text="房贷计算" icon="calculation-1" /> -->
     <t-grid-item t-class-content="t-grid-item-content" url="/pages/calc-other/calc-other?exchangeType=1&title=赠与费用计算" text="赠与" icon="undertake-delivery" />
     <t-grid-item t-class-content="t-grid-item-content" url="/pages/calc-other/calc-other?exchangeType=2&title=继承费用计算" text="继承" icon="usergroup-add" />
     <t-grid-item t-class-content="t-grid-item-content" url="/pages/calc-other/calc-other?exchangeType=3&title=婚内更名费用计算" text="婚内更名" icon="user-transmit" />
     <t-grid-item t-class-content="t-grid-item-content" url="/pages/calc-other/calc-other?exchangeType=4&title=离婚分割费用计算" text="离婚分割" icon="member" />
   </t-grid>
 </view>
-<view class="cate-menu">
-  <view class="cate-menu-item l-cate-card">
-    <text class="cate-menu-item__title">购房流程</text>
-    <text class="cate-menu-item__label">西安购房交易流程</text>
-  </view>
-  <view class="cate-menu-item l-cate-card">
-    <text class="cate-menu-item__title">房产政策</text>
-    <text class="cate-menu-item__label">贷款政策、法律法规</text>
-  </view>
-</view>
-<!-- <t-notice-bar visible="{{true}}" prefixIcon="{{false}}" content="目前适配地区：西安">
-  <view slot="prefix-icon">
-    <t-icon name="error-circle-filled"></t-icon>
-  </view>
-</t-notice-bar> -->
-
-<!-- 基本信息 -->
-
-
-<!-- 交易信息 -->
-
-
-
 <t-message id="t-message" />
 
 
@@ -59,60 +69,8 @@
     <t-radio checked="{{userIndexRember}}" bind:change="onUserIndexRemberChange" label=" 记住我的选择"></t-radio>
   </view>
 </t-popup> -->
-<!-- 显示给业主计算提示 -->
-<!-- <t-dialog visible="{{showNotice}}" title="计算帮助提示" confirm-btn="{{confirmBtn}}" bind:confirm="closeDialog">
-  <scroll-view slot="content" type="list" scroll-y class="long-content">
-    <view class="content-container">
-      {{noticeContent}}
-    </view>
-  </scroll-view>
-</t-dialog> -->
-<!-- 显示户口物业预留金额提示 -->
-<!-- <t-dialog visible="{{showHukouWuyeNotice}}" title="户口物业预留金额提示" confirm-btn="{{confirmBtn}}" bind:confirm="closeDialog">
-  <scroll-view slot="content" type="list" scroll-y class="long-content">
-    <view class="content-container">
-      在二手房交易过程中，物业交割保证金和户口迁出保证金是常见的保障措施，旨在确保交易的顺利进行并保护买卖双方的利益。
 
-      一、物业交割保证金
 
-      1. 定义
-      物业交割保证金是指在二手房交易过程中，买方向卖方支付的一笔保证金，用于确保卖方在规定时间内完成物业的交割手续。这包括物业的水、电、煤气、物业费、取暖费等费用的结清。
-
-      2. 目的
-      物业交割保证金的目的是保证卖方在交易完成前，清理所有与物业相关的费用，确保买方在接收物业时不承担任何历史遗留的费用问题。这也是为了避免由于物业交割不清导致的纠纷。
-
-      3. 流程
-      签订买卖合同：在合同中明确物业交割保证金的金额、交付时间及交付条件。
-      支付保证金：买方将物业交割保证金支付给第三方（如律师、房地产公司或公证机构）进行托管。
-      物业交割：卖方在约定时间内完成物业的交割手续，包括所有相关费用的结清。
-      返还保证金：在确认物业交割手续完成且无任何费用遗留后，第三方将保证金返还给卖方。
-
-      二、户口迁出保证金
-
-      1. 定义
-      户口迁出保证金是指在二手房交易过程中，买方向卖方支付的一笔保证金，用于确保卖方在规定时间内将其户口从所交易的房产地址上迁出。
-
-      2. 目的
-      户口迁出保证金的目的是保证卖方在交易完成后，及时将其户口迁出，避免因户口问题影响买方的后续使用，例如子女入学等涉及户口的事项。
-
-      3. 流程
-      签订买卖合同：在合同中明确户口迁出保证金的金额、交付时间及迁出条件。
-      支付保证金：买方将户口迁出保证金支付给第三方（如律师、房地产公司或公证机构）进行托管。
-      户口迁出：卖方在约定时间内完成户口的迁出手续。
-      返还保证金：在确认卖方户口已迁出后，第三方将保证金返还给卖方。
-
-      三、注意事项
-
-      合同约定：在二手房买卖合同中应详细约定保证金的金额、支付方式、返还条件、时间节点等细节，避免产生歧义和纠纷。
-      第三方托管：为保证资金安全，物业交割保证金和户口迁出保证金通常由第三方机构托管，待条件满足后再行返还。
-      违约责任：应明确约定若卖方未按时完成交割或迁出户口的违约责任及处理方式，以确保买方的权益。
-
-      四、法律依据
-
-      根据《中华人民共和国合同法》和相关地方性房地产交易法规，买卖双方在合同中明确约定保证金条款具有法律效力，受法律保护。如果一方未能履行约定，另一方有权根据合同条款主张权利。
-    </view>
-  </scroll-view>
-</t-dialog> -->
 <t-toast id="t-toast" />
 <l-privacy />
 <view class="t-tab-bar--placeholder__wrap">

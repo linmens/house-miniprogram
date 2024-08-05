@@ -13,7 +13,7 @@ export const basicBehavior = Behavior({
       unitCount: 1,
       unitRate: 0.0001,
       unit: '万元',
-      // 0二手房 1新房
+      // 0二手房 1一手房
       buyIndex: 0,
       // 是否法定继承人下标
       fadingIndex: 0,

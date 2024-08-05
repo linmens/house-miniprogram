@@ -1,14 +1,7 @@
 <wxs src="../common/utils.wxs" module="_" />
 <wxs src="./step-item.wxs" module="t" />
 
-<view
-  style="{{_._style([style, customStyle])}}"
-  class="{{_.cls(classPrefix, [layout, ['readonly', readonly]])}} class {{prefix}}-class"
-  bind:tap="onTap"
-  aria-role="{{ariaRole || readonly ? 'option' : 'button'}}"
-  aria-label="{{ariaLabel || t.getAriaLabel(index, title, content)}}"
-  aria-current="{{curStatus == 'process'? 'step': ''}}"
->
+<view style="{{_._style([style, customStyle])}}" class="{{_.cls(classPrefix, [layout, ['readonly', readonly]])}} class {{prefix}}-class" bind:tap="onTap" aria-role="{{ariaRole || readonly ? 'option' : 'button'}}" aria-label="{{ariaLabel || t.getAriaLabel(index, title, content)}}" aria-current="{{curStatus == 'process'? 'step': ''}}">
   <!-- icon  -->
   <view class="{{_.cls(classPrefix + '__anchor', [layout])}}" aria-hidden="true">
     <view wx:if="{{isDot}}" class="{{_.cls(classPrefix + '__dot', [curStatus])}}" />
@@ -24,10 +17,7 @@
   </view>
 
   <!-- content -->
-  <view
-    class="{{_.cls(classPrefix + '__content', [layout, ['last', isLastChild]])}} {{prefix}}-class-content"
-    aria-hidden="true"
-  >
+  <view class="{{_.cls(classPrefix + '__content', [layout, ['last', isLastChild]])}} {{prefix}}-class-content" aria-hidden="true">
     <slot />
     <view class="{{_.cls(classPrefix + '__title', [curStatus, layout])}} {{prefix}}-class-title">
       {{ title }}
@@ -43,9 +33,5 @@
     </view>
   </view>
 
-  <view
-    wx:if="{{!isLastChild}}"
-    class="{{_.cls(classPrefix + '__line', [curStatus, layout, theme, sequence])}}"
-    aria-hidden="true"
-  />
+  <view wx:if="{{!isLastChild}}" class="{{_.cls(classPrefix + '__line', [curStatus, layout, theme, sequence])}}" aria-hidden="true" />
 </view>

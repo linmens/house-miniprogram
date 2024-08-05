@@ -53,12 +53,8 @@
          yinhuaRate
        } = this.data.shuifeiRate
        const {
-         ceZengzhishui,
-         ceCityshui,
-         ceEdushui,
-         ceLocalshui,
          calcName,
-         calcPrice
+         zengzhishui
        } = this.data.seller
        let tudizengzhishui = this.data.seller.tudizengzhishui
        const {
@@ -76,7 +72,7 @@
 
        if (pingguPrice && oldPrice) {
          //有评估并且有原值
-         result.canMinusPrice = NP.plus(oldPrice, ceCityshui, ceEdushui, ceLocalshui)
+         result.canMinusPrice = NP.plus(oldPrice, zengzhishui.cityshui, zengzhishui.edushui, zengzhishui.localshui)
          result.tudizengzhie = NP.minus(pingguPrice, result.canMinusPrice)
          result.tudizengzhiRate = NP.round(NP.times(NP.divide(result.tudizengzhie, result.canMinusPrice), 100), numPoint)
          result.tudizengzhiRateInfo = this.getRateLevelInfo(result.tudizengzhiRate)
@@ -102,7 +98,7 @@
        if (!pingguPrice && oldPrice) {
 
          // 无评估价 并且 有原值 原值*（1+5%*产权持有年限)+上次契税+本次税金（增值税、增值税附加、印花税）
-         result.canMinusPrice = NP.round(NP.plus(canMinusYear, ceCityshui, ceEdushui, ceLocalshui, wangqianPrice * yinhuaRate), numPoint)
+         result.canMinusPrice = NP.round(NP.plus(canMinusYear, zengzhishui.cityshui, zengzhishui.edushui, zengzhishui.localshui, wangqianPrice * yinhuaRate), numPoint)
          // 土地增值额=网签价-可扣除金额
          result.tudizengzhie = NP.minus(wangqianPrice, result.canMinusPrice)
          if (result.tudizengzhie < 0) {

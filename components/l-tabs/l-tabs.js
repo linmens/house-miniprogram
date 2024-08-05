@@ -1,7 +1,7 @@
 import {
   getRect,
 } from '../../utils/util';
-import Message from 'tdesign-miniprogram/message/index';
+
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
   function adopt(value) {
     return value instanceof P ? value : new P(function (resolve) {
@@ -116,14 +116,15 @@ Component({
         disabled,
         message
       } = currentTab;
-
-
       // 触发 change 事件，传递一个回调函数
-      this.triggerEvent('change', {
-        index,
-        value,
-        label
-      });
+      if (!(currentTab === null || currentTab === void 0 ? void 0 : currentTab.disabled) && index !== this.data.currentIndex) {
+        this.triggerEvent('change', {
+          index,
+          value,
+          label
+        });
+      }
+
       this.triggerEvent('click', {
         index,
         value,

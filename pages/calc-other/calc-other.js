@@ -81,7 +81,7 @@ Page({
       'calcForm.numPoint': label === '元' ? 2 : 4
     })
     // 设置所有相关金额的数值
-    fixPrice('pingguPrice',this)
+    fixPrice('pingguPrice', this)
   },
   onPingguPriceChange(e) {
     const {
@@ -96,7 +96,7 @@ Page({
       pingguPrice
     } = this.data.calcForm
     if (!pingguPrice) {
-      Message.warning({
+      Message.info({
         context: this,
         offset: [90, 32],
         duration: 3000,

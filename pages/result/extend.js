@@ -65,7 +65,8 @@
          'extender.yinhuaShui': yinhuaShui,
          'extender.qishui': qishui,
          'extender.details': details,
-         'extender.total': total
+         'extender.total': total,
+         'result.totalAll': total
        })
 
      },

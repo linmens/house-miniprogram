@@ -1,0 +1,136 @@
+<t-navbar left-arrow title="房贷计算结果"></t-navbar>
+<l-card>
+  <t-steps layout="vertical" readonly theme="dot" current="{{55}}">
+    <t-step-item title="{{resultStep.title}}">
+      <view slot="content">
+        <t-tag wx:for="{{resultStep.tags}}" wx:for-index="tagIndex" wx:key="tagIndex" wx:for-item="tag" size="small" custom-style="display:inline-block;  width: auto;border:none;margin-left:{{tagIndex!==0?'10rpx':0}}">{{tag}}</t-tag>
+        <view class="m-t-10"><text>{{resultStep.h2}}</text></view>
+        <view style="color: var(--color-text-t0);">
+          <text style="font-size: 64rpx;">{{resultStep.price}}</text>
+          <text class="font-20 m-l-20">{{calcForm.unit}}</text>
+        </view>
+        <view wx:for="{{resultStep.details}}" wx:for-index="detailIndex" wx:key="detailIndex" wx:for-item="detail">{{detail}}</view>
+        <view wx:if="{{resultStep.lastMonthPayment}}">
+          <text>最后一月还款{{resultStep.lastMonthPayment}}{{calcForm.unit}}</text>
+        </view>
+        <view wx:if="{{resultStep.extra}}" slot="extra" style="text-align: left;background: var(--color-secondary-default);padding: 10rpx;margin-top:10rpx;border-radius: 10rpx;color:var(--td-text-color-placeholder)">{{resultStep.extra}}</view>
+      </view>
+    </t-step-item>
+  </t-steps>
+</l-card>
+<view id="section-2" class="section">
+  <t-divider content="贷款信息" />
+  <!-- 商业贷款 -->
+  <l-card wx:if="{{shangdai.length}}" headerTitle="商业贷款" info="{{shangdaiInfo}}" unit="{{calcForm.unit}}">
+    <!-- <t-notice-bar visible="{{true}}" content="月均收入需覆盖{{shangdai[calcForm.loanBackIndex].monthlyPayment*2}}{{calcForm.unit}}"></t-notice-bar> -->
+    <view class="loan__group m-t-20">
+      <view class="loan__group__item {{item.icon?'loan__group__item__active':''}}" wx:for="{{shangdai}}" wx:key="index">
+        <view class="flex f-col-center f-row-between m-b-20">
+          <t-tag theme="primary" variant="{{item.icon?'dark':'outline'}}" icon="{{item.icon}}">{{item.title}}</t-tag>
+          <text style="color: var(--td-brand-color);">明细</text>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.monthlyPayment}}">
+          <text>月均还款</text>
+          <view>
+            <text class="text-blod">{{item.monthlyPayment}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.firstMonthPayment}}">
+          <text>首月还款</text>
+          <view>
+            <text class="text-blod">{{item.firstMonthPayment}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.lastMonthPayment}}">
+          <text>末月还款</text>
+          <view>
+            <text class="text-blod">{{item.lastMonthPayment}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.monthlyDecrease}}">
+          <text>逐月递减</text>
+          <view>
+            <text class="text-blod">{{item.monthlyDecrease}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.totalPayment}}">
+          <text>还款总额</text>
+          <view>
+            <text class="text-blod">{{item.totalPayment}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.totalInterest}}">
+          <text>支付利息款</text>
+          <view>
+            <text class="text-blod">{{item.totalInterest}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </l-card>
+  <!-- 公积金 -->
+  <l-card wx:if="{{gongjijin.length}}" headerTitle="公积金贷款" info="{{gongjijinInfo}}" unit="{{calcForm.unit}}">
+
+    <view class="loan__group">
+      <view class="loan__group__item {{item.icon?'loan__group__item__active':''}}" wx:for="{{gongjijin}}" wx:key="index">
+        <view class="flex f-col-center f-row-between m-b-20">
+          <t-tag theme="primary" variant="{{item.icon?'dark':'outline'}}" icon="{{item.icon}}">{{item.title}}</t-tag>
+          <text style="color: var(--td-brand-color);">明细</text>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.monthlyPayment}}">
+          <text>月均还款</text>
+          <view>
+            <text class="text-blod">{{item.monthlyPayment}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.firstMonthPayment}}">
+          <text>首月还款</text>
+          <view>
+            <text class="text-blod">{{item.firstMonthPayment}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.lastMonthPayment}}">
+          <text>末月还款</text>
+          <view>
+            <text class="text-blod">{{item.lastMonthPayment}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.monthlyDecrease}}">
+          <text>逐月递减</text>
+          <view>
+            <text class="text-blod">{{item.monthlyDecrease}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.totalPayment}}">
+          <text>还款总额</text>
+          <view>
+            <text class="text-blod">{{item.totalPayment}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+        <view class="loan__group__item__list" wx:if="{{item.totalInterest}}">
+          <text>支付利息款</text>
+          <view>
+            <text class="text-blod">{{item.totalInterest}}</text>
+            <text class="font-20">{{calcForm.unit}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="m-t-20" wx:if="{{noticeInfo.content.length}}">
+      <t-notice-bar visible="{{true}}" content="{{noticeInfo.content}}"></t-notice-bar>
+    </view>
+
+  </l-card>
+</view>
+<t-footer text="计算结果仅供参考"></t-footer>

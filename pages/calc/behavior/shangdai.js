@@ -148,7 +148,7 @@
         } = this.data.calcForm
         let loanTypes = this.data.loanTypes
         if (value > loanMaxYear) {
-          Message.warning({
+          Message.info({
             context: this,
             offset: [90, 32],
             duration: 3000,

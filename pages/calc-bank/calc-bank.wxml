@@ -1,0 +1,61 @@
+<t-navbar left-arrow>
+  <view slot="title">
+    <text>房贷计算</text>
+  </view>
+</t-navbar>
+
+<l-cell-group theme="card">
+  <l-cell left-icon="currency-exchange" title="计算单位">
+    <l-tabs slot="note" current-index="{{calcForm.unitIndex}}" bind:change="onTypesChange" list="{{unitTypes}}">
+    </l-tabs>
+  </l-cell>
+  <l-cell left-icon="palette-1" title="贷款方式">
+    <l-tabs slot="note" current-index="{{calcForm.bankType}}" bind:change="onBankTypeChange" list="{{tabs}}">
+    </l-tabs>
+  </l-cell>
+  <l-cell left-icon="calendar-edit" title="{{'贷款年限'+'('+calcForm.loanYear*12+'期)'}}">
+    <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanTypes}}"></l-tabs>
+  </l-cell>
+  <l-cell title="自定义贷款年限" wx:if="{{calcForm.loanIndex===6}}" suffix="年">
+    <t-stepper size="large" slot="note" bind:change="onCustomLoanYearInputValChange" value="{{calcForm.loanYear}}" min="0" max="{{calcForm.loanMaxYear}}" step="1" theme="filled" />
+  </l-cell>
+  <l-cell left-icon="undertake-transaction" title="还款方式">
+    <l-tabs slot="note" current-index="{{calcForm.loanBackIndex}}" bind:change="onLoanBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
+  </l-cell>
+</l-cell-group>
+
+<block wx:if="{{calcForm.bankType===0||calcForm.bankType===2}}">
+  <t-divider content="商贷信息"></t-divider>
+  <l-cell-group theme="card">
+    <l-cell title="贷款金额" suffix="{{calcForm.unit}}">
+      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanPriceChange" value="{{calcForm.loanPrice}}" align="right" placeholder="请输入贷款金额" type="number">
+      </t-input>
+    </l-cell>
+    <l-cell title="贷款利率" suffix="%">
+      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanRateChange" value="{{calcForm.loanRate}}" align="right" placeholder="请输入贷款利率" type="number">
+      </t-input>
+    </l-cell>
+  </l-cell-group>
+</block>
+
+<block wx:if="{{calcForm.bankType===1||calcForm.bankType===2}}">
+  <t-divider content="公积金信息"></t-divider>
+  <l-cell-group theme="card">
+    <l-cell title="贷款金额" suffix="{{calcForm.unit}}">
+      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanGjjPriceChange" value="{{calcForm.loanGjjPrice}}" align="right" placeholder="请输入贷款金额" type="number">
+      </t-input>
+    </l-cell>
+    <l-cell title="贷款利率" suffix="%">
+      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanGjjRateChange" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="number">
+      </t-input>
+    </l-cell>
+  </l-cell-group>
+</block>
+<view class="t-tab-bar--placeholder__wrap">
+  <view style="height: 32rpx;"></view>
+  <view class="t-tab-bar-safe"></view>
+</view>
+<view class="calc-bottom-btn">
+  <t-button bind:tap="handleClickStart" theme="primary" size="large" block>开始计算</t-button>
+</view>
+<t-message id="t-message" />

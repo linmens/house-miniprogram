@@ -1,7 +1,8 @@
 import {
   getCurrentCachedData,
-  downloadAndOpenFile
+  downloadAndOpenFile,
 } from '../../utils/util'
+import dayjs from 'dayjs'
 
 import {
   chanquanTypes,
@@ -41,18 +42,19 @@ import {
   gongjijinBehavior
 } from './gongjijin'
 import {
+  payStepsBehavior
+} from './pay-steps'
+import {
   documentsGroupBykey
 } from '../../constants/taxList'
-console.log(documentsGroupBykey, 'documentsGroupBykey..documentsGroupBykey')
-import Toast, {
-  hideToast
-} from 'tdesign-miniprogram/toast/index';
+import BigNumber from 'bignumber.js';
+
 Page({
   options: {},
   /**
    * 页面的初始数据
    */
-  behaviors: [sendBehavior, basicBehavior, extendBehavior, marryBehavior, divorceBehavior, newerBehavior, tudizengzhishuiBehavior, geshuiBehavior, shangdaiBehavior, gongjijinBehavior],
+  behaviors: [sendBehavior, basicBehavior, extendBehavior, marryBehavior, divorceBehavior, newerBehavior, tudizengzhishuiBehavior, geshuiBehavior, shangdaiBehavior, gongjijinBehavior, payStepsBehavior],
   data: {
     orderTypes,
     tabs,
@@ -66,21 +68,21 @@ Page({
         value: 0
       },
       {
-        label: '税费信息',
+        label: '费用明细',
         value: 1
       },
       {
         label: '贷款信息',
         value: 2
       },
-      {
-        label: '计税依据',
-        value: 3
-      },
       // {
       //   label: '支付节点',
-      //   value: 4
-      // }
+      //   value: 3
+      // },
+      {
+        label: '计税依据',
+        value: 4
+      }
     ],
     sectionTops: [],
     scrollTop: 0,
@@ -123,7 +125,6 @@ Page({
           label: '评估价 * 0.0005 * 0.5'
         }],
       }
-
     },
     result: {
       totalAll: 0,
@@ -134,18 +135,18 @@ Page({
     },
     // 卖方费用
     seller: {
-      hdZengzhishui: 0,
-      hdGeshui: {
-        value: 0,
-        label: '个税'
+      geshui: {
+        hdValue: 0,
+        ceValue: 0,
       },
-      hdLocalshui: 0,
-      hdCityshui: 0,
-      hdEdushui: 0,
-      ceGeshui: {
-        value: 0,
-        label: '个税'
+      zengzhishui: {
+        hdValue: 0,
+        ceValue: 0,
+        cityshui: 0,
+        edushui: 0,
+        localshui: 0
       },
+      yinhuashui: 0,
       details: [],
       total: 0,
       serviceFee: 0,
@@ -162,7 +163,8 @@ Page({
       serviceFee: 0,
       details: [],
       custom: true
-    }
+    },
+    options: {}
   },
 
   /**
@@ -172,17 +174,130 @@ Page({
     let data = {}
     if (options.timestamp) {
       data = getCurrentCachedData(options.timestamp)
+      options.time = dayjs(Number(options.timestamp)).format('YYYY-MM-DD')
     }
     if (options.data) {
       data = JSON.parse(options.data)
     }
-    console.log(options, data, 'options')
     this.setData({
-      calcForm: data
+      calcForm: data,
+      options
     })
     await this.initResult()
     this.calcTabItemHeight();
+    if (this.data.calcForm.exchangeType === 0) {
+      this.initPaySteps()
+    }
+    this.initResultSteps()
 
+  },
+
+  initResultSteps() {
+    // 如果是全款并且是二手房买卖 税费、首付、交易费用合计应付
+    // 如果是赠与、其他 税费合计应付 前期费用 赠与方
+    // 如果是贷款并且是买卖 税费、首付、交易费用合计应付
+    const {
+      buyIndex,
+      bankType,
+      loanBackIndex,
+      loanYear,
+      loanPrice,
+      loanGjjPrice,
+      unit,
+      exchangeType
+    } = this.data.calcForm
+    const {
+      totalAll
+    } = this.data.result
+    const buyer = this.data.buyer
+    const seller = this.data.seller
+    const shangdai = this.data.shangdai
+    const shangdaiDebx = this.data.shangdaiDebx
+    const shangdaiDebj = this.data.shangdaiDebj
+    const gongjijinDebx = this.data.gongjijinDebx
+    const gongjijinDebj = this.data.gongjijinDebj
+    const gongjijin = this.data.gongjijin
+    let resultSteps = []
+    let totalObj = {
+      title: '前期费用',
+      h2: exchangeType === 0 ? '税费、交易费用、首付合计应付' : '税费合计应付',
+      details: [],
+      price: totalAll
+    }
+    let bankObj = {
+      title: '还款信息',
+      h2: `${loanBackIndex?'首月应还':'每月应还'}`,
+      tags: [`${loanBackIndex?'等额本金':'等额本息'}`, `贷${loanYear}年`],
+      price: 0,
+      lastMonthPayment: 0,
+      extra: '',
+      details: []
+    }
+    let loanResultInfo = {
+      price: 0,
+      monthlyDecrease: 0
+    }
+
+    if (exchangeType === 0) {
+      // 买卖
+      if (bankType !== 3) {
+        // 贷款
+
+        if (bankType === 0) {
+          // 商业贷款
+          bankObj.tags.splice(0, 0, `商贷${loanPrice}${unit}`)
+          if (loanBackIndex === 0) {
+            loanResultInfo.price = shangdaiDebx.monthlyPayment
+          } else {
+            loanResultInfo.price = shangdaiDebj.firstMonthPayment
+            loanResultInfo.monthlyDecrease = shangdaiDebj.monthlyDecrease
+            bankObj.lastMonthPayment = shangdaiDebj.lastMonthPayment
+          }
+        }
+        if (bankType === 1) {
+          // 公积金
+          bankObj.tags.splice(0, 0, `公积金贷${loanGjjPrice}${unit}`)
+          if (loanBackIndex === 0) {
+            loanResultInfo.price = gongjijinDebx.monthlyPayment
+          } else {
+            loanResultInfo.price = gongjijinDebj.firstMonthPayment
+            loanResultInfo.monthlyDecrease = gongjijinDebj.monthlyDecrease
+            bankObj.lastMonthPayment = gongjijinDebj.lastMonthPayment
+          }
+        }
+        if (bankType === 2) {
+          // 组合贷
+          bankObj.tags.splice(0, 0, `组合贷${loanPrice+loanGjjPrice}${unit}`)
+          // bankObj.tags.splice(1, 0, `公积金贷${loanGjjPrice}${unit}`)
+          if (loanBackIndex === 0) {
+            loanResultInfo.price = new BigNumber(gongjijinDebx.monthlyPayment).plus(shangdaiDebx.monthlyPayment).toNumber()
+            bankObj.details = [`${shangdaiDebx.monthlyPayment}${unit} (商贷)`, `${gongjijinDebx.monthlyPayment}${unit} (公积金贷)`]
+          } else {
+            loanResultInfo.price = new BigNumber(gongjijinDebj.firstMonthPayment).plus(shangdaiDebj.firstMonthPayment).toNumber()
+            loanResultInfo.monthlyDecrease = new BigNumber(gongjijinDebj.monthlyDecrease).plus(shangdaiDebj.monthlyDecrease).toNumber()
+            bankObj.details = [`${shangdaiDebj.firstMonthPayment}${unit} (商贷)`, `${gongjijinDebj.firstMonthPayment}${unit} (公积金贷)`]
+            bankObj.lastMonthPayment = new BigNumber(gongjijinDebj.lastMonthPayment).plus(shangdaiDebj.lastMonthPayment).toNumber()
+          }
+        }
+        resultSteps.splice(1, 0, bankObj)
+      }
+      if (buyIndex === 0) {
+        // 二手房
+        totalObj.details = [`${buyer.withoutTotal}${unit} (买方)`, `${seller.total}${unit} (卖方)`]
+      }
+      bankObj.price = loanResultInfo.price
+      bankObj.monthlyDecrease = loanResultInfo.monthlyDecrease
+      bankObj.extra = `${loanBackIndex?`每月还款金额递减${bankObj.monthlyDecrease}${unit}，其中每月还款的本金不变，利息逐月减少。`:'每月还款金额不变，其中还款的本金逐月递增，利息逐月递减。'}`
+    }
+    if (exchangeType === 1) {
+      // 赠与
+
+    }
+    resultSteps.splice(0, 0, totalObj)
+    console.log(resultSteps, bankObj, totalObj, loanResultInfo, bankType)
+    this.setData({
+      'result.steps': resultSteps
+    })
   },
   createSelectorQuery(selector, all) {
     return new Promise((resolve) => {
@@ -229,6 +344,9 @@ Page({
     this.setData({
       calcTabs: calcTabs
     })
+    // if(buyIndex===0&&bankType===0){
+    //   // 二手房商贷
+    // }
     switch (buyIndex) {
       case 0:
         // 二手房
@@ -261,12 +379,12 @@ Page({
 
         break;
       case 1:
-        // 新房
+        // 一手房
         this.setData({
           'seller.calcPrice': wangqianPrice,
           'seller.calcName': '网签价'
         })
-        console.log('开始生成新房基本信息')
+        console.log('开始生成一手房基本信息')
         this.initNewBasicData()
         this.calcNewer()
         // 判断贷款方式
@@ -468,9 +586,6 @@ Page({
       calcPrice,
       calcName
     } = this.data.seller
-
-    let wangqianPrice = this.data.calcForm.wangqianPrice
-
     const {
       yinhuaRate
     } = this.data.shuifeiRate
@@ -480,16 +595,18 @@ Page({
     await this.calcQishui()
     await this.setBuyerDetails()
     if (houseType === 1) {
+      let yinhuashui = NP.round(NP.times(calcPrice, yinhuaRate), numPoint)
       let newDetails = this.data.buyer.details.concat([{
         label: '印花税',
-        value: NP.round(NP.times(calcPrice, yinhuaRate), numPoint),
+        value: yinhuashui,
         type: 0,
         desc: [{
           label: `${calcName}*${0.05}%*0.5`
         }]
       }])
       this.setData({
-        'buyer.details': newDetails
+        'buyer.details': newDetails,
+        'buyer.yinhuashui': yinhuashui
       })
     }
   },
@@ -510,47 +627,46 @@ Page({
     const {
       calcPrice
     } = this.data.seller
+    let zengzhishui = {
+      value: 0,
+      label: '增值税',
+      type: 0,
+      ceValue: 0,
+      hdValue: 0
+    }
     let result = {}
     let chaeResult = {}
-    result.zengzhishui = NP.round(NP.times(NP.divide(calcPrice, 1.05), zengzhishuiRate), numPoint)
+    zengzhishui.hdValue = NP.round(NP.times(NP.divide(calcPrice, 1.05), zengzhishuiRate), numPoint)
     if (oldPrice) {
-      chaeResult.zengzhishui = NP.round(NP.times(NP.minus(calcPrice, oldPrice), zengzhishuiRate), numPoint)
-      console.log('产权不满2年,差额计算增值税为：', chaeResult)
-      if (chaeResult.zengzhishui) {
-        chaeResult.cityshui = NP.round(NP.times(chaeResult.zengzhishui, cityRate, 0.5), numPoint)
-        chaeResult.edushui = NP.round(NP.times(chaeResult.zengzhishui, eduRate, 0.5), numPoint)
-        chaeResult.localshui = NP.round(NP.times(chaeResult.zengzhishui, localeduRate, 0.5), numPoint)
-        console.log('产权不满2年,差额计算', chaeResult)
-        this.setData({
-          'seller.ceZengzhishui': chaeResult.zengzhishui,
-          'seller.ceCityshui': chaeResult.cityshui,
-          'seller.ceEdushui': chaeResult.edushui,
-          'seller.ceLocalshui': chaeResult.localshui,
-        })
+      zengzhishui.ceValue = NP.round(NP.times(NP.minus(calcPrice, oldPrice), zengzhishuiRate), numPoint)
+      console.log('产权不满2年,差额计算增值税为：', zengzhishui.ceValue)
+      if (zengzhishui.ceValue) {
+        zengzhishui.cityshui = NP.round(NP.times(zengzhishui.ceValue, cityRate, 0.5), numPoint)
+        zengzhishui.edushui = NP.round(NP.times(zengzhishui.ceValue, eduRate, 0.5), numPoint)
+        zengzhishui.localshui = NP.round(NP.times(zengzhishui.ceValue, localeduRate, 0.5), numPoint)
+        console.log('产权不满2年,差额计算', zengzhishui)
       }
     }
 
-    if (result.zengzhishui) {
+    if (zengzhishui.hdValue) {
       // 城市维护建设税
-      result.cityshui = NP.round(NP.times(result.zengzhishui, cityRate, 0.5), numPoint)
-      console.log('产权不满2年,城市维护建设税减半征收为：', result.cityshui)
+      zengzhishui.cityshui = NP.round(NP.times(zengzhishui.hdValue, cityRate, 0.5), numPoint)
+      console.log('产权不满2年,城市维护建设税减半征收为：', zengzhishui.cityshui)
 
       // 教育税附加税
-      result.edushui = NP.round(NP.times(result.zengzhishui, eduRate, 0.5), numPoint)
-      console.log('产权不满2年,教育税附加税减半征收为：', result.edushui)
+      zengzhishui.edushui = NP.round(NP.times(zengzhishui.hdValue, eduRate, 0.5), numPoint)
+      console.log('产权不满2年,教育税附加税减半征收为：', zengzhishui.edushui)
 
       // 地方教育附加税
-      result.localshui = NP.round(NP.times(result.zengzhishui, localeduRate, 0.5), numPoint)
-      console.log('产权不满2年,地方教育附加税减半征收为：', result.localshui)
+      zengzhishui.localshui = NP.round(NP.times(zengzhishui.hdValue, localeduRate, 0.5), numPoint)
+      console.log('产权不满2年,地方教育附加税减半征收为：', zengzhishui.localshui)
 
-      console.log('产权不满2年', result)
-      this.setData({
-        'seller.hdZengzhishui': result.zengzhishui,
-        'seller.hdCityshui': result.cityshui,
-        'seller.hdEdushui': result.edushui,
-        'seller.hdLocalshui': result.localshui,
-      })
+      console.log('产权不满2年', zengzhishui)
+
     }
+    this.setData({
+      'seller.zengzhishui': zengzhishui
+    })
   },
   /**
    * 计算卖方
@@ -599,7 +715,8 @@ Page({
       hukouWuyePrice,
       loanGjjPrice,
       houseType,
-      isHouseOther
+      isHouseOther,
+      bankType
     } = this.data.calcForm
     // 除依法缴纳的税金外，不动产登记机构只收取不动产登记费。根据相关规定，其中住宅每件80元，非住宅每件550元，车库、车位、储藏室按住宅类每件80元收取
     let houseBookPrice = {
@@ -619,7 +736,7 @@ Page({
       }
     }
     let newDetails = [...details, ...[qishui, {
-      label: '首付',
+      label: '首付（含定金2万）',
       value: paymentPrice,
       type: 0
     }, {
@@ -639,47 +756,42 @@ Page({
     let withoutTotal = NP.plus(qishui.value, serviceFee, bankPrice, paymentPrice, houseBookPrice.value, hukouWuyePrice)
     let totalList = [{
       tagOptions: {
-        text: '落地房价',
+        text: '总房款',
         type: 'primary'
       },
       value: total
-    }, {
-      tagOptions: {
-        text: '不含贷款',
-        type: 'success'
-      },
-      value: withoutTotal
     }]
+    if (bankType !== 3) {
+      totalList[1] = {
+        tagOptions: {
+          text: '不含贷款',
+          type: 'success'
+        },
+        value: withoutTotal
+      }
+    }
     this.setData({
       'buyer.details': newDetails,
       'buyer.total': total,
       'buyer.withoutTotal': withoutTotal,
-      'buyer.totalList': totalList
+      'buyer.totalList': totalList,
+      'buyer.houseBookPrice': houseBookPrice.value
     })
   },
   calcTotal() {
     const {
-      hdZengzhishui,
-      hdGeshui,
-      hdCityshui,
-      hdEdushui,
-      hdLocalshui,
       serviceFee,
-      ceCityshui,
-      ceEdushui,
-      ceGeshui,
-      ceLocalshui,
-      ceZengzhishui,
       calcPrice,
       calcName,
       tudizengzhishui,
-      geshui
+      geshui,
+      zengzhishui
     } = this.data.seller
     const {
       oldPrice,
       unit,
       houseType,
-      wangqianPrice
+      numPoint
     } = this.data.calcForm
     const {
       eduRate,
@@ -696,7 +808,7 @@ Page({
       totalList: []
     }
 
-    seller.hdTotal = NP.plus(hdZengzhishui, geshui.hdValue, hdEdushui, hdCityshui, hdLocalshui, tudizengzhishui.hdValue, serviceFee)
+    seller.hdTotal = NP.plus(zengzhishui.hdValue, geshui.hdValue, zengzhishui.edushui, zengzhishui.cityshui, zengzhishui.localshui, tudizengzhishui.hdValue, serviceFee)
 
     const withoutTotal = this.data.buyer.withoutTotal
     // 核定所有合计
@@ -706,8 +818,9 @@ Page({
     if (oldPrice) {
       // 有原值
       // 差额所有前期合计
-      seller.ceTotal = NP.plus(ceZengzhishui, ceCityshui, ceEdushui, geshui.ceValue, ceLocalshui, tudizengzhishui.ceValue, serviceFee);
+      seller.ceTotal = NP.plus(zengzhishui.ceValue, zengzhishui.cityshui, zengzhishui.edushui, geshui.ceValue, zengzhishui.localshui, tudizengzhishui.ceValue, serviceFee);
       seller.ceTotalAll = NP.plus(seller.ceTotal, withoutTotal)
+
       seller.totalList = [{
         tagOptions: {
           text: '核定',
@@ -725,12 +838,14 @@ Page({
       }]
       if (seller.hdTotal < seller.ceTotal) {
         // 推荐核定计算
-        result.zengzhishui = hdZengzhishui
-        result.cityshui = hdCityshui
-        result.edushui = hdEdushui
-        result.localshui = hdLocalshui
+        result.zengzhishui = zengzhishui.hdValue
+        result.cityshui = zengzhishui.cityshui
+        result.edushui = zengzhishui.edushui
+        result.localshui = zengzhishui.localshui
+        zengzhishui.value = zengzhishui.hdValue
         geshui.value = geshui.hdValue
         result.total = seller.hdTotalAll
+        result.sellerTotal = seller.hdTotal
         tudizengzhishui.value = tudizengzhishui.hdValue
         result.tagOptions = {
           text: '核定',
@@ -739,11 +854,13 @@ Page({
         seller.totalList[0].isCurrent = 1
       } else {
         // 推荐差额计算
-        result.zengzhishui = ceZengzhishui
-        result.cityshui = ceCityshui
-        result.edushui = ceEdushui
-        result.localshui = ceLocalshui
+        result.zengzhishui = zengzhishui.ceValue
+        result.cityshui = zengzhishui.cityshui
+        result.edushui = zengzhishui.edushui
+        result.localshui = zengzhishui.localshui
+        result.sellerTotal = seller.ceTotal
         geshui.value = geshui.ceValue
+        zengzhishui.value = zengzhishui.ceValue
         result.total = seller.ceTotalAll
         tudizengzhishui.value = tudizengzhishui.ceValue
         result.tagOptions = {
@@ -754,26 +871,20 @@ Page({
       }
 
       result.zengzhiDesc = [{
-        label: `核定计算 (${calcName}/1.05*5%) 结果为 ${hdZengzhishui} ${unit}`,
-        isLower: hdZengzhishui < ceZengzhishui
+        label: `核定计算 (${calcName}/1.05*5%) 结果为 ${zengzhishui.hdValue} ${unit}`,
+        isLower: zengzhishui.hdValue < zengzhishui.ceValue
       }, {
-        label: `差额计算 (${calcName}-原值)*5% 结果为 ${ceZengzhishui} ${unit}`,
-        isLower: ceZengzhishui < hdZengzhishui
+        label: `差额计算 (${calcName}-原值)*5% 结果为 ${zengzhishui.ceValue} ${unit}`,
+        isLower: zengzhishui.ceValue < zengzhishui.hdValue
       }]
-      // result.geshuiDesc = [{
-      //   label: hdGeshui.label,
-      //   isLower: hdGeshui.value < ceGeshui.value
-      // }, {
-      //   label: ceGeshui.label,
-      //   isLower: ceGeshui.value < hdGeshui.value
-      // }]
     } else {
-      // 
-      result.zengzhishui = hdZengzhishui
-      result.cityshui = hdCityshui
-      result.edushui = hdEdushui
-      result.localshui = hdLocalshui
+      result.sellerTotal = seller.hdTotal
+      result.zengzhishui = zengzhishui.hdValue
+      result.cityshui = zengzhishui.cityshui
+      result.edushui = zengzhishui.edushui
+      result.localshui = zengzhishui.localshui
       geshui.value = geshui.hdValue
+      zengzhishui.value = zengzhishui.hdValue
       tudizengzhishui.value = tudizengzhishui.hdValue
       result.tagOptions = {
         text: '核定',
@@ -781,7 +892,7 @@ Page({
       }
       result.zengzhiDesc = [{
         label: `${calcName}/1.05*5%`,
-        isLower: hdZengzhishui < ceZengzhishui
+        isLower: zengzhishui.hdValue < zengzhishui.ceValue
       }]
       result.total = seller.hdTotalAll
       seller.totalList = [{
@@ -823,21 +934,27 @@ Page({
         label: `增值税*${localeduRate}*0.5`
       }]
     }, tudizengzhishui, geshui])
+
     if (houseType === 1) {
+      let yinhuashui = NP.round(NP.times(calcPrice, yinhuaRate), numPoint)
       // 非住房
       sellerDetails = sellerDetails.concat([{
         label: '印花税',
-        value: NP.times(calcPrice, yinhuaRate),
+        value: yinhuashui,
         type: 0,
         desc: [{
           label: `${calcName}*0.05%*0.5`
         }]
       }])
+      this.setData({
+        'seller.yinhuashui': yinhuashui
+      })
     }
     this.setData({
+      'seller.total': result.sellerTotal,
       'seller.totalList': seller.totalList,
       'result.totalAll': result.total,
-      'seller.details': sellerDetails,
+      'seller.details': sellerDetails
     })
     console.log('设置前期需支付合计seller', seller)
     console.log('设置前期需支付合计result', result)
@@ -845,22 +962,14 @@ Page({
   setSellerDetails() {
     const {
       serviceFee,
-      hdGeshui,
-      hdCityshui,
-      hdEdushui,
-      hdLocalshui,
-      hdZengzhishui,
-      ceGeshui,
-      ceCityshui,
-      ceEdushui,
-      ceLocalshui,
-      ceZengzhishui
+      geshui,
+      zengzhishui
     } = this.data.seller
 
     // 核定
-    let hdTotal = NP.plus(hdGeshui, hdCityshui, hdEdushui, hdLocalshui, hdZengzhishui, serviceFee)
+    let hdTotal = NP.plus(geshui.hdValue, zengzhishui.cityshui, zengzhishui.edushui, zengzhishui.localshui, zengzhishui.hdValue, serviceFee)
     // 差额
-    let ceTotal = NP.plus(ceGeshui, ceCityshui, ceEdushui, ceLocalshui, ceZengzhishui, serviceFee)
+    let ceTotal = NP.plus(geshui.ceValue, zengzhishui.cityshui, zengzhishui.edushui, zengzhishui.localshui, zengzhishui.ceValue, serviceFee)
     this.setData({
       'seller.hdTotal': hdTotal,
       'seller.ceTotal': ceTotal,

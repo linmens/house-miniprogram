@@ -12,22 +12,19 @@
 </view>
 <t-divider content="开发问答"></t-divider>
 <t-collapse theme="card" value="{{activeValues}}" bind:change="handleChange">
-
   <t-collapse-panel header="本小程序可以计算哪些费用？" value="{{0}}" expandIcon>
-    <view>
-      目前支持计算西安二手房、新房税费+前期需要支付现金费用，以及后期贷款还款信息。
-    </view>
-    <view class="m-t-20">
-      二手房可以根据转让类型(买卖、赠与、继承、婚内更名、离婚分割)、房屋类型(普通住宅、非住宅)等方面计算对应费用。
-    </view>
-    <view class="m-t-20">
-      新房可以跟进房屋类型(普通住宅、非住宅)等方面计算对应费用。
-    </view>
-    <view class="m-t-20">
-      贷款方面可以根据商业贷款、公积金贷款、组合贷款方式计算对应费用。
-    </view>
+    <text>二手房、一手房交易全流程费用，包括税费、交易费用、贷款月供及明细、各费用的支付节点，另外还支持计算赠与、继承、婚内更名、离婚分割产生的税费。</text>
   </t-collapse-panel>
-  <t-collapse-panel header="本小程序的开发初衷?" value="{{1}}">
+  <t-collapse-panel header="本小程序可以计算哪些住宅类型？" value="{{1}}" expandIcon>
+    <text>普通住宅、非住宅</text>
+  </t-collapse-panel>
+  <t-collapse-panel header="本小程序可以计算哪些贷款方式？" value="{{2}}" expandIcon>
+    <text>商业贷款、公积金贷款、组合贷款</text>
+  </t-collapse-panel>
+  <t-collapse-panel header="本小程序支持哪些地区?" value="{{3}}">
+    <text>目前支持西安地区</text>
+  </t-collapse-panel>
+  <t-collapse-panel header="本小程序的开发初衷?" value="{{4}}">
     <view>方便房产从业者可以快速计算交易费用。</view>
     <view>方便购房者清晰了解房产交易各个流程及所需费用。</view>
   </t-collapse-panel>

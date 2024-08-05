@@ -5,35 +5,14 @@
     "compileHotReLoad": true,
     "urlCheck": false
   },
-  "libVersion": "3.4.2",
+  "libVersion": "3.5.1",
   "condition": {
     "miniprogram": {
       "list": [
         {
-          "name": "pages/calc/calc",
-          "pathName": "pages/calc/calc",
-          "query": "buyIndex=1&title=%E6%96%B0%E6%88%BF%E4%BA%A4%E6%98%93%E8%B4%B9%E7%94%A8%E8%AE%A1%E7%AE%97",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "pages/calc/calc",
-          "pathName": "pages/calc/calc",
-          "query": "buyIndex=0&title=%E4%BA%8C%E6%89%8B%E6%88%BF%E4%BA%A4%E6%98%93%E8%B4%B9%E7%94%A8%E8%AE%A1%E7%AE%97",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "pages/result/result",
-          "pathName": "pages/result/result",
-          "query": "timestamp=1722304492028",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "pages/update-record/update-record",
-          "pathName": "pages/update-record/update-record",
-          "query": "",
+          "name": "pages/result-bank/result-bank",
+          "pathName": "pages/result-bank/result-bank",
+          "query": "timestamp=1722820547516",
           "launchMode": "default",
           "scene": null
         }

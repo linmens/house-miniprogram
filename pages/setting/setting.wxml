@@ -1,0 +1,9 @@
+<t-navbar title="设置" left-arrow>
+</t-navbar>
+<view class="m-t-20"></view>
+<t-cell-group theme="card">
+  <t-cell left-icon="gesture-click" title="是否关闭操作引导">
+    <t-switch bind:change="guideSkipChange" value="{{guideSkip}}" slot="note" />
+  </t-cell>
+  <!-- <t-cell left-icon="brightness-1" title="背景设置" arrow hover note="系统"></t-cell> -->
+</t-cell-group>

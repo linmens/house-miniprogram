@@ -22,15 +22,53 @@
     <t-row>
       <t-col span="12" wx:if="{{item.show}}" wx:for="{{list}}" wx:key="index">
         <view class="row-tag">
-          <t-tag theme="default" variant="dark">{{item.label}}</t-tag>
+          <t-tag custom-style="border:none" theme="default" variant="dark">{{item.label}}</t-tag>
           <text class="m-l-20 f-24">{{item.value}}</text>
         </view>
       </t-col>
     </t-row>
   </l-card>
-  <l-cell-group theme="card" wx:if="{{result.totalAll}}">
-    <!-- 商贷等额本息 -->
-    <!-- <l-cell wx:if="{{shangdaiDebx&&calcForm.loanBackIndex===0&&shangdaiDebx.monthlyPayment}}" suffix="{{calcForm.unit}}">
+  <l-card>
+    <t-steps layout="vertical" readonly theme="dot" current="{{55}}">
+      <t-step-item title="{{item.title}}" wx:for="{{result.steps}}" wx:key="index">
+        <view slot="content">
+          <t-tag wx:for="{{item.tags}}" wx:for-index="tagIndex" wx:key="tagIndex" wx:for-item="tag" size="small" custom-style="display:inline-block;  width: auto;border:none;margin-left:{{tagIndex!==0?'10rpx':0}}">{{tag}}</t-tag>
+
+          <view class="m-t-10"><text>{{item.h2}}</text></view>
+          <view style="color: var(--color-text-t0);">
+            <text style="font-size: 64rpx;">{{item.price}}</text>
+            <text class="font-20 m-l-20">{{calcForm.unit}}</text>
+          </view>
+          <view wx:for="{{item.details}}" wx:for-index="detailIndex" wx:key="detailIndex" wx:for-item="detail">{{detail}}</view>
+          <view wx:if="{{item.lastMonthPayment}}">
+            <text>最后一月还款{{item.lastMonthPayment}}{{calcForm.unit}}</text>
+          </view>
+          <view wx:if="{{item.extra}}" slot="extra" style="text-align: left;background: var(--color-secondary-default);padding: 10rpx;margin-top:10rpx;border-radius: 10rpx;color:var(--td-text-color-placeholder)">{{item.extra}}</view>
+        </view>
+      </t-step-item>
+      <!-- <t-step-item title="还款信息">
+        <view slot="content">
+          <t-tag size="small" custom-style="border:none">商业贷款{{calcForm.loanPrice}}{{calcForm.unit}}</t-tag>
+          <t-tag size="small" custom-style="border:none;margin-left: 10rpx;">等额本息</t-tag>
+          <t-tag size="small" custom-style="border:none;margin-left: 10rpx;">贷款30年</t-tag>
+          <view class="m-t-20">
+            <text>每月应还</text>
+          </view>
+          <view style="color: var(--color-text-t0);">
+            <text style="font-size: 64rpx;">9999</text>
+            <text class="font-20 m-l-20">{{calcForm.unit}}</text>
+          </view>
+          <view>
+            <text>最后一月还款2000元</text>
+          </view>
+        </view>
+        <view slot="extra" style="text-align: left;background: var(--color-secondary-default);padding: 10rpx;border-radius: 10rpx;color:var(--semi-color-text-2)">每月还款金额不变，其中还款的本逐月递增，利息逐月递减。</view>
+      </t-step-item> -->
+    </t-steps>
+  </l-card>
+  <!-- <l-cell-group theme="card" wx:if="{{result.totalAll}}"> -->
+  <!-- 商贷等额本息 -->
+  <!-- <l-cell wx:if="{{shangdaiDebx&&calcForm.loanBackIndex===0&&shangdaiDebx.monthlyPayment}}" suffix="{{calcForm.unit}}">
       <view slot="note">
         <text class="total-price">{{shangdaiDebx.monthlyPayment}}</text>
       </view>
@@ -43,8 +81,8 @@
         <t-tag theme="primary" variant="dark">等额本息</t-tag>
       </view>
     </l-cell> -->
-    <!-- 公积金贷等额本息 -->
-    <!-- <l-cell wx:if="{{gongjijinDebx&&calcForm.loanBackIndex===0&&gongjijinDebx.monthlyPayment}}" suffix="{{calcForm.unit}}">
+  <!-- 公积金贷等额本息 -->
+  <!-- <l-cell wx:if="{{gongjijinDebx&&calcForm.loanBackIndex===0&&gongjijinDebx.monthlyPayment}}" suffix="{{calcForm.unit}}">
       <view slot="title">
         <text style="margin-right: 20rpx;">月均还款</text>
         <t-tag theme="primary" variant="dark">等额本息</t-tag>
@@ -56,8 +94,8 @@
         <t-tag style="margin-right: 20rpx;">公积金贷{{calcForm.loanGjjPrice}}{{calcForm.unit}}</t-tag>
       </view>
     </l-cell> -->
-    <!-- 商贷等额本金 -->
-    <!-- <l-cell wx:if="{{shangdaiDebj&&calcForm.loanBackIndex===1&&shangdaiDebj.firstMonthPayment}}" suffix="{{calcForm.unit}}">
+  <!-- 商贷等额本金 -->
+  <!-- <l-cell wx:if="{{shangdaiDebj&&calcForm.loanBackIndex===1&&shangdaiDebj.firstMonthPayment}}" suffix="{{calcForm.unit}}">
       <view slot="title">
         <text style="margin-right: 20rpx;">首月还款</text>
         <t-tag theme="success" variant="dark">等额本金</t-tag>
@@ -68,7 +106,7 @@
         <t-tag class="m-l-20">逐月递减{{shangdaiDebj.monthlyDecrease}}{{calcForm.unit}}</t-tag>
       </view>
     </l-cell> -->
-    <!-- <l-cell wx:if="{{gongjijinDebj&&calcForm.loanBackIndex===1&&gongjijinDebj.firstMonthPayment}}" suffix="{{calcForm.unit}}">
+  <!-- <l-cell wx:if="{{gongjijinDebj&&calcForm.loanBackIndex===1&&gongjijinDebj.firstMonthPayment}}" suffix="{{calcForm.unit}}">
       <view slot="title">
         <text style="margin-right: 20rpx;">首月还款</text>
         <t-tag theme="success" variant="dark">等额本金</t-tag>
@@ -82,16 +120,16 @@
         <t-tag>逐月递减{{gongjijinDebj.monthlyDecrease}}{{calcForm.unit}}</t-tag>
       </view>
     </l-cell> -->
-    <!-- <l-cell title="末月还款（月供）" description="等额本金" wx:if="{{shangdai&&shangdai[calcForm.loanBackIndex]&&calcForm.loanBackIndex===1&&shangdai[calcForm.loanBackIndex].lastMonthPayment}}" suffix="{{calcForm.unit}}">
+  <!-- <l-cell title="末月还款（月供）" description="等额本金" wx:if="{{shangdai&&shangdai[calcForm.loanBackIndex]&&calcForm.loanBackIndex===1&&shangdai[calcForm.loanBackIndex].lastMonthPayment}}" suffix="{{calcForm.unit}}">
         <text slot="note" class="total-price">{{shangdai[calcForm.loanBackIndex].lastMonthPayment}}</text>
       </l-cell> -->
-    <l-cell title="前期支付金额合计" suffix="{{calcForm.unit}}">
+  <!-- <l-cell title="支出合计" suffix="{{calcForm.unit}}">
       <text slot="note" class="total-price">{{result.totalAll}}</text>
-    </l-cell>
-  </l-cell-group>
+    </l-cell> -->
+  <!-- </l-cell-group> -->
 </view>
 <view id="section-1" class="section">
-  <t-divider content="税费信息" />
+  <t-divider content="费用明细" />
   <l-card wx:if="{{calcForm.exchangeType===1}}" headerTitle="赠与方合计" headerValue="{{sender.total}}" info="{{sender}}" unit="{{calcForm.unit}}"></l-card>
   <l-card wx:if="{{calcForm.exchangeType===1}}" headerValue="{{getter.total}}" headerTitle="受赠方合计" info="{{getter}}" unit="{{calcForm.unit}}"></l-card>
   <l-card wx:if="{{calcForm.exchangeType===2}}" headerValue="{{extender.total}}" headerTitle="继承人合计" info="{{extender}}" unit="{{calcForm.unit}}"></l-card>
@@ -100,8 +138,8 @@
     <l-card headerValue="{{divorcer.total}}" headerTitle="夫妻双方合计" info="{{divorcer}}" unit="{{calcForm.unit}}"></l-card>
     <l-card headerValue="{{another.total}}" headerTitle="房屋权属变更后的一方合计" info="{{another}}" unit="{{calcForm.unit}}"></l-card>
   </block>
-  <l-card wx:if="{{calcForm.exchangeType===0&&calcForm.buyIndex===0}}" headerValue="{{seller.total}}" headerTitle="卖方合计" info="{{seller}}" unit="{{calcForm.unit}}"></l-card>
-  <l-card wx:if="{{calcForm.exchangeType===0}}" headerValue="{{seller.total}}" headerTitle="买方合计" info="{{buyer}}" unit="{{calcForm.unit}}"></l-card>
+  <l-card wx:if="{{calcForm.exchangeType===0&&calcForm.buyIndex===0}}" headerTitle="卖方合计" info="{{seller}}" unit="{{calcForm.unit}}"></l-card>
+  <l-card wx:if="{{calcForm.exchangeType===0}}" headerTitle="买方合计" info="{{buyer}}" unit="{{calcForm.unit}}"></l-card>
 </view>
 <view id="section-2" class="section" wx:if="{{calcForm.bankType!==3&&calcForm.exchangeType===0}}">
   <t-divider content="贷款信息" />
@@ -219,8 +257,42 @@
   </l-card>
 </view>
 
-
-<view id="section-3" class="section">
+<!-- 支付节点 -->
+<view id="section-3" class="section" wx:if="{{paySteps&&paySteps.length}}">
+  <t-divider content="支付节点" />
+  <l-card headerTitle="支付节点">
+    <view slot="header-right" class="font-20">
+      <text>结果仅供参考，实际以合同约定为准。</text>
+    </view>
+    <t-steps layout="vertical" readonly theme="dot" current="{{55}}">
+      <t-step-item wx:for="{{paySteps}}" wx:key="index">
+        <view class="flex f-row-between f-col-center t-steps-item__title">
+          <text>{{item.title}}</text>
+          <text class="font-24" style="color: var(--color-text-t3);">{{item.time}}</text>
+        </view>
+        <view slot="content">
+          <view wx:for="{{item.list}}" wx:key="listIndex" wx:for-item="listItem" wx:for-index="listIndex" style="background: var(--color-secondary-default);padding:10rpx;border-radius: 10rpx;margin-top: 20rpx;">
+            <view class="flex f-row-between">
+              <t-tag theme="{{listItem.tagTheme}}" size="small">{{listItem.tagText}}</t-tag>
+              <view>
+                <text>合计：{{listItem.total}}</text>
+                <text class="font-20" style="margin-left: 10rpx;">{{calcForm.unit}}</text>
+              </view>
+            </view>
+            <view wx:if="{{detailsItem.value}}" wx:for="{{listItem.details}}" wx:for-item="detailsItem" wx:for-index="detailsIndex" wx:key="detailsIndex" class="flex f-row-between m-t-10">
+              <text>{{detailsItem.label}}</text>
+              <view>
+                <text>{{detailsItem.value}}</text>
+                <text class="font-20" style="margin-left: 10rpx;">{{calcForm.unit}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </t-step-item>
+    </t-steps>
+  </l-card>
+</view>
+<view id="section-4" class="section">
   <!-- 计税依据 -->
   <t-divider content="计税依据" />
   <view>
@@ -242,9 +314,7 @@
     </l-card>
   </view>
 </view>
-<view id="section-4" class="section">
 
-</view>
 
 <view class="t-tab-bar--placeholder__wrap">
   <view class="t-tab-bar-safe"></view>

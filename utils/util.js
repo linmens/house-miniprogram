@@ -1,4 +1,6 @@
  import NP from 'number-precision'
+ import BigNumber from 'bignumber.js'
+
  import _ from 'lodash'
 
  const formatTime = date => {
@@ -247,23 +249,48 @@
   * totalInterest: 支付的总利息。
   * totalPayment: 还款总额。
   */
+
  export function calculateEqualPrincipalAndInterest(loanAmount, annualInterestRate, loanTermYears, unit = '元') {
-   const months = loanTermYears * 12;
-   const monthlyInterestRate = NP.divide(annualInterestRate, 12);
-   console.log(monthlyInterestRate, 'monthlyInterestRate')
-   const monthlyPayment = loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months) / (Math.pow(1 + monthlyInterestRate, months) - 1);
-   const totalPayment = monthlyPayment * months;
-   const totalInterest = totalPayment - loanAmount;
+   const months = new BigNumber(loanTermYears).times(12); // 计算贷款月数
+   const monthlyInterestRate = new BigNumber(annualInterestRate).div(12); // 计算月利率
 
+   // 计算每月还款额
+   const one = new BigNumber(1);
+   const powPart = one.plus(monthlyInterestRate).pow(months);
+   const numerator = new BigNumber(loanAmount).times(monthlyInterestRate).times(powPart);
+   const denominator = powPart.minus(one);
+   const monthlyPayment = numerator.div(denominator);
+
+   // 计算总还款额和总利息
+   const totalPayment = monthlyPayment.times(months);
+   const totalInterest = totalPayment.minus(loanAmount);
+
+   // 设置精度
    const precision = unit === '万元' ? 4 : 2;
+   const factor = new BigNumber(10).pow(precision);
 
+   // 返回结果
    return {
-     loanMonths: months,
-     monthlyPayment: Math.round((monthlyPayment) * Math.pow(10, precision)) / Math.pow(10, precision),
-     totalInterest: Math.round((totalInterest) * Math.pow(10, precision)) / Math.pow(10, precision),
-     totalPayment: Math.round((totalPayment) * Math.pow(10, precision)) / Math.pow(10, precision)
+     loanMonths: months.toNumber(),
+     monthlyPayment: monthlyPayment.times(factor).integerValue(BigNumber.ROUND_HALF_UP).div(factor).toNumber(),
+     totalInterest: totalInterest.times(factor).integerValue(BigNumber.ROUND_HALF_UP).div(factor).toNumber(),
+     totalPayment: totalPayment.times(factor).integerValue(BigNumber.ROUND_HALF_UP).div(factor).toNumber()
    };
  }
+ //  export function calculateEqualPrincipalAndInterest(loanAmount, annualInterestRate, loanTermYears, unit = '元') {
+ //    const months = loanTermYears * 12;
+ //    const monthlyInterestRate = NP.divide(annualInterestRate, 12);
+ //    const monthlyPayment = NP.strip(NP.times(loanAmount, (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, months))) / (Math.pow(1 + monthlyInterestRate, months) - 1))
+ //    const totalPayment = monthlyPayment * months;
+ //    const totalInterest = NP.minus(totalPayment, loanAmount)
+ //    const precision = unit === '万元' ? 4 : 2;
+ //    return {
+ //      loanMonths: months,
+ //      monthlyPayment: NP.strip(Math.round(monthlyPayment * (Math.pow(10, precision))) / (Math.pow(10, precision))),
+ //      //  totalInterest: Math.round(totalInterest * Math.pow(10, precision)) / Math.pow(10, precision),
+ //      //  totalPayment: Math.round(totalPayment * Math.pow(10, precision)) / Math.pow(10, precision)
+ //    };
+ //  }
  /**
   * 计算等额本金还款
   * @param {number} loanAmount - 贷款金额
@@ -278,32 +305,67 @@
   * totalInterest: 支付的总利息。
   * totalPayment: 还款总额。
   */
- export function calculateEqualPrincipal(loanAmount, annualInterestRate, loanTermYears, unit = '元') {
-   const months = loanTermYears * 12;
-   const monthlyPrincipal = loanAmount / months;
-   const monthlyInterestRate = annualInterestRate / 12;
-   const firstMonthPayment = monthlyPrincipal + (loanAmount * monthlyInterestRate);
-   const lastMonthPayment = monthlyPrincipal + (monthlyPrincipal * monthlyInterestRate);
-   const monthlyDecrease = monthlyPrincipal * monthlyInterestRate;
-   let totalInterest = 0;
 
-   for (let i = 0; i < months; i++) {
-     totalInterest += (loanAmount - i * monthlyPrincipal) * monthlyInterestRate;
+ export function calculateEqualPrincipal(loanAmount, annualInterestRate, loanTermYears, unit = '元') {
+   const months = new BigNumber(loanTermYears).times(12); // 贷款月数
+   const loanAmountBN = new BigNumber(loanAmount); // 贷款金额
+   const monthlyPrincipal = loanAmountBN.div(months); // 每月还款本金
+   const monthlyInterestRate = new BigNumber(annualInterestRate).div(12); // 月利率
+
+   // 计算第一个月还款额
+   const firstMonthPayment = monthlyPrincipal.plus(loanAmountBN.times(monthlyInterestRate));
+   // 计算最后一个月还款额
+   const lastMonthPayment = monthlyPrincipal.plus(monthlyPrincipal.times(monthlyInterestRate));
+   // 每月减少的还款金额
+   const monthlyDecrease = monthlyPrincipal.times(monthlyInterestRate);
+
+   let totalInterest = new BigNumber(0); // 总利息
+   for (let i = 0; i < months.toNumber(); i++) {
+     totalInterest = totalInterest.plus(
+       loanAmountBN.minus(monthlyPrincipal.times(i)).times(monthlyInterestRate)
+     );
    }
 
-   const totalPayment = loanAmount + totalInterest;
+   // 总还款额
+   const totalPayment = loanAmountBN.plus(totalInterest);
 
+   // 设置精度
    const precision = unit === '万元' ? 4 : 2;
+   const factor = new BigNumber(10).pow(precision);
 
+   // 返回结果
    return {
-     loanMonths: months,
-     firstMonthPayment: Math.round((firstMonthPayment) * Math.pow(10, precision)) / Math.pow(10, precision),
-     lastMonthPayment: Math.round((lastMonthPayment) * Math.pow(10, precision)) / Math.pow(10, precision),
-     monthlyDecrease: Math.round((monthlyDecrease) * Math.pow(10, precision)) / Math.pow(10, precision),
-     totalInterest: Math.round((totalInterest) * Math.pow(10, precision)) / Math.pow(10, precision),
-     totalPayment: Math.round((totalPayment) * Math.pow(10, precision)) / Math.pow(10, precision)
+     loanMonths: months.toNumber(),
+     firstMonthPayment: firstMonthPayment.times(factor).integerValue(BigNumber.ROUND_HALF_UP).div(factor).toNumber(),
+     lastMonthPayment: lastMonthPayment.times(factor).integerValue(BigNumber.ROUND_HALF_UP).div(factor).toNumber(),
+     monthlyDecrease: monthlyDecrease.times(factor).integerValue(BigNumber.ROUND_HALF_UP).div(factor).toNumber(),
+     totalInterest: totalInterest.times(factor).integerValue(BigNumber.ROUND_HALF_UP).div(factor).toNumber(),
+     totalPayment: totalPayment.times(factor).integerValue(BigNumber.ROUND_HALF_UP).div(factor).toNumber()
    };
  }
+ //  export function calculateEqualPrincipal(loanAmount, annualInterestRate, loanTermYears, unit = '元') {
+ //    const months = loanTermYears * 12;
+ //    const monthlyPrincipal = (loanAmount / months);
+ //    const monthlyInterestRate = annualInterestRate / 12;
+ //    const firstMonthPayment = monthlyPrincipal + (loanAmount * monthlyInterestRate)
+ //    const lastMonthPayment = monthlyPrincipal + (monthlyPrincipal * monthlyInterestRate);
+ //    const monthlyDecrease = monthlyPrincipal * monthlyInterestRate;
+ //    let totalInterest = 0;
+ //    const precision = unit === '万元' ? 4 : 2;
+ //    for (let i = 0; i < months; i++) {
+ //      totalInterest += (loanAmount - i * monthlyPrincipal) * monthlyInterestRate
+ //    }
+ //    const totalPayment = (loanAmount + totalInterest)
+
+ //    return {
+ //      loanMonths: months,
+ //      firstMonthPayment: Math.round((firstMonthPayment) * Math.pow(10, precision)) / Math.pow(10, precision),
+ //      lastMonthPayment: Math.round((lastMonthPayment) * Math.pow(10, precision)) / Math.pow(10, precision),
+ //      monthlyDecrease: Math.round((monthlyDecrease) * Math.pow(10, precision)) / Math.pow(10, precision),
+ //      totalInterest: Math.round((totalInterest) * Math.pow(10, precision)) / Math.pow(10, precision),
+ //      totalPayment: Math.round((totalPayment) * Math.pow(10, precision)) / Math.pow(10, precision)
+ //    };
+ //  }
 
  /**
   * 获取首付比例
@@ -450,10 +512,5 @@
        resolve(res)
 
      });
-
-     //  wx.createSelectorQuery()[all ? 'selectAll' : 'select'](selector).scrollOffset()((scrollOffset) => {
-     //    console.log(scrollOffset)
-     //    resolve(scrollOffset)
-     //  }).exec()
    })
  }

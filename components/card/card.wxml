@@ -3,7 +3,11 @@
   <slot name="header"></slot>
   <view class="l-card__header">
     <text wx:if="{{headerTitle}}">{{headerTitle}}</text>
-    <text wx:if="{{headerValue&&!info.custom}}">{{headerValue}} {{unit}}</text>
+
+    <view class="l-card__header__right">
+      <text wx:if="{{headerValue&&!info.custom}}">{{headerValue}} {{unit}}</text>
+      <slot name="header-right"></slot>
+    </view>
     <view class="flex-1" wx:if="{{info.totalList}}">
       <view wx:for="{{info.totalList}}" wx:key="index" class="flex f-col-center">
         <view class="flex-1 flex " style="justify-content: flex-end;align-items: baseline;">

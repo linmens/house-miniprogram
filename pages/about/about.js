@@ -14,7 +14,12 @@ Page({
   onLoad(options) {
 
   },
-
+  handleChange(e) {
+    console.log(e, 'activeValues')
+    this.setData({
+      activeValues: e.detail.value,
+    });
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

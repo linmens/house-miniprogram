@@ -19,16 +19,7 @@
      calcDivorceAll() {
 
        let totalAll = NP.plus(this.data.divorcer.total, this.data.another.total)
-       //  let details = [{
-       //    title: '核定征收',
-       //    theme: 'primary',
-       //    show: 1,
-       //    data: [{
-       //      label: '全额',
-       //      value: total,
-       //      show: 1
-       //    }, ]
-       //  }]
+
        this.setData({
          'result.totalAll': totalAll,
        })

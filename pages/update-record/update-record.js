@@ -6,6 +6,25 @@ Page({
    */
   data: {
     records: [{
+      version: '0.9.0',
+      date: '2024-08-01',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '新增功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '新增一手房、二手房计算结果生成相应的支付节点',
+          type: 'text'
+        }]
+      }]
+    }, {
       version: '0.8.0',
       date: '2024-07-29',
       classname: 'h2',
@@ -52,7 +71,7 @@ Page({
         text: '个人房产计算',
         theme: 'primary',
         data: [{
-          text: '二手房、新房交易费用计算整体计算流程调整为步骤计算模式',
+          text: '二手房、一手房交易费用计算整体计算流程调整为步骤计算模式',
           type: 'text'
         }]
       }]
@@ -222,7 +241,7 @@ Page({
         text: '个人房产计算',
         theme: 'primary',
         data: [{
-          text: '新增新房、二手房相关计算逻辑'
+          text: '新增一手房、二手房相关计算逻辑'
         }]
       }, {
         text: '个人房产计算',

@@ -4,7 +4,7 @@ export const buyTypes = [{
   },
   {
     value: 2,
-    label: '新房'
+    label: '一手房'
   }
 ];
 
@@ -252,7 +252,7 @@ export const fengeTypes = [{
   value: 1,
   label: '夫妻一方的婚前房屋归属另一方'
 }]
-// 新房楼层电梯
+// 一手房楼层电梯
 export const newHouseTypes = [{
   value: 0,
   label: '7层以下，不配备电梯',

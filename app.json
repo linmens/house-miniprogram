@@ -8,9 +8,13 @@
     "pages/update-record/update-record",
     "pages/about/about",
     "pages/calc/calc",
-    "pages/calc-other/calc-other"
+    "pages/calc-other/calc-other",
+    "pages/setting/setting",
+    "pages/calc-bank/calc-bank",
+    "pages/result-bank/result-bank"
   ],
   "usingComponents": {
+    "global-provider": "./components/global-provider/global-provider",
     "t-sticky": "tdesign-miniprogram/sticky/sticky",
     "t-switch": "tdesign-miniprogram/switch/switch",
     "t-link": "tdesign-miniprogram/link/link",
@@ -52,8 +56,7 @@
   },
   "tabBar": {
     "custom": true,
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/index/index"
       },
       {

@@ -292,8 +292,9 @@
     </t-steps>
   </l-card>
 </view>
-<view id="section-4" class="section">
-  <!-- 计税依据 -->
+<!-- 计税依据 -->
+<!-- <view id="section-4" class="section">
+
   <t-divider content="计税依据" />
   <view>
 
@@ -313,7 +314,7 @@
       </t-cell>
     </l-card>
   </view>
-</view>
+</view> -->
 
 
 <view class="t-tab-bar--placeholder__wrap">

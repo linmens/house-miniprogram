@@ -1,4 +1,4 @@
 export default {
-  VERSION: '0.9.0',
-  APP_NAME: '房产计算助手'
+  VERSION: '1.0.1',
+  APP_NAME: '房产交易全能算'
 }

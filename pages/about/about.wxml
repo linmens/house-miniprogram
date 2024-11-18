@@ -7,7 +7,7 @@
   </view>
 </t-navbar>
 <view class="p-20" style="color:var(--td-warning-color)">
-  <text>欢迎使用房产计算助手！</text>
+  <text>欢迎使用房产交易全能算！</text>
   <text>计算结果仅供参考，若有计算错误请联系开发者。</text>
 </view>
 <t-divider content="开发问答"></t-divider>

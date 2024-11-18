@@ -62,7 +62,7 @@ Page({
     })
   },
   /**
-   * 元 万元 切换
+   * 元 万 切换
    * @param {*} e 
    */
   onTypesChange(e) {

@@ -27,6 +27,7 @@ page,
   --color-text-t3: rgba(var(--neutral-950), 0.6);
   --color-line-l3: rgba(var(--neutral-950), 0.06);
   --color-bg-b1-white: rgba(var(--white), 1);
+  --color-bg-bo-white: rgba(var(--white), 0);
   --color-secondary-default: rgba(var(--neutral-100), 1);
   --semi-color-text-2: rgba(var(--semi-grey-9), 0.6);
   --semi-grey-9: 35, 28, 31;
@@ -74,6 +75,7 @@ page,
     --td-text-card-color: rgb(194, 215, 239);
     --color-line-l3: rgba(var(--white), 0.04);
     --color-bg-b0: rgba(var(--neutral-950), 1);
+    --color-bg-bo-white: rgba(var(--neutral-900), 0);
     --color-bg-b1-white: rgba(var(--neutral-900), 1);
     --color-bg-b2: rgba(var(--neutral-800), 1);
     --color-secondary-default: rgba(var(--neutral-100), 0.08);
@@ -98,6 +100,10 @@ page,
     --td-navbar-bg-color,
     var(--td-bg-color-container, var(--td-font-white-1, #ffffff))
   );
+}
+.unit {
+  font-size: 20rpx;
+  margin-left: 8rpx;
 }
 .text-color-t0 {
   color: var(--color-text-t0);

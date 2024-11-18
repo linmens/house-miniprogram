@@ -6,6 +6,44 @@ Page({
    */
   data: {
     records: [{
+      version: '1.0.1',
+      date: '2024-11-18',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '新增功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '优化细节,完善契税新政策计算逻辑',
+          type: 'text'
+        }]
+      }]
+    }, {
+      version: '1.0.0',
+      date: '2024-08-05',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '新增功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '新增房贷计算结果，贷款明细',
+          type: 'text'
+        }]
+      }]
+    }, {
       version: '0.9.0',
       date: '2024-08-01',
       classname: 'h2',
@@ -290,7 +328,7 @@ Page({
         text: '个人房产计算',
         theme: 'primary',
         data: [{
-          text: '支持计算单位元、万元切换',
+          text: '支持计算单位元、万切换',
           type: 'text'
         }]
       }, {

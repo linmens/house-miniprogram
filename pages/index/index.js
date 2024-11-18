@@ -12,13 +12,13 @@ Page({
 
   data: {
     cateMenu: [{
-      title: '购买一手房全流程费用计算',
+      title: '一手房费用计算',
       label: '贷款、全款、税费、支付节点',
       icon: 'city-3',
       backgroundClass: 'bg2',
       url: '/pages/calc/calc?buyIndex=1&title=一手房交易费用计算'
     }, {
-      title: '购买二手房全流程费用计算',
+      title: '二手房全流程费用精算',
       label: '贷款、全款、税费、交易费用、支付节点',
       icon: 'houses-2',
       backgroundClass: 'bg1',

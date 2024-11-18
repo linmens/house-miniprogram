@@ -23,11 +23,11 @@ Component({
         icon: 'home',
         ariaLabel: '首页'
       },
-      {
-        value: 'label_2',
-        icon: 'control-platform',
-        ariaLabel: '工具箱'
-      },
+      // {
+      //   value: 'label_2',
+      //   icon: 'control-platform',
+      //   ariaLabel: '工具箱'
+      // },
       {
         value: 'pages/user/user',
         icon: 'user',

@@ -10,7 +10,7 @@
     </l-tabs>
   </l-cell>
   <l-cell left-icon="verify" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showNotice" data-content-key="pingguPrice" title="评估价格" required suffix="{{calcForm.unit}}">
-    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onPingguPriceChange" value="{{calcForm.pingguPrice}}" placeholder="请输入评估价格" type="number"></t-input>
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onPingguPriceChange" value="{{calcForm.pingguPrice}}" placeholder="请输入评估价格" type="digit"></t-input>
   </l-cell>
   <l-cell wx:if="{{calcForm.exchangeType===2}}" title="是否法定继承">
     <l-tabs slot="note" current-index="{{calcForm.fadingIndex}}" bind:change="onFadingTypeChange" list="{{fadingTypes}}">

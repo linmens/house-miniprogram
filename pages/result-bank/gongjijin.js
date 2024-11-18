@@ -9,7 +9,9 @@
    data: {
      gongjijin: [],
      gongjijinInfo: {
-       totalList: []
+       totalList: [],
+       details: [],
+       showAll: false
      },
      gongjijinDebx: {
 
@@ -112,6 +114,7 @@
        } = this.data.calcForm
        const debxResult = calculateEqualPrincipalAndInterest(loanGjjPrice, loanGjjRate / 100, loanYear, unit)
        const debjResult = calculateEqualPrincipal(loanGjjPrice, loanGjjRate / 100, loanYear, unit)
+       let details = loanBackIndex === 0 ? debxResult.paymentDetails.slice(0, 3) : debjResult.paymentDetails.slice(0, 3)
        console.log(debxResult, debxResult)
        let gongjijin = [{
          title: '等额本息',
@@ -123,9 +126,9 @@
          ...debjResult
        }]
 
-       let gongjijinInfo = {
-         details: [],
-         totalList: [{
+       let totalList =
+
+         [{
            tagOptions: {
              text: '贷款月数',
              type: 'success'
@@ -147,12 +150,12 @@
            value: loanGjjPrice,
            unit: unit
          }]
-       }
 
 
        this.setData({
          gongjijin: gongjijin,
-         'gongjijinInfo': gongjijinInfo,
+         'gongjijinInfo.totalList': totalList,
+         'gongjijinInfo.details': details,
          gongjijinDebx: gongjijin[0],
          gongjijinDebj: gongjijin[1],
        })

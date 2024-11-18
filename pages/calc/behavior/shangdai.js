@@ -33,7 +33,7 @@
        * 设置贷款金额
        * @param type 0 当改变首付金额时 1 网签*贷款比例 2 组合贷款金额 - 公积金贷款金额
        */
-      setLoanPrice(type) {
+      async setLoanPrice(type) {
         const {
           paymentPrice,
           paymentRate,
@@ -45,10 +45,10 @@
         } = this.data.calcForm
         let loanPrice = 0
         let wangqianPrice = this.data.calcForm.wangqianPrice
-        console.log('开始使用网签价计算商贷贷款金额...')
+        console.log('开始使用网签价计算商贷贷款金额...', wangqianPrice)
         if (pingguPrice) {
           wangqianPrice = pingguPrice
-          console.log('开始使用评估价计算商贷贷款金额...')
+          console.log('开始使用评估价计算商贷贷款金额...', wangqianPrice)
         }
         switch (type) {
           case 0:
@@ -56,7 +56,9 @@
             console.log('开始计算商贷贷款金额(网签-首付):', loanPrice)
             break;
           case 1:
-            loanPrice = calculateLoan(wangqianPrice, paymentRate, unit)
+            loanPrice = await calculateLoan(wangqianPrice, paymentRate, unit)
+            console.log('开始计算商贷贷款金额,当前网签金额:', wangqianPrice)
+            console.log('开始计算商贷贷款金额,当前贷款比例:', paymentRate)
             console.log('开始计算商贷贷款金额(网签*贷款比例):', loanPrice)
             break;
           case 2:

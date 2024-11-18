@@ -13,6 +13,14 @@ const props = {
   unit: {
     type: String
   },
-  calcForm: Object
+  calcForm: Object,
+  customHeaderStyle: {
+    type: String,
+    value: ''
+  },
+  customMainStyle: {
+    type: String,
+    value: ''
+  }
 }
 export default props;

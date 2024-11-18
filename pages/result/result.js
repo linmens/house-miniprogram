@@ -79,10 +79,10 @@ Page({
       //   label: '支付节点',
       //   value: 3
       // },
-      {
-        label: '计税依据',
-        value: 4
-      }
+      // {
+      //   label: '计税依据',
+      //   value: 4
+      // }
     ],
     sectionTops: [],
     scrollTop: 0,
@@ -1035,57 +1035,57 @@ Page({
     }
     switch (checkIndex) {
       case 0:
-        // 90㎡以下 
+        // 144㎡以下 
         if (buyerIndex === 0) {
           // 首套
           result.value = NP.times(calcPrice, 0.01);
           result.desc = [{
-            label: `家庭首套90㎡及以下(${calcName}*0.01)`
+            label: `家庭首套144㎡及以下(${calcName}*0.01)`
           }]
-          console.log('家庭首套90㎡及以下', result)
+          console.log('家庭首套144㎡及以下', result)
         }
         // 二套
         if (buyerIndex === 1) {
           result.value = NP.times(calcPrice, 0.01);
           result.desc = [{
-            label: `家庭二套90㎡及以下(${calcName}*0.01)`
+            label: `家庭二套144㎡及以下(${calcName}*0.01)`
           }]
-          console.log('家庭二套90㎡及以下', result)
+          console.log('家庭二套144㎡及以下', result)
         }
         // 三套及以上
         if (buyerIndex === 2) {
           result.value = NP.times(calcPrice, 0.03);
           result.desc = [{
-            label: `家庭三套及以上90㎡及以下(${calcName}*0.03)`
+            label: `家庭三套及以上(${calcName}*0.03)`
           }]
-          console.log('家庭三套及以上90㎡及以下', result)
+          console.log('家庭三套及以上', result)
         }
         break;
       case 1:
-        // 90㎡以上
+        // 144㎡以上
         if (buyerIndex === 0) {
           // 首套
           result.value = NP.times(calcPrice, 0.015);
           result.desc = [{
-            label: `家庭首套90㎡以上(${calcName}*0.015)`
+            label: `家庭首套144㎡以上(${calcName}*0.015)`
           }]
-          console.log('家庭首套90㎡以上', result)
+          console.log('家庭首套144㎡以上', result)
         }
         // 二套
         if (buyerIndex === 1) {
           result.value = NP.times(calcPrice, 0.02);
           result.desc = [{
-            label: `家庭二套90㎡以上(${calcName}*0.02)`
+            label: `家庭二套144㎡以上(${calcName}*0.02)`
           }]
-          console.log('家庭二套90㎡以上', result)
+          console.log('家庭二套144㎡以上', result)
         }
         // 三套及以上
         if (buyerIndex === 2) {
           result.value = NP.times(calcPrice, 0.03);
           result.desc = [{
-            label: `家庭三套及以上90㎡以上(${calcName}*0.03)`
+            label: `家庭三套及以上144㎡以上(${calcName}*0.03)`
           }]
-          console.log('家庭三套及以上90㎡以上', result)
+          console.log('家庭三套及以上144㎡以上', result)
         }
         break;
       case 2:
@@ -1125,10 +1125,10 @@ Page({
         case 2:
           // 自定义面积
 
-          if (area <= 90) {
+          if (area <= 144) {
             this.checkQishuiIndex(0)
           }
-          if (area > 90) {
+          if (area > 144) {
             this.checkQishuiIndex(1)
           }
           break;

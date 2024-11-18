@@ -45,11 +45,12 @@
     "t-tab-bar-item": "tdesign-miniprogram/tab-bar-item/tab-bar-item",
     "l-tab-bar": "./components/l-tab-bar/index",
     "t-steps": "tdesign-miniprogram/steps/steps",
-    "t-step-item": "tdesign-miniprogram/step-item/step-item"
+    "t-step-item": "tdesign-miniprogram/step-item/step-item",
+    "t-badge": "tdesign-miniprogram/badge/badge"
   },
   "window": {
     "navigationBarTextStyle": "@navTxtStyle",
-    "navigationBarTitleText": "房产计算助手",
+    "navigationBarTitleText": "房产交易全能算",
     "navigationBarBackgroundColor": "@navBgColor",
     "backgroundColor": "@bgColor",
     "backgroundColorTop": "@bgColorTop"

@@ -266,7 +266,7 @@ Page({
         loanGjjMaxPrice
       } = this.data.calcForm
       let loanGroupPrice = 0
-      let loanLowPrice = 0
+
       let wangqianPrice = this.data.calcForm.wangqianPrice
       if (pingguPrice) {
         wangqianPrice = pingguPrice
@@ -286,10 +286,7 @@ Page({
         default:
           break;
       }
-      loanLowPrice = NP.minus(loanGroupPrice, loanGjjMaxPrice)
-      if (loanLowPrice < 0) {
-        loanLowPrice = 0
-      }
+
       if (loanGroupPrice < loanGjjMaxPrice) {
         this.setData({
           'calcForm.loanGjjMaxPrice': loanGroupPrice
@@ -297,7 +294,6 @@ Page({
       }
       this.setData({
         'calcForm.loanGroupPrice': loanGroupPrice,
-        'calcForm.loanLowPrice': loanLowPrice
       })
       resolve()
     })
@@ -457,6 +453,15 @@ Page({
         tabs[2].disabled = true
         this.setData({
           'calcForm.bankType': 3,
+          tabs: tabs
+        })
+      }
+      if (houseType === 0) {
+        // 普通住宅
+        tabs[0].disabled = false
+        tabs[1].disabled = false
+        tabs[2].disabled = false
+        this.setData({
           tabs: tabs
         })
       }

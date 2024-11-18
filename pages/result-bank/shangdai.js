@@ -6,14 +6,15 @@
    data: {
      shangdai: [],
      shangdaiInfo: {
-       totalList: []
+       totalList: [],
+       details: []
      },
      shangdaiDebx: {
 
      },
      shangdaiDebj: {
 
-     }
+     },
    },
    methods: {
      // 计算商贷结果
@@ -27,6 +28,7 @@
        } = this.data.calcForm
        const debxResult = calculateEqualPrincipalAndInterest(loanPrice, loanRate / 100, loanYear, unit)
        const debjResult = calculateEqualPrincipal(loanPrice, loanRate / 100, loanYear, unit)
+       let details = loanBackIndex === 0 ? debxResult.paymentDetails.slice(0, 3) : debjResult.paymentDetails.slice(0, 3)
        console.log(debxResult, debjResult, 'result')
        let shangdai = [{
          title: '等额本息',
@@ -64,7 +66,8 @@
          shangdai: shangdai,
          'shangdaiInfo.totalList': shangdaiInfoDetails,
          shangdaiDebx: shangdai[0],
-         shangdaiDebj: shangdai[1]
+         shangdaiDebj: shangdai[1],
+         'shangdaiInfo.details': details
        })
      }
    }

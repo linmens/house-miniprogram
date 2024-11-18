@@ -58,7 +58,7 @@
   </l-cell>
   <view id="guide--step-0">
     <l-cell left-icon="transform" required wx:if="{{calcForm.exchangeType===0}}" title="建筑面积" suffix="㎡">
-      <t-input customStyle="padding:0" slot="note" borderless align="right" type="number" bind:change="onAreaChange" value="{{calcForm.area}}" placeholder="请输入建筑面积"></t-input>
+      <t-input customStyle="padding:0" slot="note" borderless align="right" type="digit" bind:change="onAreaChange" value="{{calcForm.area}}" placeholder="请输入建筑面积"></t-input>
     </l-cell>
   </view>
 
@@ -99,19 +99,19 @@
       </l-tabs>
     </l-cell>
     <l-cell required wx:if="{{calcForm.oldPriceIndex===0}}" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showNotice" data-content-key="yuanzhi" title="原值" suffix="{{calcForm.unit}}">
-      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldPriceChange" value="{{calcForm.oldPrice}}" placeholder="请输入原始购买价格" type="number"></t-input>
+      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldPriceChange" value="{{calcForm.oldPrice}}" placeholder="请输入原始购买价格" type="digit"></t-input>
     </l-cell>
     <l-cell wx:if="{{calcForm.oldPriceIndex===0}}" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showNotice" data-content-key="zhuangxiu" title="住房装修费用" suffix="{{calcForm.unit}}">
-      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldHouseStylePriceChange" value="{{calcForm.oldHouseStylePrice}}" placeholder="请输入住房装修费用" type="number"></t-input>
+      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldHouseStylePriceChange" value="{{calcForm.oldHouseStylePrice}}" placeholder="请输入住房装修费用" type="digit"></t-input>
     </l-cell>
     <l-cell wx:if="{{calcForm.oldPriceIndex===0}}" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showNotice" data-content-key="daikuanlixi" title="住房贷款利息" suffix="{{calcForm.unit}}">
-      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldBankPriceChange" value="{{calcForm.oldBankPrice}}" placeholder="请输入住房贷款利息" type="number"></t-input>
+      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldBankPriceChange" value="{{calcForm.oldBankPrice}}" placeholder="请输入住房贷款利息" type="digit"></t-input>
     </l-cell>
     <l-cell wx:if="{{calcForm.oldPriceIndex===0}}" title="手续费、公证费等" suffix="{{calcForm.unit}}">
-      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldOtherPriceChange" value="{{calcForm.oldOtherPrice}}" placeholder="请输入手续费、公证费等" type="number"></t-input>
+      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onOldOtherPriceChange" value="{{calcForm.oldOtherPrice}}" placeholder="请输入手续费、公证费等" type="digit"></t-input>
     </l-cell>
     <l-cell title="产证持有年限" suffix="年">
-      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="handleChanquanYearChange" value="{{calcForm.chanquanYear}}" placeholder="请输入产证持有年限" type="number"></t-input>
+      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="handleChanquanYearChange" value="{{calcForm.chanquanYear}}" placeholder="请输入产证持有年限" type="digit"></t-input>
     </l-cell>
     <l-cell title="是否唯一住房">
       <l-tabs slot="note" current-index="{{calcForm.chanquanIndex}}" bind:change="onChanquanTypesChange" list="{{chanquanTypes}}">
@@ -126,16 +126,16 @@
   <l-cell-group wx:if="{{stepIndex===1}}" theme="card">
 
     <l-cell left-icon="money" wx:if="{{calcForm.exchangeType===0}}" title="交易总价" required suffix="{{calcForm.unit}}">
-      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onTotalPriceChange" value="{{calcForm.totalPrice}}" placeholder="请输入交易总价" type="number"></t-input>
+      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onTotalPriceChange" value="{{calcForm.totalPrice}}" placeholder="请输入交易总价" type="digit"></t-input>
     </l-cell>
     <l-cell left-icon="fact-check" suffix="{{calcForm.unit}}" wx:if="{{calcForm.buyIndex===0&&calcForm.exchangeType===0}}" title="网签金额" required>
-      <t-input slot="note" borderless customStyle="padding:0" align="right" bind:change="onWangqianPriceChange" value="{{calcForm.wangqianPrice}}" placeholder="请输入网签金额" type="number"></t-input>
+      <t-input slot="note" borderless customStyle="padding:0" align="right" bind:change="onWangqianPriceChange" value="{{calcForm.wangqianPrice}}" placeholder="请输入网签金额" type="digit"></t-input>
     </l-cell>
     <l-cell left-icon="verify" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showNotice" data-content-key="pingguPrice" wx:if="{{calcForm.buyIndex!==1&&calcForm.totalPrice&&calcForm.exchangeType===0||calcForm.buyIndex!==1&&calcForm.exchangeType!==0}}" title="评估价格" required="{{calcForm.exchangeType!==0}}" suffix="{{calcForm.unit}}">
-      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onPingguPriceChange" value="{{calcForm.pingguPrice}}" placeholder="请输入评估价格" type="number"></t-input>
+      <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onPingguPriceChange" value="{{calcForm.pingguPrice}}" placeholder="请输入评估价格" type="digit"></t-input>
     </l-cell>
     <l-cell left-icon="creditcard" suffix="{{calcForm.unit}}" wx:if="{{calcForm.buyIndex===0&&calcForm.exchangeType===0&&calcForm.houseType===0}}" title-right-icon="help-circle" bind:title-right-click="showDialog" data-key="showNotice" data-content-key="hukouwuye" title="户口物业预留金额">
-      <t-input slot="note" borderless customStyle="padding:0" align="right" bind:change="onHukouWuyePriceChange" value="{{calcForm.hukouWuyePrice}}" placeholder="请输入户口物业预留金额" type="number"></t-input>
+      <t-input slot="note" borderless customStyle="padding:0" align="right" bind:change="onHukouWuyePriceChange" value="{{calcForm.hukouWuyePrice}}" placeholder="请输入户口物业预留金额" type="digit"></t-input>
 
     </l-cell>
 
@@ -173,7 +173,8 @@
       <t-stepper size="large" slot="note" bind:change="onPaymentRateChange" value="{{calcForm.paymentRate}}" step="1" min="0" max="100" theme="filled" />
     </l-cell>
     <l-cell left-icon="money" suffix="{{calcForm.unit}}" bordered="{{false}}" wx:if="{{calcForm.bankType!==3}}" title="首付金额">
-      <t-input disabled="{{calcForm.pingguPrice}}" slot="note" borderless customStyle="padding:0" bind:change="onPaymentPriceChange" value="{{calcForm.paymentPrice}}" type="number" align="right" placeholder="请输入首付金额"></t-input>
+      <t-stepper input-width="80" theme="filled" size="large" disabled="{{calcForm.pingguPrice}}" slot="note" bind:change="onPaymentPriceChange" value="{{calcForm.paymentPrice}}" min="0" max="{{calcForm.wangqianPrice}}" placeholder="请输入首付金额">
+      </t-stepper>
     </l-cell>
     <view id="guide--step-5">
       <l-cell wx:if="{{calcForm.buyIndex===0}}" left-icon="cooperate" title="成交方式">
@@ -188,12 +189,11 @@
     <t-divider content="商贷信息"></t-divider>
     <l-cell-group theme="card">
       <l-cell title="贷款金额" suffix="{{calcForm.unit}}">
-        <!-- <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanPriceChange" value="{{calcForm.loanPrice}}" align="right" placeholder="请输入贷款金额" type="number">
-        </t-input> -->
-        <t-stepper input-width="100" size="large" slot="note" bind:change="onLoanPriceChange" max="{{calcForm.wangqianPrice}}" value="{{calcForm.loanPrice}}" min="{{calcForm.loanLowPrice}}" step="1" theme="filled" />
+
+        <t-stepper input-width="80" size="large" slot="note" bind:change="onLoanPriceChange" min="0" max="{{calcForm.wangqianPrice}}" value="{{calcForm.loanPrice}}" theme="filled" />
       </l-cell>
       <l-cell title="贷款利率" suffix="%">
-        <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanRateChange" value="{{calcForm.loanRate}}" align="right" placeholder="请输入贷款利率" type="number">
+        <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanRateChange" value="{{calcForm.loanRate}}" align="right" placeholder="请输入贷款利率" type="digit">
         </t-input>
       </l-cell>
 
@@ -223,7 +223,7 @@
     <l-cell-group theme="card">
       <l-cell title="贷款金额">
         <view slot="note" class="flex f-col-center">
-          <t-stepper max="{{calcForm.loanGjjMaxPrice}}" step="1" input-width="80" value="{{calcForm.loanGjjPrice}}" size="large" theme="filled" bind:change="onLoanGjjPriceChange" />
+          <t-stepper max="{{calcForm.loanGjjMaxPrice}}" min="0" input-width="80" value="{{calcForm.loanGjjPrice}}" size="large" theme="filled" bind:change="onLoanGjjPriceChange" />
           <text class="m-l-20">{{calcForm.unit}}</text>
         </view>
         <view slot="description">
@@ -231,7 +231,7 @@
         </view>
       </l-cell>
       <l-cell title="贷款利率" suffix="%">
-        <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanGjjRateChange" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="number">
+        <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanGjjRateChange" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="digit">
         </t-input>
       </l-cell>
 
@@ -256,7 +256,7 @@
           <t-stepper size="large" slot="note" bind:change="onLoanGjjAgeChange" value="{{calcForm.loanGjjAge}}" min="18" max="{{calcForm.loanGjjSexIndex===0?60:55}}" step="1" theme="filled" />
         </l-cell>
         <l-cell title="借款人缴存基数" suffix="{{calcForm.unit}}">
-          <t-input bind:change="onLoanGjjBasicPriceChange" slot="note" placeholder="请输入缴存基数" borderless customStyle="padding:0" align="right" type="number" value="{{calcForm.loanGjjBasicPrice}}">
+          <t-input bind:change="onLoanGjjBasicPriceChange" slot="note" placeholder="请输入缴存基数" borderless customStyle="padding:0" align="right" type="digit" value="{{calcForm.loanGjjBasicPrice}}">
           </t-input>
         </l-cell>
       </block>
@@ -265,14 +265,14 @@
           <t-stepper size="large" slot="note" bind:change="onLoanGjjMaleAgeChange" value="{{calcForm.loanGjjMaleAge}}" min="18" max="60" step="1" theme="filled" />
         </l-cell>
         <l-cell title="男方缴存基数" suffix="{{calcForm.unit}}">
-          <t-input type="number" bind:change="onLoanGjjMaleBasicPriceChange" slot="note" placeholder="请输入男方缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjMaleBasicPrice}}">
+          <t-input type="digit" bind:change="onLoanGjjMaleBasicPriceChange" slot="note" placeholder="请输入男方缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjMaleBasicPrice}}">
           </t-input>
         </l-cell>
         <l-cell title="女方年龄" suffix="岁">
           <t-stepper size="large" slot="note" bind:change="onLoanGjjFemaleAgeChange" value="{{calcForm.loanGjjFemaleAge}}" min="18" max="55" step="1" theme="filled" />
         </l-cell>
         <l-cell title="女方缴存基数" suffix="{{calcForm.unit}}">
-          <t-input type="number" bind:change="onLoanGjjFemaleBasicPriceChange" slot="note" placeholder="请输入女方缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjFemaleBasicPrice}}">
+          <t-input type="digit" bind:change="onLoanGjjFemaleBasicPriceChange" slot="note" placeholder="请输入女方缴存基数" borderless customStyle="padding:0" align="right" value="{{calcForm.loanGjjFemaleBasicPrice}}">
           </t-input>
         </l-cell>
       </block>
@@ -289,7 +289,7 @@
         </view>
       </l-cell>
       <l-cell suffix="{{calcForm.unit}}" wx:if="{{calcForm.totalPrice}}" title="居间服务费">
-        <t-input slot="note" borderless customStyle="padding:0" bind:change="onServiceFeeChange" value="{{calcForm.serviceFee}}" type="number" align="right">
+        <t-input slot="note" borderless customStyle="padding:0" bind:change="onServiceFeeChange" value="{{calcForm.serviceFee}}" type="digit" align="right">
         </t-input>
       </l-cell>
       <l-cell title="费用承担方">
@@ -303,7 +303,7 @@
         <t-stepper step="{{calcForm.unitRate}}" slot="note" bind:change="onServiceSellerChange" value="{{calcForm.serviceSeller}}" theme="filled" max="{{calcForm.serviceFee}}" />
       </l-cell>
       <l-cell wx:if="{{calcForm.bankType!==3&&calcForm.forWhoIndex!==1}}" title="贷款服务费" suffix="{{calcForm.unit}}">
-        <t-input slot="note" type="number" borderless customStyle="padding:0" align="right" value="{{calcForm.bankPrice}}">
+        <t-input slot="note" type="digit" borderless customStyle="padding:0" align="right" value="{{calcForm.bankPrice}}">
         </t-input>
       </l-cell>
     </l-cell-group>

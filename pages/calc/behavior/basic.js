@@ -9,7 +9,7 @@ export const basicBehavior = Behavior({
     calcForm: {
       // 计价单位下标
       unitIndex: 1,
-      // 金额换算值 元 1 || 万元 10000
+      // 金额换算值 元 1 || 万 10000
       unitCount: 1,
       unitRate: 0.0001,
       unit: '万元',
@@ -22,7 +22,7 @@ export const basicBehavior = Behavior({
       // 建筑面积
       area: '',
       // 建筑面积下标
-      areaIndex: 0,
+      areaIndex: 2,
       // 贷款方式 0 商业 1 公积金 2 组合贷 3 全款
       bankType: 0,
       // 房屋建成年份
@@ -62,7 +62,7 @@ export const basicBehavior = Behavior({
           }
 
         } else {
-          // 万元
+          // 万
           if (hukouWuyePrice) {
             price = hukouWuyePrice / 10000
           } else {
@@ -150,7 +150,7 @@ export const basicBehavior = Behavior({
       this.setBankPrice()
     },
     /**
-     * 元 万元 切换
+     * 元 万 切换
      * @param {*} e 
      */
     onTypesChange(e) {

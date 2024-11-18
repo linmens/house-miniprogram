@@ -124,11 +124,10 @@
           paymentPrice,
           loanGjjMaxPrice,
           loanGjjPrice,
-          loanLowPrice
         } = this.data.calcForm
         let _loanGjjPrice = 0
         // const loanGjjMaxPrice = loanGjjHomeTypes[loanGjjSaveIndex].max * unitCount
-        // console.log('设置公积金贷款最大金额:', loanGjjMaxPrice)
+        console.log('设置公积金贷款最大金额:', loanGjjMaxPrice)
         switch (type) {
           case 0:
             _loanGjjPrice = calculateLoan(wangqianPrice, paymentRate, unit)

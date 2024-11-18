@@ -32,6 +32,7 @@
 
 .l-card__main {
   font-size: 24rpx;
+  position: relative;
 }
 
 .l-card__main--item {

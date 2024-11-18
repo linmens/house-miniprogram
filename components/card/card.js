@@ -22,6 +22,11 @@ const name = `${prefix}-card`;
 let Card = class Card extends SuperComponent {
   constructor() {
     super(...arguments);
+    this.externalClasses = [
+      `${prefix}-class`,
+      `${prefix}-class-header`,
+    ];
+    console.log(this.externalClasses)
     this.options = {
       multipleSlots: true,
     };

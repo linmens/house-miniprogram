@@ -1,1 +1,85 @@
-/* pages/result-bank/result-bank.wxss */
+.bank-total {
+  margin: 32rpx;
+  align-items: center;
+}
+.bank-total__item {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 8rpx;
+  background-color: var(--color-bg-b1-white);
+  border-radius: 10rpx;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 0 0.5px 0 var(--color-secondary-default);
+  border: 0.5px solid var(--color-line-l3);
+}
+.bank-total__item__label {
+  font-size: 20rpx;
+  color: var(--color-text-t2);
+  width: 100%;
+}
+.bank-total__item__value {
+  color: var(--color-text-t0);
+}
+.bank-total__item__desc {
+  font-size: 20rpx;
+  color: var(--td-warning-color-8);
+}
+.l-table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.l-class__header {
+  padding: 20rpx;
+}
+.l-table__thead {
+  display: flex;
+  background-color: var(--color-secondary-default);
+  padding: 10px 0;
+  font-weight: bold;
+  text-align: center;
+  font-size: 20rpx;
+}
+
+.l-table__thead text {
+  flex: 1;
+}
+.l-table__tbody:nth-of-type(even) {
+  background-color: var(--color-secondary-default);
+}
+.l-table__tbody .l-table__row {
+  display: flex;
+  padding: 10px 0;
+}
+
+.l-table__row text {
+  flex: 1;
+  text-align: center;
+}
+.l-table__footer {
+  background: linear-gradient(
+    to bottom,
+    var(--color-bg-bo-white),
+    var(--color-bg-b1-white)
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 28rpx;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 88rpx;
+  color: var(--color-text-t3);
+}
+.l-table__footer__floating {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding-bottom: calc(env(safe-area-inset-bottom));
+}

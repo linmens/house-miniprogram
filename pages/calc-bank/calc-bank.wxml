@@ -28,11 +28,11 @@
   <t-divider content="商贷信息"></t-divider>
   <l-cell-group theme="card">
     <l-cell title="贷款金额" suffix="{{calcForm.unit}}">
-      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanPriceChange" value="{{calcForm.loanPrice}}" align="right" placeholder="请输入贷款金额" type="number">
+      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanPriceChange" value="{{calcForm.loanPrice}}" align="right" placeholder="请输入贷款金额" type="digit">
       </t-input>
     </l-cell>
     <l-cell title="贷款利率" suffix="%">
-      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanRateChange" value="{{calcForm.loanRate}}" align="right" placeholder="请输入贷款利率" type="number">
+      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanRateChange" value="{{calcForm.loanRate}}" align="right" placeholder="请输入贷款利率" type="digit">
       </t-input>
     </l-cell>
   </l-cell-group>
@@ -42,11 +42,11 @@
   <t-divider content="公积金信息"></t-divider>
   <l-cell-group theme="card">
     <l-cell title="贷款金额" suffix="{{calcForm.unit}}">
-      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanGjjPriceChange" value="{{calcForm.loanGjjPrice}}" align="right" placeholder="请输入贷款金额" type="number">
+      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanGjjPriceChange" value="{{calcForm.loanGjjPrice}}" align="right" placeholder="请输入贷款金额" type="digit">
       </t-input>
     </l-cell>
     <l-cell title="贷款利率" suffix="%">
-      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanGjjRateChange" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="number">
+      <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanGjjRateChange" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="digit">
       </t-input>
     </l-cell>
   </l-cell-group>

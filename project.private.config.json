@@ -5,14 +5,21 @@
     "compileHotReLoad": true,
     "urlCheck": false
   },
-  "libVersion": "3.5.1",
+  "libVersion": "3.5.3",
   "condition": {
     "miniprogram": {
       "list": [
         {
           "name": "pages/result-bank/result-bank",
           "pathName": "pages/result-bank/result-bank",
-          "query": "timestamp=1722820547516",
+          "query": "timestamp=1722846476316",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/result-bank/result-bank",
+          "pathName": "pages/result-bank/result-bank",
+          "query": "timestamp=1722830506975",
           "launchMode": "default",
           "scene": null
         }

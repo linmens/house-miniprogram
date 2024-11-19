@@ -79,25 +79,40 @@
       setLoanYear() {
         const {
           houseAge,
-          loanIndex
+          loanIndex,
+          bankType
         } = this.data.calcForm
         const {
           loanTypes
         } = this.data
-        let loanYear = NP.minus(40, houseAge);
-        if (loanYear > 30) {
-          loanYear = 30
-        }
-        if (loanYear <= 0) {
-          loanYear = 0;
-        }
-        if (loanYear >= 0) {
+        if (bankType === 1 || bankType === 2) {
+          console.log('使用公积金贷款或者组合贷时计算可贷年限')
+          let loanYear = NP.minus(40, houseAge);
+          if (loanYear > 30) {
+            loanYear = 30
+          }
+          if (loanYear <= 0) {
+            loanYear = 0;
+            this.setData({
+              'calcForm.bankType': 3,
+            })
+          }
+          if (loanYear >= 0) {
+            this.setData({
+              'calcForm.loanYear': loanYear,
+              'calcForm.loanIndex': 6,
+              'calcForm.loanMaxYear': loanYear
+            })
+          }
+        } else {
+          // 初始化贷款年限最高贷款年限
           this.setData({
-            'calcForm.loanYear': loanYear,
-            'calcForm.loanIndex': 6,
-            'calcForm.loanMaxYear': loanYear
+            'calcForm.loanYear': 30,
+            'calcForm.loanIndex': 5,
+            'calcForm.loanMaxYear': 30
           })
         }
+
 
       },
       onCustomLoanYearInputValChange(e) {

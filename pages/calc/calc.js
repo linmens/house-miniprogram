@@ -311,7 +311,7 @@ Page({
     } = this.data.calcForm
     let tabs = this.data.tabs
     if (value === 1 && houseType === 1) {
-
+      // 如果是公积金并且房屋类型为非住宅
       Message.info({
         context: this,
         offset: [0, 32],
@@ -321,6 +321,7 @@ Page({
       return
     }
     if (loanYear <= 0) {
+      // 如果贷款年限<=0
       Message.info({
         context: this,
         offset: [90, 32],
@@ -356,6 +357,7 @@ Page({
       return
     }
     if (value === 3) {
+      // 如果是全款
       this.setData({
         'calcForm.bankPrice': 0,
         'calcForm.loanPrice': 0,
@@ -371,6 +373,8 @@ Page({
     await this.setBankPrice()
     await this.setPaymentRate()
     this.switchBankType()
+    // 设置贷款年限
+    this.setLoanYear()
   },
   handleClickStart() {
 
@@ -397,6 +401,7 @@ Page({
     if (stepIndex === 0) {
       // 基本信息点击下一步
       await this.stepBasic()
+      // this.setLoanYear()
     }
     if (stepIndex === 1) {
       // 交易信息点击下一步

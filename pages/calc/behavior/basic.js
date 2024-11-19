@@ -129,7 +129,7 @@ export const basicBehavior = Behavior({
         'calcForm.bankType': 0
       })
       this.setHukouWuyePrice()
-      this.startCalc()
+      // this.startCalc()
     },
     onNewHouseTypesChange(e) {
       const {

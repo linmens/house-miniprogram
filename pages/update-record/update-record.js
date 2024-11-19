@@ -6,6 +6,25 @@ Page({
    */
   data: {
     records: [{
+      version: '1.0.2',
+      date: '2024-11-19',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '修复功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '修复契税计算逻辑，调整贷款年限逻辑',
+          type: 'text'
+        }]
+      }]
+    }, {
       version: '1.0.1',
       date: '2024-11-18',
       classname: 'h2',

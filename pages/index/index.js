@@ -64,6 +64,12 @@ Page({
       value: page.route
     })
   },
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage() {
+
+  },
   onLoad() {
     // const supabaseUrl = 'https://cq29rba5g6h0s3o5amt0.baseapi.memfiredb.com'
     // const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIiwiZXhwIjozMjk2NzY3MTQ5LCJpYXQiOjE3MTk5NjcxNDksImlzcyI6InN1cGFiYXNlIn0.RWr3S2joN1HS8kCHWi38pZ6p9kcFAb9yfAh6c7ollUM"

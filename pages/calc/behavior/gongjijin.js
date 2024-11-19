@@ -171,7 +171,7 @@
         } = this.data.calcForm
 
         if (houseAge) {
-          let loanYear = NP.minus(40, houseAge);
+          let loanYear = NP.minus(39, houseAge);
           if (loanYear > 30) {
             loanYear = 30
           }

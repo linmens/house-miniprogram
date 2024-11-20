@@ -6,6 +6,44 @@ Page({
    */
   data: {
     records: [{
+      version: '1.0.4',
+      date: '2024-11-20',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '新增功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '新增计算历史功能',
+          type: 'text'
+        }]
+      }]
+    }, {
+      version: '1.0.3',
+      date: '2024-11-20',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '优化功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '优化贷款计算结果滚动',
+          type: 'text'
+        }]
+      }]
+    }, {
       version: '1.0.2',
       date: '2024-11-19',
       classname: 'h2',

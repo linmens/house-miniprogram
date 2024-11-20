@@ -1,7 +1,7 @@
 <t-sticky>
   <view class="t-navbar-class">
     <t-navbar left-arrow title="房贷计算结果"></t-navbar>
-    <t-tabs split="{{false}}" style="--td-tab-nav-bg-color: transparent;" value="{{calcForm.loanBackIndex}}" bind:change="onTabsChange" bind:click="onTabsClick" t-class="custom-tabs">
+    <t-tabs split="{{false}}" style="--td-tab-nav-bg-color: transparent;" value="{{calcForm.loanBackIndex}}" bind:change="onTabsChange" t-class="custom-tabs">
       <t-tab-panel label="等额本息" value="{{0}}" />
       <t-tab-panel label="等额本金" value="{{1}}" />
     </t-tabs>
@@ -33,39 +33,39 @@
   <view class="bank-total flex f-row-between">
     <view class="bank-total__item">
       <view class="text-center bank-total__item__label"><text>还款总额</text></view>
-      <view class="text-center bank-total__item__value"><text>{{resultStep.total.price}}</text><text class="unit">{{calcForm.unit}}</text></view>
+      <view class="text-center bank-total__item__value"><text>{{resultStep.total.price}}</text><text class="unit">万</text></view>
       <block wx:if="{{calcForm.bankType===2}}">
         <view class="bank-total__item__desc">
-          <text>商贷：{{resultStep.total.shangdai}}{{calcForm.unit}}</text>
+          <text>商贷：{{resultStep.total.shangdai}}万</text>
         </view>
         <view class="bank-total__item__desc">
-          <text>公积金：{{resultStep.total.gongjijin}}{{calcForm.unit}}</text>
+          <text>公积金：{{resultStep.total.gongjijin}}万</text>
         </view>
       </block>
     </view>
     <t-tag size="small" style="margin: 0 10rpx;">=</t-tag>
     <view class="bank-total__item">
       <view class="text-center bank-total__item__label">贷款总额({{resultStep.loan.rate}}%)</view>
-      <view class="text-center bank-total__item__value"><text>{{resultStep.loan.price}}</text><text class="unit">{{calcForm.unit}}</text></view>
+      <view class="text-center bank-total__item__value"><text>{{resultStep.loan.price}}</text><text class="unit">万</text></view>
       <block wx:if="{{calcForm.bankType===2}}">
         <view class="bank-total__item__desc">
-          <text>商贷：{{resultStep.loan.shangdai}}{{calcForm.unit}}</text>
+          <text>商贷：{{resultStep.loan.shangdai}}万</text>
         </view>
         <view class="bank-total__item__desc">
-          <text>公积金：{{resultStep.loan.gongjijin}}{{calcForm.unit}}</text>
+          <text>公积金：{{resultStep.loan.gongjijin}}万</text>
         </view>
       </block>
     </view>
     <t-tag size="small" style="margin: 0 10rpx;">+</t-tag>
     <view class="bank-total__item">
       <view class="text-center bank-total__item__label">支付利息({{resultStep.totalInterest.rate}}%)</view>
-      <view class="text-center bank-total__item__value"><text>{{resultStep.totalInterest.price}}</text><text class="unit">{{calcForm.unit}}</text></view>
+      <view class="text-center bank-total__item__value"><text>{{resultStep.totalInterest.price}}</text><text class="unit">万</text></view>
       <block wx:if="{{calcForm.bankType===2}}">
         <view class="bank-total__item__desc">
-          <text>商贷：{{resultStep.totalInterest.shangdai}}{{calcForm.unit}}</text>
+          <text>商贷：{{resultStep.totalInterest.shangdai}}万</text>
         </view>
         <view class="bank-total__item__desc">
-          <text>公积金：{{resultStep.totalInterest.gongjijin}}{{calcForm.unit}}</text>
+          <text>公积金：{{resultStep.totalInterest.gongjijin}}万</text>
         </view>
       </block>
     </view>
@@ -78,7 +78,6 @@
         <view class="loan__group__item {{item.icon?'loan__group__item__active':''}}" wx:for="{{shangdai}}" wx:key="index">
           <view class="flex f-col-center f-row-between m-b-20">
             <t-tag theme="primary" variant="{{item.icon?'dark':'outline'}}" icon="{{item.icon}}">{{item.title}}</t-tag>
-            <text style="color: var(--td-brand-color);">明细</text>
           </view>
           <view class="loan__group__item__list" wx:if="{{item.monthlyPayment}}">
             <text>月均还款</text>
@@ -125,7 +124,7 @@
         </view>
       </view>
 
-      <view class="l-table" wx:if="{{shangdaiInfo.details.length}}">
+      <view class="l-table l-table-shangdai" wx:if="{{shangdaiInfo.details.length}}">
         <view class="l-table__thead">
           <text>期数</text>
           <text>月供总额</text>
@@ -133,7 +132,7 @@
           <text>月供利息</text>
           <text>剩余还款总额</text>
         </view>
-        <view class="text-right p-20" style="color: var(--color-text-t3);">单位：元</view>
+        <view class="l-table__unit">单位：元</view>
         <view class="l-table__tbody " id="{{'tbody-shangdaiInfo'+index}}" wx:for="{{shangdaiInfo.details}}" wx:key="index">
           <view class="l-table__row">
             <text>{{item.period}}</text>
@@ -143,8 +142,7 @@
             <text>{{item.remainingPrincipal}}</text>
           </view>
         </view>
-        <view style="height: 88rpx;" id="shangdaiInfo-bottom"></view>
-        <view class="l-table__footer {{shangdaiInfo.isFloating && activeFloatingKey === 'shangdaiInfo'?'l-table__footer__floating':''}}" bind:tap="toggleShowAll" data-key="shangdaiInfo" style="{{!shangdaiInfo.showAll?'padding-top:150px':'padding-top:0'}}">
+        <view class="l-table__footer" bind:tap="toggleShowAll" data-key="shangdaiInfo">
           <text>{{!shangdaiInfo.showAll?'展开全部信息':'收起'}}</text>
           <t-icon name="{{!shangdaiInfo.showAll?'chevron-down':'chevron-up'}}" size="25"></t-icon>
         </view>
@@ -160,7 +158,6 @@
         <view class="loan__group__item {{item.icon?'loan__group__item__active':''}}" wx:for="{{gongjijin}}" wx:key="index">
           <view class="flex f-col-center f-row-between m-b-20">
             <t-tag theme="primary" variant="{{item.icon?'dark':'outline'}}" icon="{{item.icon}}">{{item.title}}</t-tag>
-            <text style="color: var(--td-brand-color);">明细</text>
           </view>
           <view class="loan__group__item__list" wx:if="{{item.monthlyPayment}}">
             <text>月均还款</text>
@@ -217,7 +214,7 @@
           <text>月供利息</text>
           <text>剩余还款总额</text>
         </view>
-        <view class="text-right p-20" style="color: var(--color-text-t3);">单位：元</view>
+        <view class="l-table__unit">单位：元</view>
         <view class="l-table__tbody" id="{{'tbody-gongjijinInfo'+index}}" wx:for="{{gongjijinInfo.details}}" wx:key="index">
           <view class="l-table__row">
             <text>{{item.period}}</text>
@@ -228,8 +225,7 @@
           </view>
 
         </view>
-        <view style="height: 88rpx;" id="gongjijinInfo-bottom"></view>
-        <view class="l-table__footer {{gongjijinInfo.isFloating && activeFloatingKey === 'gongjijinInfo'? 'l-table__footer__floating' : ''}}" bind:tap="toggleShowAll" data-key="gongjijinInfo" style="{{!gongjijinInfo.showAll?'padding-top:150px':'padding-top:0'}}">
+        <view class="l-table__footer" bind:tap="toggleShowAll" data-key="gongjijinInfo">
           <text>{{!gongjijinInfo.showAll?'展开全部信息':'收起'}}</text>
           <t-icon name="{{!gongjijinInfo.showAll?'chevron-down':'chevron-up'}}" size="25"></t-icon>
         </view>

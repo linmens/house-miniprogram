@@ -1,0 +1,24 @@
+.l-card__header {
+  display: flex;
+  gap: 10rpx;
+  align-items: center;
+  justify-content: space-between;
+}
+.l-card__header__left {
+  display: flex;
+  gap: 10rpx;
+  align-items: center;
+}
+.l-card__header__right {
+  color: var(--color-text-t3);
+}
+.l-card__label {
+  display: flex;
+  gap: 10rpx;
+  align-items: center;
+  color: var(--color-text-t2);
+  margin-top: 20rpx;
+}
+.l-card__footer {
+  text-align: right;
+}

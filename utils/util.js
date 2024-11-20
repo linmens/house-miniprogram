@@ -173,7 +173,7 @@
    return result
  }
  // 获取缓存数据
- function getCachedData() {
+ export function getCachedData() {
    const data = wx.getStorageSync('result');
    return data ? JSON.parse(data) : {};
  }

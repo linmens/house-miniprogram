@@ -150,7 +150,6 @@
       <view class="loan__group__item {{item.icon?'loan__group__item__active':''}}" wx:for="{{shangdai}}" wx:key="index">
         <view class="flex f-col-center f-row-between m-b-20">
           <t-tag theme="primary" variant="{{item.icon?'dark':'outline'}}" icon="{{item.icon}}">{{item.title}}</t-tag>
-          <text style="color: var(--td-brand-color);">明细</text>
         </view>
         <view class="loan__group__item__list" wx:if="{{item.monthlyPayment}}">
           <text>月均还款</text>
@@ -204,7 +203,7 @@
       <view class="loan__group__item {{item.icon?'loan__group__item__active':''}}" wx:for="{{gongjijin}}" wx:key="index">
         <view class="flex f-col-center f-row-between m-b-20">
           <t-tag theme="primary" variant="{{item.icon?'dark':'outline'}}" icon="{{item.icon}}">{{item.title}}</t-tag>
-          <text style="color: var(--td-brand-color);">明细</text>
+
         </view>
         <view class="loan__group__item__list" wx:if="{{item.monthlyPayment}}">
           <text>月均还款</text>

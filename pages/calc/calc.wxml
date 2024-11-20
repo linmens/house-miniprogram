@@ -29,7 +29,7 @@
 
     <view class="bg-main py-20">
       <t-steps current="{{stepIndex}}" bind:change="onFirstChange">
-        <t-step-item wx:for="{{3}}" wx:key="index" title="{{_.getText(stepIndex, index)}}" content="{{_.getContent(stepIndex,index)}}" />
+        <t-step-item wx:for="{{3}}" wx:key="index" title="{{_.getText(stepIndex, index)}}" />
       </t-steps>
     </view>
   </view>

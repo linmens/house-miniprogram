@@ -1,11 +1,7 @@
 import {
   getCurrentCachedData,
-  calculateLoanDetails,
   createSelectorQuery
 } from '../../utils/util'
-import {
-  setWatcher
-} from '../../utils/watch'
 
 import dayjs from 'dayjs'
 import {
@@ -22,18 +18,15 @@ Page({
    * 页面的初始数据
    */
   data: {
-    resultStep: {},
+    resultStep: {
+      title: ''
+    },
     isFooterFloating: false,
     scrollTopArr: [],
     activeFloatingKey: null, // 当前悬浮的卡片
     _height: 0,
     groupTop: [],
-    stickyOffset: 20
-  },
-  watch: {
-    foo(val) {
-      console.log('foo变化了，变化后的值是', val)
-    }
+    stickyOffset: 20,
   },
   /**
    * 生命周期函数--监听页面加载
@@ -53,9 +46,6 @@ Page({
       options
     })
     this.initResult()
-    if (this.data._height === 0) {
-      this.setHeight();
-    }
   },
   async initResult() {
     const {
@@ -214,70 +204,23 @@ Page({
 
     bankObj.extra = `${loanBackIndex?`每月还款金额递减${bankObj.monthlyDecrease}${unit}，其中每月还款的本金不变，利息逐月减少。`:'每月还款金额不变，其中还款的本金逐月递增，利息逐月递减。'}`
 
-    console.log(bankObj)
+
+    if (unit === '元') {
+      bankObj.total.price = new BigNumber(bankObj.total.price).div(10000).toFixed(2);
+      bankObj.total.shangdai = new BigNumber(bankObj.total.shangdai).div(10000).toFixed(2);
+      bankObj.total.gongjijin = new BigNumber(bankObj.total.gongjijin).div(10000).toFixed(2);
+      bankObj.loan.price = new BigNumber(bankObj.loan.price).div(10000).toFixed(2);
+      bankObj.loan.shangdai = new BigNumber(bankObj.loan.shangdai).div(10000).toFixed(2);
+      bankObj.loan.gongjijin = new BigNumber(bankObj.loan.gongjijin).div(10000).toFixed(2);
+
+      bankObj.totalInterest.price = new BigNumber(bankObj.totalInterest.price).div(10000).toFixed(2);
+      bankObj.totalInterest.shangdai = new BigNumber(bankObj.totalInterest.shangdai).div(10000).toFixed(2);
+      bankObj.totalInterest.gongjijin = new BigNumber(bankObj.totalInterest.gongjijin).div(10000).toFixed(2);
+    }
+    console.log(bankObj, 'resultStep')
     this.setData({
       'resultStep': bankObj
     })
-  },
-  async calcCardScrollTop() {
-    let scrollTopArr = [];
-    const queryData = (await createSelectorQuery('.card-section', true))
-    queryData.forEach((item) => {
-      scrollTopArr.push(item.top)
-    })
-    this.setData({
-      scrollTopArr: scrollTopArr
-    })
-  },
-
-  getCardPositions() {
-    const query = wx.createSelectorQuery();
-    query.select('#shangdaiInfo').boundingClientRect();
-    // query.select('#shangdaiInfo-bottom').boundingClientRect();
-    query.select('#gongjijinInfo').boundingClientRect();
-    // query.select('#gongjijinInfo-bottom').boundingClientRect();
-
-    query.exec((res) => {
-      console.log(res, 'getCardPositions')
-      this.setData({
-        shangdaiTop: res[0].top,
-        gongjijinTop: res[1].top
-      });
-    });
-  },
-
-  checkFloatingButton(scrollTop) {
-    const {
-      cardPositions
-    } = this.data;
-    let activeKey = null;
-    const {
-      shangdaiTop,
-      gongjijinTop,
-      shangdaiInfo,
-      gongjijinInfo
-    } = this.data;
-    // 判断元素是否进入视野
-    let windowHeight = wx.getSystemInfoSync().windowHeight
-    const isShangdaiInView = scrollTop + windowHeight >= shangdaiTop && scrollTop <= shangdaiTop + windowHeight;
-    const isGongjijinInView = scrollTop + windowHeight >= gongjijinTop && scrollTop <= gongjijinTop + windowHeight;
-    console.log(scrollTop, isShangdaiInView, isGongjijinInView, 'this.data.activeFloatingKey')
-    if (isShangdaiInView && shangdaiInfo.showAll && !this.data.shangdaiIsFloating) {
-      this.setData({
-        shangdaiIsFloating: true,
-        gongjijinIsFloating: false
-      });
-    } else if (isGongjijinInView && gongjijinInfo.showAll && !this.data.gongjijinIsFloating) {
-      this.setData({
-        gongjijinIsFloating: true,
-        shangdaiIsFloating: false
-      });
-    } else if (!isShangdaiInView && !isGongjijinInView) {
-      this.setData({
-        shangdaiIsFloating: false,
-        gongjijinIsFloating: false
-      });
-    }
   },
   toggleShowAll(e) {
     const {
@@ -302,10 +245,9 @@ Page({
           [`${key}.details`]: data.slice(0, 3),
           // [`${key}.isFloating`]: false
         });
-        // this.disconnectObserver(key);
       }
     });
-    this.getCardPositions();
+
   },
 
   onTabsChange(e) {
@@ -316,103 +258,6 @@ Page({
       'calcForm.loanBackIndex': value
     })
     this.initResult()
-  },
-  setHeight(height) {
-    if (!height) {
-      const {
-        windowHeight
-      } = wx.getSystemInfoSync();
-      height = windowHeight;
-    }
-    this.setData({
-      _height: height,
-    }, () => {
-      this.getAllRect();
-    });
-  },
-  async getAllRect() {
-    await this.getAnchorsRect()
-    this.groupTop.forEach((item, index) => {
-      const next = this.groupTop[index + 1];
-      item.totalHeight = ((next === null || next === void 0 ? void 0 : next.top) || Infinity) - item.top;
-    });
-    console.log(this.groupTop)
-    this.setAnchorOnScroll(0);
-    // this.getSidebarRect();
-  },
-  async getAnchorsRect() {
-
-    const res = await createSelectorQuery('.card-section', true)
-
-    this.groupTop = res.map((item, index) => {
-      return {
-        height: item.height,
-        top: item.top,
-        index,
-      }
-    })
-    console.log(this.groupTop, 'getAnchorsRect')
-    //  return Promise.all(this.$children.map((child) => getRect(child, `.${name}-anchor`).then((rect) => {
-    //    this.groupTop.push({
-    //      height: rect.height,
-    //      top: rect.top,
-    //      anchor: child.data.index,
-    //    });
-    //  })));
-  },
-  setAnchorOnScroll(scrollTop) {
-    if (!this.groupTop) {
-      return;
-    }
-    const {
-      stickyOffset,
-    } = this.data;
-    scrollTop += stickyOffset;
-    const curIndex = this.groupTop.findIndex((group) => scrollTop >= group.top - group.height && scrollTop <= group.top + group.totalHeight - group.height);
-    console.log(curIndex, 'curIndex')
-    if (curIndex === -1)
-      return;
-    const curGroup = this.groupTop[curIndex];
-    console.log(curGroup, 'curGroup')
-    const offset = curGroup.top - scrollTop;
-    const betwixt = offset < curGroup.height && offset > 0 && scrollTop > stickyOffset;
-    console.log(betwixt, 'betwixt')
-    this.$children.forEach((child, index) => {
-      if (index === curIndex) {
-        const sticky = scrollTop > stickyOffset;
-        const anchorStyle = `transform: translate3d(0, ${betwixt ? offset : 0}px, 0); top: ${stickyOffset}px`;
-        if (anchorStyle !== child.data.anchorStyle || sticky !== child.data.sticky) {
-          child.setData({
-            sticky,
-            active: true,
-            style: `height: ${curGroup.height}px`,
-            anchorStyle,
-          });
-        }
-      } else if (index + 1 === curIndex) {
-        const anchorStyle = `transform: translate3d(0, ${betwixt ? offset - curGroup.height : 0}px, 0); top: ${stickyOffset}px`;
-        if (anchorStyle !== child.data.anchorStyle) {
-          child.setData({
-            sticky: true,
-            active: true,
-            style: `height: ${curGroup.height}px`,
-            anchorStyle,
-          });
-        }
-      } else {
-        child.setData({
-          active: false,
-          sticky: false,
-          anchorStyle: ''
-        });
-      }
-    });
-  },
-  onPageScroll(e) {
-    const {
-      scrollTop
-    } = e
-    this.setAnchorOnScroll(scrollTop);
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -439,7 +284,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
-    this.disconnectAllObservers();
+
   },
 
   /**

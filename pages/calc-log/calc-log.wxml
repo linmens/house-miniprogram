@@ -1,0 +1,38 @@
+<view>
+  <t-navbar left-arrow title="计算历史">
+
+  </t-navbar>
+  <t-divider content="至多储存10条历史记录"></t-divider>
+  <l-card wx:for="{{list}}" wx:key="index">
+    <view class="l-card__header">
+      <view class="l-card__header__left">
+        <t-tag theme="primary" wx:if="{{item.type==='bank'}}">贷款计算</t-tag>
+        <t-tag theme="primary" wx:if="{{item.buyIndex===0}}">二手房计算</t-tag>
+        <t-tag theme="primary" wx:if="{{item.buyIndex===1}}">一手房计算</t-tag>
+        <t-tag wx:if="{{item.bankType===0}}">商业</t-tag>
+        <t-tag wx:if="{{item.bankType===1}}">公积金</t-tag>
+        <t-tag wx:if="{{item.bankType===2}}">组合贷</t-tag>
+        <t-tag wx:if="{{item.bankType===3}}">全款</t-tag>
+        <t-tag wx:if="{{item.exchangeType===0}}">买卖</t-tag>
+        <t-tag wx:if="{{item.exchangeType===1}}">赠与</t-tag>
+        <t-tag wx:if="{{item.exchangeType===2}}">继承</t-tag>
+        <t-tag wx:if="{{item.exchangeType===3}}">婚内更名</t-tag>
+        <t-tag wx:if="{{item.exchangeType===4}}">离婚分割</t-tag>
+
+      </view>
+      <view class="l-card__header__right">
+        <text>{{item.formattedTimestamp}}</text>
+      </view>
+    </view>
+    <view class="l-card__label">
+      <text wx:if="{{item.totalPrice}}">{{item.totalPrice}}{{item.unit}}</text>
+      <text wx:if="{{item.area}}">{{item.area}}㎡</text>
+      <text wx:if="{{item.loanPrice}}">商贷{{item.loanPrice}}{{item.unit}}</text>
+      <text wx:if="{{item.loanGjjPrice}}">公积金贷{{item.loanGjjPrice}}{{item.unit}}</text>
+      <text wx:if="{{item.pingguPrice}}">{{item.pingguPrice}}{{item.unit}}</text>
+    </view>
+    <view class="l-card__footer">
+      <t-button data-index="{{index}}" bind:tap="onResultBtnClick" theme="primary" variant="outline" size="small">计算结果</t-button>
+    </view>
+  </l-card>
+</view>

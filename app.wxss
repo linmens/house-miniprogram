@@ -28,6 +28,8 @@ page,
   --color-line-l3: rgba(var(--neutral-950), 0.06);
   --color-bg-b1-white: rgba(var(--white), 1);
   --color-bg-bo-white: rgba(var(--white), 0);
+  --color-bg-b1-black: rgba(var(--black), 1);
+  --color-bg-bo-black: rgba(var(--black), 0);
   --color-secondary-default: rgba(var(--neutral-100), 1);
   --semi-color-text-2: rgba(var(--semi-grey-9), 0.6);
   --semi-grey-9: 35, 28, 31;

@@ -10,7 +10,8 @@ import {
   loanBackTypes,
   newHouseTypes,
   sexTypes,
-  NoticeData
+  NoticeData,
+  shuifeiTypes
 } from '../../utils/constants';
 import Message from 'tdesign-miniprogram/message/index';
 import {
@@ -29,6 +30,10 @@ import {
   createSelectorQuery,
   createSelectViewport
 } from '../../utils/util';
+import {
+  writeHistory,
+  readHistory
+} from '../../utils/history'
 import NP from 'number-precision'
 Page({
   behaviors: [basicBehavior, dealBehavior, serviceBehavior, gongjijinBehavior, sellerBehavior,
@@ -49,12 +54,17 @@ Page({
     loanBackTypes,
     newHouseTypes,
     sexTypes,
+    shuifeiTypes,
     stepIndex: 0,
     calcForm: {
       // 组合贷款合计金额
       loanGroupPrice: 0,
       // 保留小数位数
       numPoint: 4,
+      // 个税税费承担方 0 买方 1 卖方
+      geshuichengdanIndex: 1,
+      // 增值税税费承担方 0 买方 1 卖方
+      zengzhishuichengdanIndex: 1
     },
     currentYear: '',
     mineDate: getOldYearTimestamp(50),
@@ -69,6 +79,7 @@ Page({
     },
     guideCurrent: -1,
     guideSteps: [],
+
   },
 
   /**
@@ -79,13 +90,26 @@ Page({
     const {
       buyIndex
     } = options
+    const loanRateHistory = readHistory('loanrate_history')
+    const loanGjjRateHistory = readHistory('loangjjrate_history')
     this.setData({
       currentYear: new Date().getFullYear().toString(),
       options: options,
-      'calcForm.buyIndex': Number(buyIndex)
+      'calcForm.buyIndex': Number(buyIndex),
+      loanRateHistory,
+      loanGjjRateHistory
     })
     this.initGuide()
 
+
+  },
+  onShow() {
+    const loanRateHistory = readHistory('loanrate_history')
+    const loanGjjRateHistory = readHistory('loangjjrate_history')
+    this.setData({
+      loanRateHistory,
+      loanGjjRateHistory
+    })
   },
   initGuide() {
     const isGuideSkip = wx.getStorageSync('guide-skip')
@@ -298,6 +322,25 @@ Page({
       resolve()
     })
   },
+  // 个税税费承担方改变
+  onshuifeiTypesChange(e) {
+    const {
+      index
+    } = e.detail
+    this.setData({
+      'calcForm.geshuichengdanIndex': index
+    })
+  },
+
+  // 增值税税费承担方改变
+  onzengzhishuichengdanChange(e) {
+    const {
+      index
+    } = e.detail
+    this.setData({
+      'calcForm.zengzhishuichengdanIndex': index
+    })
+  },
   // 贷款方式 0 商业贷款 1 公积金 2组合贷 3全款
   async onBankTypeChange(e) {
     const {
@@ -380,7 +423,33 @@ Page({
 
     const timestamp = new Date().getTime();
     addDataToCache(this.data.calcForm, timestamp)
-
+    const {
+      loanRate,
+      loanGjjRate,
+      bankType
+    } = this.data.calcForm
+    if (bankType === 0) {
+      writeHistory('loanrate_history', {
+        label: `${loanRate}%`,
+        value: loanRate
+      })
+    }
+    if (bankType === 1) {
+      writeHistory('loangjjrate_history', {
+        label: `${loanGjjRate}%`,
+        value: loanGjjRate
+      })
+    }
+    if (bankType === 2) {
+      writeHistory('loanrate_history', {
+        label: `${loanRate}%`,
+        value: loanRate
+      })
+      writeHistory('loangjjrate_history', {
+        label: `${loanGjjRate}%`,
+        value: loanGjjRate
+      })
+    }
     wx.navigateTo({
       url: `/pages/result/result?timestamp=${timestamp}`,
     })

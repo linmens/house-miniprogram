@@ -139,7 +139,9 @@
     <l-card headerValue="{{another.total}}" headerTitle="房屋权属变更后的一方合计" info="{{another}}" unit="{{calcForm.unit}}"></l-card>
   </block>
   <l-card wx:if="{{calcForm.exchangeType===0&&calcForm.buyIndex===0}}" headerTitle="卖方合计" info="{{seller}}" unit="{{calcForm.unit}}"></l-card>
-  <l-card wx:if="{{calcForm.exchangeType===0}}" headerTitle="买方合计" info="{{buyer}}" unit="{{calcForm.unit}}"></l-card>
+  <l-card wx:if="{{calcForm.exchangeType===0}}" headerTitle="买方合计" info="{{buyer}}" unit="{{calcForm.unit}}">
+    <t-button block bind:tap="onCopyBtn" theme="primary" size="small" data-payer="buyer-step">复制清单</t-button>
+  </l-card>
 </view>
 <view id="section-2" class="section" wx:if="{{calcForm.bankType!==3&&calcForm.exchangeType===0}}">
   <t-divider content="贷款信息" />
@@ -289,6 +291,7 @@
         </view>
       </t-step-item>
     </t-steps>
+    <t-button block bind:tap="onCopyBtn" theme="primary" size="small" data-payer="buyer-step">复制清单</t-button>
   </l-card>
 </view>
 <!-- 计税依据 -->
@@ -320,5 +323,9 @@
   <view class="t-tab-bar-safe"></view>
 </view>
 <t-toast id="t-toast" />
+<!-- <view style="position: fixed;left:var(--td-spacer, 16rpx);bottom: calc(32rpx + env(safe-area-inset-bottom));padding:0 20rpx;">
+  <t-button bind:tap="onCopyBtn" theme="primary" size="small">复制清单</t-button>
+</view> -->
+<t-fab icon="add" button-props="{{fabButton}}" bind:click="handleClick" text="分享给朋友" />
 
 <t-back-top style="z-index: 99;" theme="round" scroll-top="{{scrollTop}}"></t-back-top>

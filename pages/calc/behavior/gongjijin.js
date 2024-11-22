@@ -67,6 +67,7 @@
         // 女方缴存基数
         loanGjjFemaleBasicPrice: 0
       },
+      loanGjjRateHistory: []
     },
     methods: {
       setLoanGjjMaxPrice() {
@@ -187,6 +188,14 @@
 
 
         }
+      },
+      onloanGjjRateHistory(e) {
+        const {
+          value
+        } = e.currentTarget.dataset
+        this.setData({
+          'calcForm.loanGjjRate': value
+        })
       },
       /**
        * 公积金贷款金额改变时

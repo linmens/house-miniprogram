@@ -6,6 +6,25 @@ Page({
    */
   data: {
     records: [{
+      version: '1.0.5',
+      date: '2024-11-21',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '新增功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '新增贷款利率操作历史、复制清单、个税、增值税承担方自定义功能',
+          type: 'text'
+        }]
+      }]
+    }, {
       version: '1.0.4',
       date: '2024-11-20',
       classname: 'h2',
@@ -20,7 +39,7 @@ Page({
         text: '个人房产计算',
         theme: 'primary',
         data: [{
-          text: '新增计算历史功能',
+          text: '新增历史计算功能',
           type: 'text'
         }]
       }]

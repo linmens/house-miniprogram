@@ -16,7 +16,8 @@
           bankPrice,
           paymentPrice,
           unit,
-          hukouWuyePrice
+          hukouWuyePrice,
+          zengzhishuichengdanIndex
         } = this.data.calcForm
         let calcTabs = this.data.calcTabs
         calcTabs.splice(3, 0, {
@@ -103,13 +104,19 @@
             list: [{
               tagText: '买方支付',
               tagTheme: 'primary',
-              total: NP.plus(buyer.qishui.value, buyer.houseBookPrice, hukouWuyePrice),
+              total: NP.plus(buyer.qishui.value, buyer.geshui.value, buyer.houseBookPrice.value, hukouWuyePrice, buyer.zengzhishui.value, buyer.zengzhishui.edushui, buyer.zengzhishui.cityshui, buyer.zengzhishui.localshui),
               details: [{
                 label: '契税',
                 value: buyer.qishui.value,
               }, {
                 label: '房本制本费',
-                value: buyer.houseBookPrice
+                value: buyer.houseBookPrice.value
+              }, {
+                label: '个税',
+                value: buyer.geshui.value
+              }, {
+                label: '增值税及附加',
+                value: NP.plus(buyer.zengzhishui.value, buyer.zengzhishui.edushui, buyer.zengzhishui.cityshui, buyer.zengzhishui.localshui)
               }, {
                 label: '户口物业预留金额（支付至卖方）',
                 value: hukouWuyePrice

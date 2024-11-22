@@ -26,7 +26,8 @@
         // 提前还款方式
         loanPaidTypeIndex: 0
       },
-
+      // 贷款利率操作历史
+      loanRateHistory: []
     },
     methods: {
       /**
@@ -114,6 +115,14 @@
         }
 
 
+      },
+      onloanRateHistory(e) {
+        const {
+          value
+        } = e.currentTarget.dataset
+        this.setData({
+          'calcForm.loanRate': value
+        })
       },
       onCustomLoanYearInputValChange(e) {
         const {

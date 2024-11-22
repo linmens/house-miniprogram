@@ -3,6 +3,29 @@
    } from '../../../utils/constants';
    export const sellerBehavior = Behavior({
      data: {
+       // 产证年限记录
+       chanzhengYearHistory: [{
+         label: '不满2年',
+         value: 0
+       }, {
+         label: '2年',
+         value: 2
+       }, {
+         label: '5年',
+         value: 5
+       }, {
+         label: '10年',
+         value: 10
+       }, {
+         label: '15年',
+         value: 15
+       }, {
+         label: '20年',
+         value: 20
+       }, {
+         label: '25年',
+         value: 25
+       }],
        canGiveOldpriceTypes,
        calcForm: {
          // 产权证持有年限
@@ -19,9 +42,19 @@
          oldBankPrice: '',
          // 手续费、公证费等
          oldOtherPrice: ''
-       }
+       },
+
      },
      methods: {
+       onChanzhengYearHistory(e) {
+         console.log(e, 'e')
+         const {
+           value
+         } = e.currentTarget.dataset
+         this.setData({
+           'calcForm.chanquanYear': value
+         })
+       },
        onOldOtherPriceChange(e) {
          const {
            value

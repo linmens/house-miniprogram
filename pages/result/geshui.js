@@ -1,7 +1,19 @@
  import NP from 'number-precision'
  export const geshuiBehavior = Behavior({
    data: {
+
      seller: {
+       geshui: {
+         label: '个税',
+         value: 0,
+         hdValue: 0,
+         ceValue: 0,
+         desc: [],
+         tagOptions: {},
+         type: 0,
+       }
+     },
+     buyer: {
        geshui: {
          label: '个税',
          value: 0,
@@ -21,21 +33,26 @@
          oldHouseStylePrice,
          oldOtherPrice,
          unit,
-
+         geshuichengdanIndex
        } = this.data.calcForm
+
+       const {
+         geshuiRate,
+         ceGeshuiRate
+       } = this.data.shuifeiRate
+       let geshui = {
+         label: '个税',
+       }
+       let buyer = this.data.buyer
+       let seller = this.data.seller
        const {
          zengzhishui,
          calcPrice,
          calcName,
          tudizengzhishui
-       } = this.data.seller
-       const {
-         geshuiRate,
-         ceGeshuiRate
-       } = this.data.shuifeiRate
-       let geshui = this.data.seller.geshui
-
+       } = seller
        let peroldHouseStylePrice = 0
+
        geshui.hdValue = NP.times(calcPrice, geshuiRate)
        if (oldPrice) {
          // 按差额 = 网签 - 历史成交价 - 原始税费 - 贷款利息 等合理费用
@@ -69,18 +86,34 @@
            label: `${calcName}*${geshuiRate} 结果为 ${geshui.ceValue} ${unit}`,
            isLower: geshui.hdValue < geshui.ceValue
          }, ...geshui.desc]
-
+         geshui.tagOptions = {
+           text: '差额',
+           type: 'primary'
+         }
+         geshui.value = geshui.ceValue
        } else {
          //  ceResult.value = NP.times(calcPrice, ceGeshuiRate)
          //  ceResult.label = `${calcName}*${ceGeshuiRate} 结果为 ${ceResult.value} ${unit}`
          geshui.desc = [{
            label: `${calcName}*${geshuiRate}`
          }]
+         geshui.tagOptions = {
+           text: '核定',
+           type: 'primary'
+         }
+         geshui.value = geshui.hdValue
          console.log('产权满5年及以上非家庭唯一,普通住宅个税核定征收：', geshui)
        }
-       this.setData({
-         'seller.geshui': geshui,
-       })
+
+       if (geshuichengdanIndex === 0) {
+         buyer.details = buyer.details.concat(geshui)
+         buyer.geshui = geshui
+         this.setData(buyer)
+       } else {
+         seller.details = seller.details.concat(geshui)
+         seller.geshui = geshui
+         this.setData(seller)
+       }
      },
    }
  })

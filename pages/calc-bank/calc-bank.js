@@ -10,6 +10,13 @@ import {
 import {
   addDataToCache
 } from '../../utils/util'
+import {
+  writeHistory,
+  readHistory
+} from '../../utils/history'
+import {
+  getCurrentCachedData,
+} from '../../utils/util'
 Page({
 
   /** 
@@ -20,6 +27,9 @@ Page({
     loanTypes,
     loanBackTypes,
     tabs: [],
+    // 贷款利率操作历史
+    loanRateHistory: [],
+    loanGjjRateHistory: [],
     calcForm: {
       type: 'bank',
       unit: '万元',
@@ -40,16 +50,28 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
+    console.log(options, 'calc-bank')
+    let calcForm = this.data.calcForm
+    if (options.timestamp) {
+      calcForm = getCurrentCachedData(options.timestamp)
+    }
+    const loanRateHistory = readHistory('loanrate_history')
+    const loanGjjRateHistory = readHistory('loangjjrate_history')
     tabs.splice(3, 1)
     this.setData({
-      tabs: tabs
+      tabs: tabs,
+      loanRateHistory,
+      loanGjjRateHistory,
+      calcForm
     })
   },
   handleClickStart() {
     const {
       bankType,
       loanGjjPrice,
-      loanPrice
+      loanPrice,
+      loanRate,
+      loanGjjRate,
     } = this.data.calcForm
     // 调用验证函数
     const isValid = validateLoanAmounts(bankType, loanPrice, loanGjjPrice);
@@ -59,8 +81,49 @@ Page({
     const timestamp = new Date().getTime();
     addDataToCache(this.data.calcForm, timestamp)
 
+    if (bankType === 0) {
+      writeHistory('loanrate_history', {
+        label: `${loanRate}%`,
+        value: loanRate
+      })
+    }
+    if (bankType === 1) {
+      writeHistory('loangjjrate_history', {
+        label: `${loanGjjRate}%`,
+        value: loanGjjRate
+      })
+    }
+    if (bankType === 2) {
+      writeHistory('loanrate_history', {
+        label: `${loanRate}%`,
+        value: loanRate
+      })
+      writeHistory('loangjjrate_history', {
+        label: `${loanGjjRate}%`,
+        value: loanGjjRate
+      })
+    }
     wx.navigateTo({
       url: `/pages/result-bank/result-bank?timestamp=${timestamp}`,
+    })
+  },
+  /**
+   * 贷款利率改变
+   */
+  onLoanRateChange(e) {
+    const {
+      value
+    } = e.detail
+    this.setData({
+      'calcForm.loanRate': value
+    })
+  },
+  onLoanGjjRateChange(e) {
+    const {
+      value
+    } = e.detail
+    this.setData({
+      'calcForm.loanGjjRate': value
     })
   },
   onBankTypeChange(e) {
@@ -101,7 +164,22 @@ Page({
       'calcForm.unitIndex': index
     })
   },
-
+  onloanRateHistory(e) {
+    const {
+      value
+    } = e.currentTarget.dataset
+    this.setData({
+      'calcForm.loanRate': value
+    })
+  },
+  onloanGjjRateHistory(e) {
+    const {
+      value
+    } = e.currentTarget.dataset
+    this.setData({
+      'calcForm.loanGjjRate': value
+    })
+  },
   onLoanPriceChange(e) {
     const {
       value

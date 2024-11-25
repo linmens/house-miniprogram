@@ -224,7 +224,8 @@ Page({
       buyIndex,
       exchangeType,
       geshuichengdanIndex,
-      hukouWuyePrice
+      hukouWuyePrice,
+      loanYear
     } = this.data.calcForm
     if (buyIndex === 0 && exchangeType === 0) {
       const {
@@ -240,11 +241,36 @@ Page({
         let currentLoanGjjInfo = this.data.gongjijin[loanBackIndex]
         let totalZengzhishui = NP.plus(buyer.zengzhishui.value, buyer.zengzhishui.cityshui, buyer.zengzhishui.edushui, buyer.zengzhishui.localshui)
         buyer.dingjinPrice = unit === '元' ? 20000 : 2
+        const loanDetails =
+          bankType === 0 && loanPrice ?
+          `商业贷款：${loanPrice}${unit}` :
+          bankType === 1 && loanGjjPrice ?
+          `公积金贷款：${loanGjjPrice}${unit}` :
+          bankType === 2 && loanGroupPrice ?
+          `组合贷款：${loanGroupPrice}${unit} (商业贷款${loanPrice}${unit} + 公积金贷款${loanGjjPrice}${unit})` :
+          "";
+        const monthlyPayment =
+          bankType === 0 && loanBackIndex === 0 ?
+          `每月还款：${currentLoanInfo.monthlyPayment}${unit}` :
+          bankType === 1 && loanBackIndex === 0 ?
+          `每月还款：${currentLoanGjjInfo.monthlyPayment}${unit}` :
+          bankType === 2 && loanBackIndex === 0 ?
+          `每月还款：${NP.plus(currentLoanInfo.monthlyPayment, currentLoanGjjInfo.monthlyPayment)}${unit} (商贷每月${currentLoanInfo.monthlyPayment}${unit} + 公积金每月${currentLoanGjjInfo.monthlyPayment}${unit})` :
+          "";
+        const firstMonthPayment =
+          bankType === 0 && loanBackIndex === 1 ?
+          `首月还款：${currentLoanInfo.firstMonthPayment}${unit}` :
+          bankType === 1 && loanBackIndex === 1 ?
+          `首月还款：${currentLoanGjjInfo.firstMonthPayment}${unit}` :
+          bankType === 2 && loanBackIndex === 1 ?
+          `首月还款：${NP.plus(currentLoanInfo.firstMonthPayment, currentLoanGjjInfo.firstMonthPayment)}${unit} (商贷首月${currentLoanInfo.firstMonthPayment}${unit} + 公积金首月${currentLoanGjjInfo.firstMonthPayment}${unit})` :
+          "";
         copyData = `
 [爱心][爱心][爱心] 买方清单 [爱心][爱心][爱心]
 
 交易总价：${totalPrice}${unit}
 建筑面积：${area}㎡
+交易单价： ${unit === '元' ? `${NP.divide(totalPrice,area).toFixed(2)}${unit}/㎡` : `${NP.divide(totalPrice,area).toFixed(4)}${unit}/㎡`}
 网签金额：${wangqianPrice}${unit}
 首付(含定金2万)：${paymentPrice}${unit}
 前期费用合计(不含贷款)：${buyer.withoutTotal}${unit}
@@ -274,10 +300,10 @@ ${geshuichengdanIndex === 0 &&buyer.geshui.value ? `个税：${buyer.geshui.valu
 ${hukouWuyePrice?`户口物业预留金额(支付至卖方)：${hukouWuyePrice}${unit}`:""}
 
 ${bankType!==3?`🌟🌟🌟 贷款信息 🌟🌟🌟`:""}
-${bankType===0&&loanPrice?`商业贷款：${loanPrice}${unit}`:""}
-${bankType===1&&loanGjjPrice?`公积金贷款：${loanGjjPrice}${unit}`:""}${bankType===2&&loanGjjPrice?`组合贷款：${loanGroupPrice}${unit}(商业贷款${loanPrice}${unit} + 公积金贷款${loanGjjPrice}${unit})`:""}
+${loanDetails}
 ${bankType!==3?`还款方式：${loanBackIndex===0?'等额本息':'等额本金'}`:""}
-${bankType===0&&loanBackIndex===0?`每月还款：${currentLoanInfo.monthlyPayment}${unit}`:bankType===1&&loanBackIndex===0?`每月还款：${currentLoanGjjInfo.monthlyPayment}${unit}`:bankType===2&&loanBackIndex===0?`每月还款：${NP.plus(currentLoanInfo.monthlyPayment,currentLoanGjjInfo.monthlyPayment)}${unit} + (商贷每月${currentLoanInfo.monthlyPayment}${unit} + 公积金每月${currentLoanGjjInfo.monthlyPayment}${unit})`:""}${bankType===0&&loanBackIndex===1?`首月还款：${currentLoanInfo.firstMonthPayment}${unit}`:bankType===1&&loanBackIndex===1?`首月还款：${currentLoanGjjInfo.firstMonthPayment}${unit}`:bankType===2&&loanBackIndex===1?`首月还款：${NP.plus(currentLoanInfo.firstMonthPayment,currentLoanGjjInfo.firstMonthPayment)}${unit} + (商贷首月${currentLoanInfo.firstMonthPayment}${unit} + 公积金首月${currentLoanGjjInfo.firstMonthPayment}${unit})`:""}
+贷款年限：${loanYear}年
+${monthlyPayment || firstMonthPayment}
 
 `.split("\n") // 将模板按行拆分
           .map(line => line.trim()) // 去掉每行的多余空格
@@ -748,6 +774,7 @@ ${bankType===0&&loanBackIndex===0?`每月还款：${currentLoanInfo.monthlyPayme
 
     zengzhishui.hdValue = NP.round(NP.times(NP.divide(calcPrice, 1.05), zengzhishuiRate), numPoint)
     if (oldPrice) {
+      // 有原值 差额计算
       zengzhishui.ceValue = NP.round(NP.times(NP.minus(calcPrice, oldPrice), zengzhishuiRate), numPoint)
       console.log('产权不满2年,差额计算增值税为：', zengzhishui.ceValue)
       if (zengzhishui.ceValue) {
@@ -762,30 +789,36 @@ ${bankType===0&&loanBackIndex===0?`每月还款：${currentLoanInfo.monthlyPayme
           label: `差额计算 (${calcName}-原值)*5% 结果为 ${zengzhishui.ceValue} ${unit}`,
           isLower: zengzhishui.ceValue < zengzhishui.hdValue
         }]
+        zengzhishui.tagOptions = {
+          text: '差额',
+          type: 'primary'
+        }
         zengzhishui.value = zengzhishui.ceValue
       }
-    }
+    } else {
+      if (zengzhishui.hdValue) {
+        // 城市维护建设税
+        zengzhishui.cityshui = NP.round(NP.times(zengzhishui.hdValue, cityRate, 0.5), numPoint)
+        console.log('产权不满2年,城市维护建设税减半征收为：', zengzhishui.cityshui)
 
-    if (zengzhishui.hdValue) {
-      // 城市维护建设税
-      zengzhishui.cityshui = NP.round(NP.times(zengzhishui.hdValue, cityRate, 0.5), numPoint)
-      console.log('产权不满2年,城市维护建设税减半征收为：', zengzhishui.cityshui)
+        // 教育税附加税
+        zengzhishui.edushui = NP.round(NP.times(zengzhishui.hdValue, eduRate, 0.5), numPoint)
+        console.log('产权不满2年,教育税附加税减半征收为：', zengzhishui.edushui)
 
-      // 教育税附加税
-      zengzhishui.edushui = NP.round(NP.times(zengzhishui.hdValue, eduRate, 0.5), numPoint)
-      console.log('产权不满2年,教育税附加税减半征收为：', zengzhishui.edushui)
+        // 地方教育附加税
+        zengzhishui.localshui = NP.round(NP.times(zengzhishui.hdValue, localeduRate, 0.5), numPoint)
+        console.log('产权不满2年,地方教育附加税减半征收为：', zengzhishui.localshui)
 
-      // 地方教育附加税
-      zengzhishui.localshui = NP.round(NP.times(zengzhishui.hdValue, localeduRate, 0.5), numPoint)
-      console.log('产权不满2年,地方教育附加税减半征收为：', zengzhishui.localshui)
-
-      console.log('产权不满2年', zengzhishui)
-      zengzhishui.value = zengzhishui.hdValue
-      zengzhishui.tagOptions = {
-        text: '核定',
-        type: 'primary'
+        console.log('产权不满2年', zengzhishui)
+        zengzhishui.value = zengzhishui.hdValue
+        zengzhishui.tagOptions = {
+          text: '核定',
+          type: 'primary'
+        }
       }
     }
+
+
     if (zengzhishuichengdanIndex === 0) {
 
       buyer.zengzhishui = zengzhishui
@@ -857,7 +890,7 @@ ${bankType===0&&loanBackIndex===0?`每月还款：${currentLoanInfo.monthlyPayme
       houseType
     } = this.data.calcForm
     if (houseType === 1) {
-      this.setZengzhishui()
+      // this.setZengzhishui()
       this.setTudizengzhishui()
     }
     if (chanquanYear < 2) {
@@ -991,54 +1024,8 @@ ${bankType===0&&loanBackIndex===0?`每月还款：${currentLoanInfo.monthlyPayme
       // let ceTotal = NP.plus(zengzhishui.ceValue, zengzhishui.cityshui, zengzhishui.edushui, geshui.ceValue, zengzhishui.localshui, tudizengzhishui.ceValue, serviceFee);
       // let ceTotalAll = NP.plus(ceTotal, withoutTotal)
 
-      // seller.totalList = [{
-      //   tagOptions: {
-      //     text: '核定',
-      //     type: 'primary'
-      //   },
-      //   isCurrent: 0,
-      //   value: hdTotal
-      // }, {
-      //   tagOptions: {
-      //     text: '差额',
-      //     type: 'warning'
-      //   },
-      //   isCurrent: 0,
-      //   value: ceTotal
-      // }]
-      if (hdTotal < ceTotal) {
-        // 推荐核定计算
-        // result.zengzhishui = zengzhishui.hdValue
-        // result.cityshui = zengzhishui.cityshui
-        // result.edushui = zengzhishui.edushui
-        // result.localshui = zengzhishui.localshui
-        // zengzhishui.value = zengzhishui.hdValue
-        // geshui.value = geshui.hdValue
 
 
-        // tudizengzhishui.value = tudizengzhishui.hdValue
-        // result.tagOptions = {
-        //   text: '核定',
-        //   type: 'primary'
-        // }
-        // seller.totalList[0].isCurrent = 1
-      } else {
-        // 推荐差额计算
-        // result.zengzhishui = zengzhishui.ceValue
-        // result.cityshui = zengzhishui.cityshui
-        // result.edushui = zengzhishui.edushui
-        // result.localshui = zengzhishui.localshui
-        // result.sellerTotal = ceTotal
-        // geshui.value = geshui.ceValue
-        // zengzhishui.value = zengzhishui.ceValue
-        // result.total = ceTotalAll
-        // tudizengzhishui.value = tudizengzhishui.ceValue
-        // result.tagOptions = {
-        //   text: '差额',
-        //   type: 'warning'
-        // }
-        // seller.totalList[1].isCurrent = 1
-      }
 
       // result.zengzhiDesc = [{
       //   label: `核定计算 (${calcName}/1.05*5%) 结果为 ${zengzhishui.hdValue} ${unit}`,
@@ -1055,7 +1042,7 @@ ${bankType===0&&loanBackIndex===0?`每月还款：${currentLoanInfo.monthlyPayme
       // result.localshui = zengzhishui.localshui
 
       // zengzhishui.value = zengzhishui.hdValue
-      // tudizengzhishui.value = tudizengzhishui.hdValue
+
       // result.tagOptions = {
       //   text: '核定',
       //   type: 'primary'
@@ -1400,10 +1387,5 @@ ${bankType===0&&loanBackIndex===0?`每月还款：${currentLoanInfo.monthlyPayme
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
 
-  }
 })

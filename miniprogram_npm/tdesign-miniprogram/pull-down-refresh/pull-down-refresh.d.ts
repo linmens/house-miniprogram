@@ -6,12 +6,13 @@ export default class PullDownRefresh extends SuperComponent {
         pageY: number;
     } | null;
     isPulling: boolean;
-    loadingBarHeight: number;
     maxRefreshAnimateTimeFlag: number;
     closingAnimateTimeFlag: number;
+    refreshStatusTimer: any;
     externalClasses: string[];
     options: {
         multipleSlots: boolean;
+        pureDataPattern: RegExp;
     };
     relations: RelationsOptions;
     properties: import("./type").TdPullDownRefreshProps;
@@ -19,10 +20,13 @@ export default class PullDownRefresh extends SuperComponent {
         prefix: string;
         classPrefix: string;
         barHeight: number;
+        tipsHeight: number;
         refreshStatus: number;
         loosing: boolean;
         enableToRefresh: boolean;
         scrollTop: number;
+        _maxBarHeight: number;
+        _loadingBarHeight: number;
     };
     lifetimes: {
         attached(): void;
@@ -30,8 +34,12 @@ export default class PullDownRefresh extends SuperComponent {
     };
     observers: {
         value(val: any): void;
+        barHeight(val: any): void;
+        maxBarHeight(v: any): void;
+        loadingBarHeight(v: any): void;
     };
     methods: {
+        resetTimer(): void;
         onScrollToBottom(): void;
         onScrollToTop(): void;
         onScroll(e: any): void;

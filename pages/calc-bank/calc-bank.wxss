@@ -1,1 +1,13 @@
-/* pages/calc-bank/calc-bank.wxss */
+.scroll-x__item {
+  display: inline-block;
+  margin-right: 15rpx;
+  padding: 4rpx 20rpx;
+  border: 0.5px solid var(--color-line-l3);
+  background-color: var(--color-bg-b2);
+  border-radius: 10rpx;
+  margin-top: 10rpx;
+}
+.scroll-x__item:hover {
+  color: var(--td-font-white-1);
+  background-color: var(--td-brand-color);
+}

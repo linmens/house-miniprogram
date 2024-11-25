@@ -3,6 +3,8 @@
 
   </t-navbar>
   <t-divider content="至多储存10条历史记录"></t-divider>
+  <t-empty wx:if="{{list.length===0}}" icon="info-circle-filled" description="暂无计算历史数据" />
+
   <l-card wx:for="{{list}}" wx:key="index">
     <view class="l-card__header">
       <view class="l-card__header__left">
@@ -32,7 +34,8 @@
       <text wx:if="{{item.pingguPrice}}">{{item.pingguPrice}}{{item.unit}}</text>
     </view>
     <view class="l-card__footer">
-      <t-button data-index="{{index}}" bind:tap="onResultBtnClick" theme="primary" variant="outline" size="small">计算结果</t-button>
+      <t-button icon="history" style="margin-right: 10rpx;" data-index="{{index}}" bind:tap="onRetryBtnClick" theme="default" variant="outline" size="small">重新计算</t-button>
+      <t-button icon="giggle" data-index="{{index}}" bind:tap="onResultBtnClick" theme="primary" variant="outline" size="small">计算结果</t-button>
     </view>
   </l-card>
 </view>

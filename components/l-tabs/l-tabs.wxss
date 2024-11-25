@@ -13,7 +13,7 @@
 .l-tabs__wrap {
   /* width: 100%; */
   background: var(--color-bg-b2);
-  border: 0.5px solid var(--color-line-l3);
+  /* border: 0.5px solid var(--color-line-l3); */
   /* background-color: var(
     --td-tab-item-tag-bg,
     var(--td-bg-color-secondarycontainer, var(--td-gray-color-1, #f3f3f3))

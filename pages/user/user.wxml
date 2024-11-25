@@ -16,7 +16,7 @@
 <t-cell-group theme="card">
   <t-cell url="/pages/setting/setting" title="设置" left-icon="setting" arrow hover></t-cell>
   <t-cell url="/pages/about/about" left-icon="info-circle" title="关于" arrow hover></t-cell>
-  <t-cell url="/pages/update-record/update-record" left-icon="tree-list" title="更新日志" arrow hover></t-cell>
+  <t-cell url="/pages/update-record/update-record" left-icon="bug-report" title="更新日志" arrow hover></t-cell>
   <t-cell url="/pages/calc-log/calc-log" left-icon="root-list" title="计算历史" arrow hover></t-cell>
 </t-cell-group>
 <view style="margin:32rpx">

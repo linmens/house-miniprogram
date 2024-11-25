@@ -12,6 +12,7 @@
    houseTypes
  }
  from '../../utils/constants';
+ import NP from 'number-precision'
  export const basicBehavior = Behavior({
    data: {
      // 动态生成的列表
@@ -89,6 +90,10 @@
          label: '评估价格',
          value: pingguPrice + unit,
          show: pingguPrice ? 1 : 0
+       }, {
+         label: '交易单价',
+         value: unit === '元' ? `${NP.divide(totalPrice,area).toFixed(2)}${unit}/㎡` : `${NP.divide(totalPrice,area).toFixed(4)}${unit}/㎡`,
+         show: 1
        }]
        this.setData({
          list: list

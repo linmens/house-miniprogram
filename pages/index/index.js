@@ -101,6 +101,7 @@ Page({
       showNotice: true
     })
   },
+
   onForWhoIndexChange(e) {
     const {
       value

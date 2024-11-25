@@ -18,6 +18,7 @@
   align-items: center;
   color: var(--color-text-t2);
   margin-top: 20rpx;
+  margin-bottom: 20rpx;
 }
 .l-card__footer {
   text-align: right;

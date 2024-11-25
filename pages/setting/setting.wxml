@@ -5,5 +5,6 @@
   <t-cell left-icon="gesture-click" title="是否关闭操作引导">
     <t-switch bind:change="guideSkipChange" value="{{guideSkip}}" slot="note" />
   </t-cell>
+  <t-cell left-icon="system-storage" title="本地缓存" note="{{currentSize+'KB'}}" right-icon="clear" bind:tap="clearLocalStorage"></t-cell>
   <!-- <t-cell left-icon="brightness-1" title="背景设置" arrow hover note="系统"></t-cell> -->
 </t-cell-group>

@@ -26,20 +26,23 @@
 
   </view>
 </view> -->
-<view class="l-cate-card m-32" bind:tap="openCalc" data-url="{{item.url}}" wx:for="{{cateMenu}}" wx:key="index">
-  <view class="l-cate-card__bg l-cate-card__{{item.backgroundClass}}">
-    <view class="l-cate-card__icon">
-      <t-icon size="20" name="{{item.icon}}"></t-icon>
-      <view class="l-cate-card__icon--shadow"></view>
-    </view>
-    <view class="l-cate-card__content">
-      <text class="l-cate-card__title">{{item.title}}</text>
-      <text class="l-cate-card__label font-24">{{item.label}}</text>
+<view style="width: 100%;overflow: hidden;">
+  <view class="l-cate-card m-32" bind:tap="openCalc" data-url="{{item.url}}" wx:for="{{cateMenu}}" wx:key="index">
+    <view class="l-cate-card__bg l-cate-card__{{item.backgroundClass}}">
+      <view class="l-cate-card__icon">
+        <t-icon size="20" name="{{item.icon}}"></t-icon>
+        <view class="l-cate-card__icon--shadow"></view>
+      </view>
+      <view class="l-cate-card__content">
+        <text class="l-cate-card__title">{{item.title}}</text>
+        <text class="l-cate-card__label font-24">{{item.label}}</text>
+      </view>
     </view>
   </view>
 </view>
 
-<view style="margin-top: 32rpx;margin-bottom: 32rpx;">
+
+<view style="margin-bottom: 32rpx;">
   <t-grid hover="{{true}}" column="{{4}}" theme="card" custom-style="border:0.5px solid var(--color-line-l3)">
     <!-- <t-grid-item wx:for="{{cateMenu}}" text="{{item.text}}" url="{{item.url+'?buyIndex='+item.params.buyIndex+'&'+'title='+item.params.title}}" icon="{{item.icon}}" /> -->
     <!-- <t-grid-item badge-props="{{ { count: '全程费用',color:'#FE2C55' } }}" t-class-content="t-grid-item-content" text="二手房" url="/pages/calc/calc?buyIndex=0&title=二手房交易费用计算" icon="houses-2" /> -->

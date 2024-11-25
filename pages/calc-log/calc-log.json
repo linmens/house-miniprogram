@@ -1,6 +1,7 @@
 {
   "navigationStyle": "custom",
   "usingComponents": {
-    "l-card": "/components/card/card"
+    "l-card": "/components/card/card",
+    "t-empty": "tdesign-miniprogram/empty/empty"
   }
 }

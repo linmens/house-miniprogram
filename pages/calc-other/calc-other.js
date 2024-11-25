@@ -8,6 +8,9 @@ import {
   addDataToCache,
   fixPrice
 } from '../../utils/util';
+import {
+  getCurrentCachedData,
+} from '../../utils/util'
 Page({
 
   /**
@@ -28,6 +31,7 @@ Page({
       fadingIndex: 0,
       // 分割条件
       fengeIndex: 0,
+      type: 'other'
     },
     options: {}
   },
@@ -37,13 +41,28 @@ Page({
    */
   onLoad(options) {
     console.log(options)
+
     const {
-      exchangeType
+      exchangeType,
+      title,
+      timestamp
     } = options
-    this.setData({
-      options: options,
-      'calcForm.exchangeType': Number(exchangeType)
-    })
+    if (exchangeType) {
+      this.setData({
+        options: options,
+        'calcForm.exchangeType': Number(exchangeType),
+        'calcForm.title': title
+      })
+    }
+    let calcForm = this.data.calcForm
+    if (timestamp) {
+      calcForm = getCurrentCachedData(timestamp)
+      console.log(calcForm, 'calcForm')
+      this.setData({
+        calcForm
+      })
+    }
+
   },
   onFengeTypeChange(e) {
     const {

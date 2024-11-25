@@ -35,6 +35,9 @@ import {
   readHistory
 } from '../../utils/history'
 import NP from 'number-precision'
+import {
+  getCurrentCachedData,
+} from '../../utils/util'
 Page({
   behaviors: [basicBehavior, dealBehavior, serviceBehavior, gongjijinBehavior, sellerBehavior,
     buyerBehavior, shangdaiBehavior
@@ -57,6 +60,7 @@ Page({
     shuifeiTypes,
     stepIndex: 0,
     calcForm: {
+      type: 'second-hand',
       // 组合贷款合计金额
       loanGroupPrice: 0,
       // 保留小数位数
@@ -88,14 +92,26 @@ Page({
   onLoad(options) {
     console.log(options)
     const {
-      buyIndex
+      buyIndex,
+      timestamp
     } = options
+    let calcForm = this.data.calcForm
+    if (timestamp) {
+      calcForm = getCurrentCachedData(timestamp)
+      console.log(calcForm, 'calcForm')
+      this.setData({
+        calcForm
+      })
+    } else {
+      this.setData({
+        'calcForm.buyIndex': Number(buyIndex),
+      })
+    }
     const loanRateHistory = readHistory('loanrate_history')
     const loanGjjRateHistory = readHistory('loangjjrate_history')
     this.setData({
       currentYear: new Date().getFullYear().toString(),
       options: options,
-      'calcForm.buyIndex': Number(buyIndex),
       loanRateHistory,
       loanGjjRateHistory
     })

@@ -326,8 +326,8 @@
          'calcForm.wangqianPrice': value
        });
 
-       await this.setTotalPrice(0)
-       this.startCalc()
+       this.setTotalPrice(0)
+       //  this.startCalc()
 
      },
      /**

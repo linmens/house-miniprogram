@@ -113,7 +113,7 @@
     <l-cell title="产证持有年限" suffix="年">
       <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="handleChanquanYearChange" value="{{calcForm.chanquanYear}}" placeholder="请输入产证持有年限" type="digit"></t-input>
       <scroll-view scroll-anchoring scroll-with-animation enable-passive show-scrollbar="{{false}}" scroll-x="{{true}}" slot="description" style="position: relative; overflow-x: scroll;white-space: nowrap;width: 100%">
-        <view wx:for="{{chanzhengYearHistory}}" class="scroll-x__item" data-value="{{item.value}}" bind:tap="onChanzhengYearHistory">{{item.label}}</view>
+        <view wx:for="{{chanzhengYearHistory}}" wx:key="index" class="scroll-x__item" data-value="{{item.value}}" bind:tap="onChanzhengYearHistory">{{item.label}}</view>
       </scroll-view>
     </l-cell>
 
@@ -211,7 +211,7 @@
         <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanRateChange" value="{{calcForm.loanRate}}" align="right" placeholder="请输入贷款利率" type="digit">
         </t-input>
         <scroll-view scroll-anchoring scroll-with-animation enable-passive show-scrollbar="{{false}}" scroll-x="{{true}}" slot="description" style="position: relative; overflow-x: scroll;white-space: nowrap;width: 100%">
-          <view wx:for="{{loanRateHistory}}" class="scroll-x__item" data-value="{{item.value}}" bind:tap="onloanRateHistory">{{item.label}}</view>
+          <view wx:for="{{loanRateHistory}}" wx:key="index" class="scroll-x__item" data-value="{{item.value}}" bind:tap="onloanRateHistory">{{item.label}}</view>
         </scroll-view>
       </l-cell>
 
@@ -252,7 +252,7 @@
         <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanGjjRateChange" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="digit">
         </t-input>
         <scroll-view scroll-anchoring scroll-with-animation enable-passive show-scrollbar="{{false}}" scroll-x="{{true}}" slot="description" style="position: relative; overflow-x: scroll;white-space: nowrap;width: 100%">
-          <view wx:for="{{loanGjjRateHistory}}" class="scroll-x__item" data-value="{{item.value}}" bind:tap="onloanGjjRateHistory">{{item.label}}</view>
+          <view wx:for="{{loanGjjRateHistory}}" wx:key="index" class="scroll-x__item" data-value="{{item.value}}" bind:tap="onloanGjjRateHistory">{{item.label}}</view>
         </scroll-view>
       </l-cell>
 

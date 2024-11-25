@@ -20,7 +20,7 @@
         this.setData({
           'calcForm.buyerIndex': index,
         })
-        this.startCalc()
+        // this.startCalc()
       }
     }
   })

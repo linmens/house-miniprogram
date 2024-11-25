@@ -291,7 +291,7 @@
         </view>
       </t-step-item>
     </t-steps>
-    <t-button block bind:tap="onCopyBtn" theme="primary" size="small" data-payer="buyer-step">复制清单</t-button>
+    <t-button style="margin-top: 10rpx;" block bind:tap="onCopyBtn" theme="primary" size="small" data-payer="buyer-step">复制清单</t-button>
   </l-card>
 </view>
 <!-- 计税依据 -->

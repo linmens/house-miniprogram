@@ -1,4 +1,4 @@
-// pages/update-record/update-record.js
+import updateRecords from './updateRecords.js'; // 导入升级记录
 Page({
 
   /**
@@ -6,6 +6,63 @@ Page({
    */
   data: {
     records: [{
+      version: '1.0.8',
+      date: '2024-11-25',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '优化功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '优化版本管理升级',
+          type: 'text'
+        }]
+      }]
+    }, {
+      version: '1.0.7',
+      date: '2024-11-25',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '新增功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '修复继承计算问题、新增重新计算功能',
+          type: 'text'
+        }]
+      }]
+    }, {
+      version: '1.0.6',
+      date: '2024-11-22',
+      classname: 'h2',
+      title: '',
+      icon: 'send'
+    }, {
+      classname: 'h3',
+      title: '修复功能',
+    }, {
+      classname: 'ul',
+      list: [{
+        text: '个人房产计算',
+        theme: 'primary',
+        data: [{
+          text: '修复贷款计算利率不生效的问题',
+          type: 'text'
+        }]
+      }]
+    }, {
       version: '1.0.5',
       date: '2024-11-21',
       classname: 'h2',
@@ -435,7 +492,6 @@ Page({
     // 使用选择器获取最后一个 .h2 元素
     const query = wx.createSelectorQuery();
     query.selectAll('.timeline .h2').boundingClientRect(function (res) {
-      console.log(res, 's')
       // 找到最后一个 .h2 元素
       if (res.length > 0) {
         const lastH2Index = res.length - 1;
@@ -447,8 +503,56 @@ Page({
         });
       }
     }).exec();
-  },
 
+    // 将升级记录批量插入到 records
+    updateRecords.forEach((record) => {
+      this.addVersionUpdate(record);
+    });
+  },
+  addVersionUpdate({
+    version,
+    date,
+    title = '新增功能',
+    icon = 'send',
+    features = []
+  }) {
+
+    let records = JSON.parse(JSON.stringify(this.data.records)); // 深拷贝数据
+    const newUpdate = [{
+        version,
+        date,
+        classname: 'h2',
+        title: '',
+        icon,
+      },
+      {
+        classname: 'h3',
+        title,
+      },
+      {
+        classname: 'ul',
+        list: features.map(({
+          text,
+          theme,
+          subFeatures
+        }) => ({
+          text,
+          theme,
+          data: subFeatures.map(({
+            text,
+            type
+          }) => ({
+            text,
+            type
+          })),
+        })),
+      },
+    ];
+    records.unshift(...newUpdate)
+    this.setData({
+      records
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

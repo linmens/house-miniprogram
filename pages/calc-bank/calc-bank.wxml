@@ -34,6 +34,9 @@
     <l-cell title="贷款利率" suffix="%">
       <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanRateChange" value="{{calcForm.loanRate}}" align="right" placeholder="请输入贷款利率" type="digit">
       </t-input>
+      <scroll-view scroll-anchoring scroll-with-animation enable-passive show-scrollbar="{{false}}" scroll-x="{{true}}" slot="description" style="position: relative; overflow-x: scroll;white-space: nowrap;width: 100%">
+        <view wx:for="{{loanRateHistory}}" wx:key="index" class="scroll-x__item" data-value="{{item.value}}" bind:tap="onloanRateHistory">{{item.label}}</view>
+      </scroll-view>
     </l-cell>
   </l-cell-group>
 </block>
@@ -48,6 +51,9 @@
     <l-cell title="贷款利率" suffix="%">
       <t-input slot="note" borderless customStyle="padding:0" bind:change="onLoanGjjRateChange" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="digit">
       </t-input>
+      <scroll-view scroll-anchoring scroll-with-animation enable-passive show-scrollbar="{{false}}" scroll-x="{{true}}" slot="description" style="position: relative; overflow-x: scroll;white-space: nowrap;width: 100%">
+        <view wx:for="{{loanGjjRateHistory}}" wx:key="index" class="scroll-x__item" data-value="{{item.value}}" bind:tap="onloanGjjRateHistory">{{item.label}}</view>
+      </scroll-view>
     </l-cell>
   </l-cell-group>
 </block>

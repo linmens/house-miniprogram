@@ -5,7 +5,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    guideSkip: false
+    guideSkip: false,
+    // 当前占用缓存大小
+    currentSize: 0
   },
 
   /**
@@ -13,9 +15,15 @@ Page({
    */
   onLoad(options) {
     let guideSkip = wx.getStorageSync('guide-skip')
+
+    // if (guideSkip === "") {
+    //   wx.setStorageSync('guide-skip', true)
+    //   guideSkip = true
+    // }
     this.setData({
       guideSkip
     })
+    this.getLocalSize()
   },
   guideSkipChange(e) {
     const {
@@ -25,6 +33,48 @@ Page({
     this.setData({
       guideSkip: value
     })
+  },
+  getLocalSize() {
+    const currentSize = wx.getStorageInfoSync().currentSize
+    console.log(currentSize)
+    this.setData({
+      currentSize
+    })
+  },
+  clearLocalStorage() {
+    const that = this;
+
+    wx.showModal({
+      title: '清理缓存',
+      content: '确定要清理缓存吗？',
+      success(res) {
+        if (res.confirm) {
+          try {
+            const info = wx.getStorageInfoSync();
+            const excludeKey = 'guide-skip'; // 要排除的键
+
+            info.keys.forEach((key) => {
+              if (key !== excludeKey) {
+                wx.removeStorageSync(key); // 删除非排除键的缓存
+              }
+            });
+
+            wx.showToast({
+              title: '缓存清理成功',
+              icon: 'success',
+            });
+
+            that.getLocalSize(); // 更新缓存信息
+          } catch (error) {
+            console.error('清理缓存失败:', error);
+            wx.showToast({
+              title: '缓存清理失败',
+              icon: 'none',
+            });
+          }
+        }
+      },
+    });
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

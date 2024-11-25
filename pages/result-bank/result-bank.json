@@ -3,8 +3,6 @@
   "styleIsolation": "apply-shared",
   "usingComponents": {
     "l-card": "/components/card/card",
-    "t-footer": "tdesign-miniprogram/footer/footer",
-    "t-indexes": "tdesign-miniprogram/indexes/indexes",
-    "t-indexes-anchor": "tdesign-miniprogram/indexes-anchor/indexes-anchor"
+    "t-footer": "tdesign-miniprogram/footer/footer"
   }
 }

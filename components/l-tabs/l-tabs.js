@@ -183,13 +183,13 @@ Component({
 
             const maxOffset = res.reduce((acc, item) => acc + item.width, 0) - containerWidth;
             this.setData({
-              offset: Math.min(Math.max(distance, 0), maxOffset),
+              offset: Math.min(Math.max(distance - 20, 0), maxOffset),
             });
           }
 
           this.setData({
-            trackStyle: `-webkit-transform: translateX(${distance}px);
-            transform: translateX(${distance}px);
+            trackStyle: `-webkit-transform: translateX(${distance-20}px);
+            transform: translateX(${distance-20}px);
           `,
           });
         } catch (err) {

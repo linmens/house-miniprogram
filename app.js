@@ -146,6 +146,46 @@ App({
   },
   onLaunch() {
     wx.hideTabBar()
+
+    this.checkForUpdates(); // 检查更新
+  },
+  checkForUpdates() {
+    // 获取更新管理器实例
+    const updateManager = wx.getUpdateManager();
+
+    // 检测新版本
+    updateManager.onCheckForUpdate((res) => {
+      console.log('是否有新版本:', res.hasUpdate);
+      // 如果需要，也可以在这里自定义逻辑，比如记录日志或更新UI。
+    });
+
+    // 监听新版本下载完成
+    updateManager.onUpdateReady(() => {
+      wx.showModal({
+        title: '更新提示',
+        content: '新版本已准备好，是否立即重启应用？',
+        confirmText: '立即更新',
+        cancelText: '稍后',
+        success(res) {
+          if (res.confirm) {
+            // 应用新版本并重启
+            updateManager.applyUpdate();
+          } else {
+            console.log('用户选择稍后更新');
+          }
+        },
+      });
+    });
+
+    // 监听新版本下载失败
+    updateManager.onUpdateFailed(() => {
+      wx.showModal({
+        title: '更新失败',
+        content: '新版本下载失败，请检查网络连接或稍后重试。',
+        showCancel: false, // 不显示取消按钮
+        confirmText: '知道了',
+      });
+    });
   },
   onThemeChange(theme) {
     console.log(theme)

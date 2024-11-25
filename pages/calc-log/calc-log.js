@@ -51,6 +51,29 @@ Page({
       }
     }
   },
+  onRetryBtnClick(e) {
+    const {
+      index
+    } = e.currentTarget.dataset
+    let currentItem = this.data.list[index]
+    if (currentItem) {
+      if (currentItem.type === 'bank') {
+        wx.navigateTo({
+          url: `/pages/calc-bank/calc-bank?timestamp=${currentItem.timestamp}`,
+        })
+      }
+      if (currentItem.type === 'other') {
+        wx.navigateTo({
+          url: `/pages/calc-other/calc-other?timestamp=${currentItem.timestamp}`,
+        })
+      }
+      if (currentItem.type === 'second-hand') {
+        wx.navigateTo({
+          url: `/pages/calc/calc?timestamp=${currentItem.timestamp}`,
+        })
+      }
+    }
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

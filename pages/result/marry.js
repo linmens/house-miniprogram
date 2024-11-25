@@ -51,7 +51,8 @@
        this.setData({
          'marryder.yinhuaShui': yinhuaShui,
          'marryder.details': details,
-         'marryder.total': total
+         'marryder.total': total,
+         'result.totalAll': total
        })
      },
    }

@@ -1,5 +1,8 @@
 @import "miniprogram_npm/tdesign-miniprogram/common/style/theme/_index.wxss";
-
+page {
+  width: 100%;
+  height: 100%;
+}
 page,
 .light-mode {
   --margin-32: 32rpx;

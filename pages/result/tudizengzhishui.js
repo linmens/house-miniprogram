@@ -69,7 +69,11 @@
          tudizengzhiRateInfo: {}
        }
        tudizengzhishui.hdValue = NP.times(wangqianPrice, 0.05)
-
+       tudizengzhishui.value = tudizengzhishui.hdValue
+       tudizengzhishui.tagOptions = {
+         text: '核定',
+         type: 'primary'
+       }
        if (pingguPrice && oldPrice) {
          //有评估并且有原值
          result.canMinusPrice = NP.plus(oldPrice, zengzhishui.cityshui, zengzhishui.edushui, zengzhishui.localshui)
@@ -126,15 +130,21 @@
          }, {
            label: `4.应纳税额=增值额*税率(${result.tudizengzhiRateInfo.rate})-可扣除项目金额*速算扣除系数(${result.tudizengzhiRateInfo.susuanRate}) 结果为 ${tudizengzhishui.ceValue} ${unit}`
          }]
+         tudizengzhishui.value = tudizengzhishui.ceValue
+         tudizengzhishui.tagOptions = {
+           text: '差额',
+           type: 'primary'
+         }
        }
 
        tudizengzhishui.desc = [{
          label: `核定计算 网签价*0.05 结果为 ${tudizengzhishui.hdValue} ${unit}`,
          isLower: tudizengzhishui.hdValue < tudizengzhishui.ceValue
        }, ...tudizengzhishui.desc]
-
+       const newDetails = this.data.seller.details.concat(tudizengzhishui)
        this.setData({
-         'seller.tudizengzhishui': tudizengzhishui
+         'seller.tudizengzhishui': tudizengzhishui,
+         'seller.details': newDetails
        })
      }
    }

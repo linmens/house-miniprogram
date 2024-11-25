@@ -83,7 +83,7 @@
          console.log('产权满5年及以上非家庭唯一,个税按差额征收：', geshui)
 
          geshui.desc = [{
-           label: `${calcName}*${geshuiRate} 结果为 ${geshui.ceValue} ${unit}`,
+           label: `${calcName}*${geshuiRate} 结果为 ${geshui.hdValue} ${unit}`,
            isLower: geshui.hdValue < geshui.ceValue
          }, ...geshui.desc]
          geshui.tagOptions = {

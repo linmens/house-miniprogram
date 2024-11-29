@@ -44,6 +44,10 @@ Page({
         wx.navigateTo({
           url: `/pages/result-bank/result-bank?timestamp=${currentItem.timestamp}`,
         })
+      } else if (currentItem.type === 'seller') {
+        wx.navigateTo({
+          url: `/pages/result-seller/result-seller?timestamp=${currentItem.timestamp}`,
+        })
       } else {
         wx.navigateTo({
           url: `/pages/result/result?timestamp=${currentItem.timestamp}`,
@@ -70,6 +74,11 @@ Page({
       if (currentItem.type === 'second-hand') {
         wx.navigateTo({
           url: `/pages/calc/calc?timestamp=${currentItem.timestamp}`,
+        })
+      }
+      if (currentItem.type === 'seller') {
+        wx.navigateTo({
+          url: `/pages/calc-seller/calc-seller?timestamp=${currentItem.timestamp}`,
         })
       }
     }

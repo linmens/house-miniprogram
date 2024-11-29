@@ -1,0 +1,85 @@
+.box {
+  padding: 0 32rpx;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background-color: var(--td-bg-color-container, #fff);
+}
+.pre-radio {
+  font-size: 28rpx;
+  padding: 10rpx 0rpx;
+}
+.scroll-x__item {
+  display: inline-block;
+  margin-right: 15rpx;
+  padding: 4rpx 20rpx;
+  border: 0.5px solid var(--color-line-l3);
+  background-color: var(--color-bg-b2);
+  border-radius: 10rpx;
+  margin-top: 10rpx;
+}
+.scroll-x__item:hover {
+  color: var(--td-font-white-1);
+  background-color: var(--td-brand-color);
+}
+/* 外层容器 */
+.l-scroll-x {
+  display: flex;
+  position: relative;
+  overflow-x: scroll;
+  width: 100%;
+}
+
+/* 卡片样式 */
+.l-scroll-x__item {
+  flex: 0 0 auto;
+  width: 350rpx;
+  margin-right: 20rpx;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color-bg-b2);
+
+  border-radius: 10rpx;
+  padding: 20rpx;
+  min-height: 170rpx; /* 保证每个卡片等高 */
+}
+
+/* 内容区域 */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 标签部分 */
+.card-tag {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  margin-bottom: 10rpx;
+}
+
+/* 金额样式 */
+.amount {
+  margin-left: 20rpx;
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+/* 日期部分 */
+.card-date {
+  font-size: 24rpx;
+  color: #888888;
+  margin-bottom: 10rpx;
+}
+
+/* 信息部分 */
+.card-info {
+  font-size: 24rpx;
+  color: #333333;
+  margin-top: auto;
+}

@@ -32,10 +32,11 @@ export function writeHistory(key, newItem) {
     return;
   }
 
-  // if (!newItem || typeof newItem.label !== "string" || typeof newItem.value !== "number") {
-  //   console.error("无效的历史记录格式，应为 {label: string, value: number}");
-  //   return;
-  // }
+  if (!newItem || typeof newItem.label !== "string" || typeof newItem.value !== "number") {
+    console.error("无效的历史记录格式，应为 {label: string, value: number}");
+    newItem.value = Number(newItem.value)
+    // return;
+  }
 
   try {
     const history = readHistory(key);

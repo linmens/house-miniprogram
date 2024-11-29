@@ -7,3 +7,11 @@ export function showMessage(message) {
     content: message,
   });
 }
+export function showSuccessMessage(message) {
+  Message.success({
+    context: this,
+    offset: [90, 32],
+    duration: 3000,
+    content: message,
+  });
+}

@@ -8,6 +8,7 @@
   <l-card wx:for="{{list}}" wx:key="index">
     <view class="l-card__header">
       <view class="l-card__header__left">
+        <t-tag theme="primary" wx:if="{{item.type==='seller'}}">售房成本计算</t-tag>
         <t-tag theme="primary" wx:if="{{item.type==='bank'}}">贷款计算</t-tag>
         <t-tag theme="primary" wx:if="{{item.buyIndex===0}}">二手房计算</t-tag>
         <t-tag theme="primary" wx:if="{{item.buyIndex===1}}">一手房计算</t-tag>

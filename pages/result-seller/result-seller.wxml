@@ -1,0 +1,239 @@
+<t-navbar left-arrow title="售房成本计算结果"></t-navbar>
+<!-- <t-sticky>
+  <view class="t-navbar-class">
+    <t-navbar left-arrow title="售房成本计算结果"></t-navbar>
+    <t-tabs split="{{false}}" style="--td-tab-nav-bg-color: transparent;" value="{{calcForm.loanBackIndex}}" bind:change="onTabsChange" t-class="custom-tabs">
+      <t-tab-panel label="基本信息" value="{{0}}" />
+      <t-tab-panel label="上次交易" value="{{1}}" />
+      <t-tab-panel label="本次交易" value="{{2}}" />
+      <t-tab-panel label="成本比较" value="{{3}}" />
+    </t-tabs>
+  </view>
+</t-sticky> -->
+<!-- <t-divider content="基本信息"></t-divider>
+<l-card style="padding-bottom: 0;">
+  <t-row>
+    <t-col span="12" wx:if="{{item.value}}" wx:for="{{basicList}}" wx:key="index">
+      <view class="row-tag">
+        <t-tag custom-style="border:none" theme="default" variant="dark">{{item.label}}</t-tag>
+        <text class="m-l-20 f-24">{{item.value}}</text>
+      </view>
+    </t-col>
+  </t-row>
+</l-card> -->
+<view class="bank-total flex f-row-between">
+  <view class="bank-total__item">
+    <view class="text-center bank-total__item__label"><text>本次净得</text></view>
+    <view class="text-center bank-total__item__value"><text>{{result.endTotalFormat}}</text><text class="unit">万</text></view>
+  </view>
+  <t-tag size="small" style="margin: 0 10rpx;">=</t-tag>
+  <view class="bank-total__item">
+    <view class="text-center bank-total__item__label">本次售房价</view>
+    <view class="text-center bank-total__item__value"><text>{{calcForm.totalPrice}}</text><text class="unit">万</text></view>
+  </view>
+  <t-tag size="small" style="margin: 0 10rpx;">-</t-tag>
+  <view class="bank-total__item">
+    <view class="text-center bank-total__item__label">已支出成本</view>
+    <view class="text-center bank-total__item__value"><text>{{result.usePayPriceFormat}}</text><text class="unit">万</text></view>
+  </view>
+</view>
+<view class="seller-notice">
+  <text style="font-weight: bold;">已支出成本包含：</text>
+  <text>
+    本次支付的交易费用、其他费用；
+    房屋累积支付的物业费、供暖费；
+    首次支付的首付、交易费用、其他费用；
+    若存在贷款则应包含已支付的所有本金、利息，以及需要提前结清的尾款剩余本金。
+  </text>
+</view>
+
+<l-card>
+  <t-steps layout="vertical" readonly theme="dot" current="{{55}}">
+    <t-step-item title="{{calcForm.buyDate+' 以'+calcForm.lastPrice+calcForm.unit+'购入本房'}}">
+      <view slot="content">
+        <view>建筑面积：{{calcForm.area}}㎡</view>
+        <view>支付方式：{{tabs[calcForm.bankType].label}}</view>
+        <block wx:if="{{calcForm.bankType!==3}}">
+          <view>贷款年限：{{calcForm.loanYear}}年</view>
+          <view>还款方式：{{loanBackTypes[calcForm.loanBackIndex].label}}</view>
+          <view>商业贷款：
+            <text class="brand-color">{{calcForm.loanPrice}}</text>
+            <text class="unit">{{calcForm.unit}}</text>
+            <text class="m-l-20">利率{{calcForm.loanRate}}%</text>
+          </view>
+          <view wx:if="{{calcForm.loanGjjPrice}}">
+            公积金贷款：
+            <text class="brand-color">{{calcForm.loanGjjPrice}}</text>
+            <text class="unit">{{calcForm.unit}}</text>
+            <text class="m-l-20">利率{{calcForm.loanGjjRate}}%</text>
+          </view>
+        </block>
+
+        <view>
+          支付首付：
+          <text class="brand-color">{{result.paymentPrice}}</text>
+          <text class="unit">{{calcForm.unit}}</text>
+        </view>
+        <view wx:if="{{calcForm.lastBuyFee}}">
+          支付交易费用：
+          <text class="brand-color">{{calcForm.lastBuyFee}}</text>
+          <text class="unit">{{calcForm.unit}}</text>
+        </view>
+        <view wx:if="{{calcForm.zhuangxiuFee}}">
+          支付装修费用：
+          <text class="brand-color">{{calcForm.zhuangxiuFee}}</text>
+          <text class="unit">{{calcForm.unit}}</text>
+        </view>
+        <view wx:if="{{calcForm.lastOtherFee}}">
+          支付其他费用：
+          <text class="brand-color">{{calcForm.lastOtherFee}}</text>
+          <text class="unit">{{calcForm.unit}}</text>
+        </view>
+        <view>小计：
+          <text class="brand-color">{{result.lastTotal}}</text>
+          <text class="unit">{{calcForm.unit}}</text>
+        </view>
+      </view>
+    </t-step-item>
+    <t-step-item wx:if="{{calcForm.loanBackFirstDate}}" title="{{calcForm.loanBackFirstDate}} 首次还款">
+
+      <view slot="content">
+        <view>合计支付本金利息：
+          <text class="brand-color">{{result.loanFirstTotal}}</text>
+          <text class="unit">元</text>
+        </view>
+        <view class="seller-inset-card" wx:if="{{calcForm.loanPrice}}">
+          <view class="seller-inset-card__header">
+            <t-tag theme="primary" size="small">商业贷款</t-tag>
+            <view style="font-size: 20rpx;">单位：元</view>
+          </view>
+          <t-row>
+            <t-col span="6">本金</t-col>
+            <t-col span="6">利息</t-col>
+            <t-col span="6">剩余本金</t-col>
+            <t-col span="6">剩余利息</t-col>
+          </t-row>
+          <t-row>
+            <t-col span="6">{{result.loanFirstDetails.firstPrincipal}}</t-col>
+            <t-col span="6">{{result.loanFirstDetails.firstInterest}}</t-col>
+            <t-col span="6">{{result.loanFirstDetails.remainingPrincipal}}</t-col>
+            <t-col span="6">{{result.loanFirstDetails.remainingInterest}}</t-col>
+          </t-row>
+        </view>
+
+        <view class="seller-inset-card" wx:if="{{calcForm.loanGjjPrice}}">
+          <view class="seller-inset-card__header">
+            <t-tag theme="primary" size="small">公积金贷款</t-tag>
+            <view style="font-size: 20rpx;">单位：元</view>
+          </view>
+          <t-row>
+            <t-col span="6">本金</t-col>
+            <t-col span="6">利息</t-col>
+            <t-col span="6">剩余本金</t-col>
+            <t-col span="6">剩余利息</t-col>
+          </t-row>
+          <t-row>
+            <t-col span="6">{{result.loanGjjFirstDetails.firstPrincipal}}</t-col>
+            <t-col span="6">{{result.loanGjjFirstDetails.firstInterest}}</t-col>
+            <t-col span="6">{{result.loanGjjFirstDetails.remainingPrincipal}}</t-col>
+            <t-col span="6">{{result.loanGjjFirstDetails.remainingInterest}}</t-col>
+          </t-row>
+        </view>
+
+
+
+      </view>
+    </t-step-item>
+    <t-step-item title="{{nowDate+' 以'+calcForm.totalPrice+calcForm.unit+'售出'}}">
+      <view slot="content">
+        <view>共跨过{{result.heatingPeriods}}个供暖期</view>
+        <view>房屋已使用{{result.useYear}}年，共使用{{result.useMonth}}个月</view>
+        <view wx:if="{{result.loanAllDetails.paidMonths}}">贷款已还{{result.loanAllDetails.paidMonths}}期</view>
+        <view wx:if="{{calcForm.buyFee}}">
+          <text>支付交易费用：</text>
+          <text class="brand-color">{{calcForm.buyFee}}</text>
+          <text class="unit">{{calcForm.unit}}</text>
+        </view>
+        <view wx:if="{{calcForm.otherFee}}">
+          <text>支付其他费用：</text>
+          <text class="brand-color">{{calcForm.otherFee}}</text>
+          <text class="unit">{{calcForm.unit}}</text>
+        </view>
+        <t-divider content="截止当前累积"></t-divider>
+        <view wx:if="{{result.useGongnuanFee}}">
+          <text>供暖费用：</text>
+          <text class="brand-color">{{result.useGongnuanFee}}</text>
+          <text class="unit">元</text>
+        </view>
+        <view wx:if="{{result.useWuyeFee}}">
+          <text>物业费用：</text>
+          <text class="brand-color">{{result.useWuyeFee}}</text>
+          <text class="unit">元</text>
+        </view>
+        <view wx:if="{{result.loanTotal}}">
+          <text>本金利息：</text>
+          <text class="brand-color">{{result.loanTotal}}</text>
+          <text class="unit">元</text>
+        </view>
+        <view wx:if="{{result.remainingPrincipal}}">
+          <text>剩余本金：</text>
+          <text class="success-color">{{result.remainingPrincipal}}</text>
+          <text class="unit">元</text>
+        </view>
+        <view wx:if="{{calcForm.BuyFee}}">本次支付交易费用：{{calcForm.BuyFee}}{{calcForm.unit}}</view>
+        <view class="seller-inset-card" wx:if="{{calcForm.loanPrice}}">
+          <view class="seller-inset-card__header">
+            <t-tag theme="primary" size="small">商业贷款</t-tag>
+            <view style="font-size: 20rpx;">单位：元</view>
+          </view>
+          <t-row>
+            <t-col span="6">本金</t-col>
+            <t-col span="6">利息</t-col>
+            <t-col span="6">剩余本金</t-col>
+            <t-col span="6">剩余利息</t-col>
+          </t-row>
+          <t-row>
+            <t-col span="6">{{result.loanAllDetails.totalPaidPrincipal}}</t-col>
+            <t-col span="6">{{result.loanAllDetails.totalPaidInterest}}</t-col>
+            <t-col span="6">{{result.loanAllDetails.remainingPrincipal}}</t-col>
+            <t-col span="6">{{result.loanAllDetails.remainingInterest}}</t-col>
+          </t-row>
+
+        </view>
+        <view class="seller-inset-card" wx:if="{{calcForm.loanGjjPrice}}">
+          <view class="seller-inset-card__header">
+            <t-tag theme="primary" size="small">公积金贷款</t-tag>
+            <view style="font-size: 20rpx;">单位：元</view>
+          </view>
+          <t-row>
+            <t-col span="6">本金</t-col>
+            <t-col span="6">利息</t-col>
+            <t-col span="6">剩余本金</t-col>
+            <t-col span="6">剩余利息</t-col>
+          </t-row>
+          <t-row>
+            <t-col span="6">{{result.loanGjjAllDetails.totalPaidPrincipal}}</t-col>
+            <t-col span="6">{{result.loanGjjAllDetails.totalPaidInterest}}</t-col>
+            <t-col span="6">{{result.loanGjjAllDetails.remainingPrincipal}}</t-col>
+            <t-col span="6">{{result.loanGjjAllDetails.remainingInterest}}</t-col>
+          </t-row>
+        </view>
+      </view>
+    </t-step-item>
+  </t-steps>
+</l-card>
+
+
+<t-footer style="padding:0 32rpx 32rpx 32rpx;" text="计算结果仅供参考，本小程序对此结果的准确性不承担任何责任，实际数额以银行/保险公司/国家相关机构确认的结果为准。"></t-footer>
+<!-- <t-divider content="上次交易成本"></t-divider>
+<l-card>
+  <view class="last__item" wx:for="{{lastList}}" wx:key="index">
+    <view class="last__item--content">
+      <text>{{item.label}}</text>
+      <text class="">{{item.value}}</text>
+    </view>
+    <view class="last__item--desc">
+      <text>{{item.desc}}</text>
+    </view>
+  </view>
+</l-card> -->

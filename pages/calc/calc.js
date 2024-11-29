@@ -166,7 +166,8 @@ Page({
                 createSelectorQuery(`#guide--step-3`, false),
               title: '录入交易信息',
               body: '录入交易总价或网签金额，如有户口预留金额请修改金额，默认为10000元。如有银行出具的评估价格，请在评估价格处录入，此次贷款将按网签价与评估价孰低原则计价，默认以网签价计算。',
-              placement: 'bottom'
+              placement: 'bottom',
+              offset: [0, -120]
             },
             {
               element: () =>

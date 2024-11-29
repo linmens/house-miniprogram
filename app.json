@@ -12,7 +12,9 @@
     "pages/setting/setting",
     "pages/calc-bank/calc-bank",
     "pages/result-bank/result-bank",
-    "pages/calc-log/calc-log"
+    "pages/calc-log/calc-log",
+    "pages/calc-seller/calc-seller",
+    "pages/result-seller/result-seller"
   ],
   "usingComponents": {
     "global-provider": "./components/global-provider/global-provider",

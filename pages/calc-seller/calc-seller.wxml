@@ -1,0 +1,174 @@
+<t-navbar left-arrow>
+  <view slot="title">
+    <text>售房成本计算</text>
+  </view>
+</t-navbar>
+<t-divider content="房屋基本信息"></t-divider>
+<l-cell-group theme="card">
+  <l-cell required left-icon="transform" title="建筑面积" suffix="㎡">
+    <t-input customStyle="padding:0" slot="note" borderless align="right" type="digit" bind:change="onAreaChange" value="{{calcForm.area}}" placeholder="请输入建筑面积">
+    </t-input>
+
+  </l-cell>
+  <l-cell title="物业费标准" suffix="元/㎡">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onwuyeFeeStandardChange" value="{{calcForm.wuyeFeeStandard}}" placeholder="请输入每平米物业费" type="digit"></t-input>
+    <view wx:if="{{calcForm.area}}" slot="description">
+      <text>预计每月缴费</text>
+      <text class="brand-color">{{calcForm.wuyeFeeStandard*calcForm.area}}元</text>
+    </view>
+  </l-cell>
+  <l-cell title="供暖费">
+    <l-tabs slot="note" current-index="{{calcForm.gongnuanFeeIndex}}" bind:change="ongongnuanTypesChange" list="{{gongnuanTypes}}">
+    </l-tabs>
+    <view slot="description" class="m-t-10">
+      <text>{{'供暖标准按'+calcForm.gongnuanFeeStandard+'元/㎡计算'}}</text>
+      <text style="color:var(--td-brand-color)"> {{calcForm.gongnuanFee}} 元/年</text>
+    </view>
+    <!-- <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onPingguPriceChange" value="{{calcForm.totalPrice}}" placeholder="请输入每平米供暖费" type="digit"></t-input> -->
+  </l-cell>
+</l-cell-group>
+<t-divider content="本次交易情况"></t-divider>
+<l-cell-group theme="card">
+  <l-cell title="售房价" required suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onCommonDataChange" data-key="totalPrice" value="{{calcForm.totalPrice}}" placeholder="请输入本次售房价" type="digit"></t-input>
+  </l-cell>
+  <l-cell description="居间服务费、个税、增值税等费用合计" title="交易费用" suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onCommonDataChange" data-key="buyFee" value="{{calcForm.buyFee}}" placeholder="请输入本次交易费用" type="digit" tips=""></t-input>
+  </l-cell>
+  <l-cell title="其他费用" suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onCommonDataChange" data-key="otherFee" value="{{calcForm.otherFee}}" placeholder="请输入其他费用" type="digit" tips=""></t-input>
+  </l-cell>
+</l-cell-group>
+<t-divider content="上次交易情况"></t-divider>
+<l-cell-group theme="card">
+
+  <l-cell left-icon="palette-1" title="支付方式">
+    <l-tabs slot="note" current-index="{{calcForm.bankType}}" bind:change="onBankTypeChange" list="{{tabs}}">
+    </l-tabs>
+  </l-cell>
+  <l-cell title="购入价" required suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onCommonDataChange" data-key="lastPrice" value="{{calcForm.lastPrice}}" placeholder="请输入上次购入价" type="digit"></t-input>
+  </l-cell>
+  <t-cell required title="购入日期" hover note="{{calcForm.buyDate}}" arrow data-mode="date" data-form="calcForm" data-key="buyDate" bindtap="showPicker" t-class="panel-item" />
+  <block wx:if="{{calcForm.bankType!==3}}">
+    <!-- <l-cell title="贷款结清状态">
+      <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanStatusTypes}}"></l-tabs>
+    </l-cell> -->
+
+
+    <l-cell title="提前还款清单">
+
+      <view slot="note" style="text-align: right;">
+        <t-button icon="plus" bind:tap="showDialog" data-key="prePaymentVisible" size="small" theme="primary" ghost>添加提前还款记录</t-button>
+      </view>
+      <scroll-view slot="description" wx:if="{{calcForm.prePaymentList.length}}" scroll-y="{{true}}" style="height: 300rpx;margin-top: 10rpx;">
+        <t-steps layout="vertical" readonly theme="dot" current="{{10}}">
+          <t-step-item wx:for="{{calcForm.prePaymentList}}" wx:key="index">
+            <view slot="title" style="width: 100%;display: flex;align-items: center;justify-content: space-between;">
+              <text>{{item.date}}</text>
+              <t-icon bind:tap="deletePrepayment" data-index="{{index}}" style="padding-right: 20rpx;" name="delete"></t-icon>
+            </view>
+            <view slot="content">
+              <view>
+                <t-tag theme="primary" style="margin-right: 10rpx;" wx:if="{{item.bankTypeName}}">{{item.bankTypeName}}</t-tag>
+                <t-tag wx:if="{{item.isFullRepayment}}">全部提前还款</t-tag>
+                <t-tag wx:else>部分提前还款</t-tag>
+              </view>
+              <view wx:if="{{item.amount}}"><text>还款金额：{{item.amount}}{{calcForm.unit}}</text></view>
+              <view wx:if="{{item.plan===0&&!item.isFullRepayment}}">还款方案：还款期数不变，减少月供</view>
+              <view wx:if="{{item.plan===1&&!item.isFullRepayment}}">月供不变，减少还款期数</view>
+            </view>
+          </t-step-item>
+        </t-steps>
+      </scroll-view>
+
+
+    </l-cell>
+    <!-- <t-cell title="结清贷款日期" hover note="{{dateText || ''}}" arrow data-mode="date" bindtap="showPicker" t-class="panel-item" /> -->
+    <t-cell required title="首次还款日期" data-form="calcForm" data-key="loanBackFirstDate" hover note="{{calcForm.loanBackFirstDate || ''}}" arrow data-mode="date" data-form="calcForm" bindtap="showPicker" t-class="panel-item" />
+    <!-- <t-cell title="每月还款日期" hover note="{{dateText || ''}}" arrow data-mode="date" bindtap="showPicker" t-class="panel-item" />
+    <t-cell title="最后还款日期" hover note="{{dateText || ''}}" arrow data-mode="date" bindtap="showPicker" t-class="panel-item" /> -->
+    <l-cell left-icon="calendar-edit" title="{{'贷款年限'+'('+calcForm.loanYear*12+'期)'}}">
+      <l-tabs slot="note" id="loanTabs" current-index="{{calcForm.loanIndex}}" bind:change="onLoanTypesChange" list="{{loanTypes}}"></l-tabs>
+    </l-cell>
+    <l-cell title="自定义贷款年限" wx:if="{{calcForm.loanIndex===6}}" suffix="年">
+      <t-stepper size="large" slot="note" bind:change="onCustomLoanYearInputValChange" value="{{calcForm.loanYear}}" min="0" max="{{calcForm.loanMaxYear}}" step="1" theme="filled" />
+    </l-cell>
+    <l-cell left-icon="undertake-transaction" title="还款方式">
+      <l-tabs slot="note" current-index="{{calcForm.loanBackIndex}}" bind:change="onLoanBackTypesChange" list="{{loanBackTypes}}"></l-tabs>
+    </l-cell>
+    <block wx:if="{{calcForm.bankType===0||calcForm.bankType===2}}">
+      <l-cell title="商业贷款金额" suffix="{{calcForm.unit}}">
+        <t-stepper data-key="loanPrice" input-width="80" size="large" slot="note" bind:change="onCommonDataChange" min="0" max="{{calcForm.lastPrice}}" value="{{calcForm.loanPrice}}" theme="filled" />
+      </l-cell>
+      <l-cell title="商业贷款利率" suffix="%">
+        <t-input data-key="loanRate" slot="note" borderless customStyle="padding:0" bind:change="onCommonDataChange" value="{{calcForm.loanRate}}" align="right" placeholder="请输入贷款利率" type="digit">
+        </t-input>
+        <scroll-view scroll-anchoring scroll-with-animation enable-passive show-scrollbar="{{false}}" scroll-x="{{true}}" slot="description" style="position: relative; overflow-x: scroll;white-space: nowrap;width: 100%">
+          <view wx:for="{{loanRateHistory}}" wx:key="index" class="scroll-x__item" data-value="{{item.value}}" bind:tap="onloanRateHistory">{{item.label}}</view>
+        </scroll-view>
+      </l-cell>
+    </block>
+    <block wx:if="{{calcForm.bankType===1||calcForm.bankType===2}}">
+      <l-cell title="公积金贷款金额" suffix="{{calcForm.unit}}">
+        <view slot="note" class="flex f-col-center">
+          <t-stepper min="0" max="{{calcForm.lastPrice}}" data-key="loanGjjPrice" input-width="80" value="{{calcForm.loanGjjPrice}}" size="large" theme="filled" bind:change="onCommonDataChange" />
+        </view>
+      </l-cell>
+      <l-cell title="公积金贷款利率" suffix="%">
+        <t-input slot="note" borderless customStyle="padding:0" bind:change="onCommonDataChange" data-key="loanGjjRate" value="{{calcForm.loanGjjRate}}" align="right" placeholder="请输入贷款利率" type="digit">
+        </t-input>
+        <scroll-view scroll-anchoring scroll-with-animation enable-passive show-scrollbar="{{false}}" scroll-x="{{true}}" slot="description" style="position: relative; overflow-x: scroll;white-space: nowrap;width: 100%">
+          <view wx:for="{{loanGjjRateHistory}}" wx:key="index" class="scroll-x__item" data-value="{{item.value}}" bind:tap="onloanGjjRateHistory">{{item.label}}</view>
+        </scroll-view>
+      </l-cell>
+    </block>
+  </block>
+
+
+  <l-cell description="居间服务费、贷款服务费、契税、大修基金、增值税等费用合计" title="交易费用" suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onCommonDataChange" data-key="lastBuyFee" value="{{calcForm.lastBuyFee}}" placeholder="请输入交易费用" type="digit" tips=""></t-input>
+  </l-cell>
+  <l-cell description="" title="装修费" suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onCommonDataChange" data-key="zhuangxiuFee" value="{{calcForm.zhuangxiuFee}}" placeholder="请输入装修费" type="digit" tips=""></t-input>
+  </l-cell>
+  <l-cell title="其他费用" suffix="{{calcForm.unit}}">
+    <t-input slot="note" borderless align="right" customStyle="padding:0" bind:change="onCommonDataChange" data-key="lastOtherFee" value="{{calcForm.lastOtherFee}}" placeholder="请输入其他费用" type="digit" tips=""></t-input>
+  </l-cell>
+</l-cell-group>
+<!-- 提前还款弹框 -->
+<t-dialog bind:cancel="closeDialog" cancel-btn="{{cancelBtn}}" z-index="11400" visible="{{prePaymentVisible}}" title="提前还款" confirm-btn="{{ confirmBtn }}" bind:confirm="onPrePaymentConfirm">
+  <view slot="content">
+    <t-tabs style="--td-tab-item-tag-active-bg:var(--td-brand-color);--td-tab-item-active-color:#fff" theme="tag" defaultValue="{{0}}" bind:change="onTabsChange" bind:click="onTabsClick" t-class="custom-tabs">
+      <t-tab-panel label="商业贷款" value="0" />
+      <t-tab-panel label="公积金贷款" value="1" />
+    </t-tabs>
+    <t-cell-group>
+      <t-cell title="还款方式">
+        <t-radio-group bind:change="onisFullRepaymentChange" slot="description" value="{{prePaymentForm.isFullRepayment}}" borderless>
+          <t-radio icon="dot" style="font-size: 28rpx;padding: 10rpx 0rpx;" label="全部提前还款" value="{{true}}" />
+          <t-radio icon="dot" style="font-size: 28rpx;padding: 10rpx 0rpx;" label="部分提前还款" value="{{false}}" />
+        </t-radio-group>
+      </t-cell>
+      <t-cell title="还款日期" data-form="prePaymentForm" data-key="date" hover note="{{prePaymentForm.date || ''}}" arrow data-mode="date" bindtap="showPicker" />
+      <t-input wx:if="{{!prePaymentForm.isFullRepayment}}" label="还款金额" align="right" bind:change="onPrePaymentAmountChange" value="{{prePaymentForm.amount}}" suffix="{{calcForm.unit}}"></t-input>
+      <t-cell wx:if="{{!prePaymentForm.isFullRepayment}}" title="还款方案">
+        <t-radio-group slot="description" bind:change="onPrePaymentPlanChange" value="{{prePaymentForm.plan}}" borderless>
+          <t-radio style="font-size: 28rpx;padding: 10rpx 0rpx;" icon="dot" label="还款期数不变，减少月供" value="{{0}}" />
+          <t-radio style="font-size: 28rpx;padding: 10rpx 0rpx;" icon="dot" label="月供不变，减少还款期数" value="{{1}}" />
+        </t-radio-group>
+      </t-cell>
+    </t-cell-group>
+  </view>
+</t-dialog>
+
+<!-- 年月日 -->
+<t-date-time-picker auto-close title="选择日期" visible="{{dateVisible}}" mode="date" default-value="{{date}}" format="YYYY-MM-DD" start="{{start}}" end="{{end}}" filter="{{filter}}" popup-props="{{popupProps}}" bindchange="onDateConfirm" bindpick="onColumnChange" bindcancel="hidePicker" bindclose="handleClose" />
+<view class="calc-bottom-btn">
+  <t-button bind:tap="handleClickStart" theme="primary" size="large" block>开始计算</t-button>
+</view>
+<view class="t-tab-bar--placeholder__wrap">
+  <view style="height: 32rpx;"></view>
+  <view class="t-tab-bar-safe"></view>
+</view>
+<t-message id="t-message" />

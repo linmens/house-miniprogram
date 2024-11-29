@@ -239,10 +239,9 @@
   <block wx:if="{{calcForm.bankType===1||calcForm.bankType===2}}">
     <t-divider content="公积金信息"></t-divider>
     <l-cell-group theme="card">
-      <l-cell title="贷款金额">
+      <l-cell title="贷款金额" suffix="{{calcForm.unit}}">
         <view slot="note" class="flex f-col-center">
           <t-stepper max="{{calcForm.loanGjjMaxPrice}}" min="0" input-width="80" value="{{calcForm.loanGjjPrice}}" size="large" theme="filled" bind:change="onLoanGjjPriceChange" />
-          <text class="m-l-20">{{calcForm.unit}}</text>
         </view>
         <view slot="description">
           {{loanGjjHomeTypes[calcForm.loanGjjSaveIndex].desc}}

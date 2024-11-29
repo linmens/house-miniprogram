@@ -7,25 +7,7 @@
 </t-navbar>
 
 
-<!-- <view class="cate-menu">
-  <view class="cate-menu-item l-cate-card">
-    <image class="cate-menu-item__image" src="/static/goufang-bg.png"></image>
-    <view class="cate-menu-item__pos">
-      <text class="cate-menu-item__title">房产流程</text>
-      <text class="cate-menu-item__label">各类流程一览</text>
-      <view class="cate-menu-item__btn">查看详情</view>
-    </view>
-  </view>
-  <view class="cate-menu-item l-cate-card">
-    <image class="cate-menu-item__image" src="/static/zhengce-bg.png"></image>
-    <view class="cate-menu-item__pos">
-      <text class="cate-menu-item__title">房产政策</text>
-      <text class="cate-menu-item__label">各类政策一览</text>
-      <view class="cate-menu-item__btn">查看详情</view>
-    </view>
 
-  </view>
-</view> -->
 <view style="width: 100%;overflow: hidden;">
   <view class="l-cate-card m-32" bind:tap="openCalc" data-url="{{item.url}}" wx:for="{{cateMenu}}" wx:key="index">
     <view class="l-cate-card__bg l-cate-card__{{item.backgroundClass}}">
@@ -41,7 +23,35 @@
   </view>
 </view>
 
+<view class="cate-menu">
+  <view class="l-cate-card" bind:tap="openCalc" data-url="/pages/calc-seller/calc-seller">
+    <!-- <image class="cate-menu-item__image" src="/static/goufang-bg.png"></image> -->
+    <view class="l-cate-card__bg l-cate-card__bg4">
+      <view class="l-cate-card__icon">
+        <t-icon size="20" name="money"></t-icon>
+        <view class="l-cate-card__icon--shadow"></view>
+      </view>
+      <view class="l-cate-card__content">
+        <text class="l-cate-card__title">售房成本</text>
+        <text class="l-cate-card__label font-24">此次售房净得金额</text>
+      </view>
+    </view>
 
+  </view>
+  <view class="l-cate-card flex-1 m-l-20">
+    <view class="l-cate-card__bg l-cate-card__bg5">
+      <view class="l-cate-card__icon">
+        <t-icon size="20" name="undertake-transaction"></t-icon>
+        <view class="l-cate-card__icon--shadow"></view>
+      </view>
+      <view class="l-cate-card__content">
+        <text class="l-cate-card__title">提前还款</text>
+        <text class="l-cate-card__label font-24">正在研发中...</text>
+      </view>
+    </view>
+
+  </view>
+</view>
 <view style="margin-bottom: 32rpx;">
   <t-grid hover="{{true}}" column="{{4}}" theme="card" custom-style="border:0.5px solid var(--color-line-l3)">
     <!-- <t-grid-item wx:for="{{cateMenu}}" text="{{item.text}}" url="{{item.url+'?buyIndex='+item.params.buyIndex+'&'+'title='+item.params.title}}" icon="{{item.icon}}" /> -->

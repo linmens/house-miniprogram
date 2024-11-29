@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "l-card": "/components/card/card",
+    "t-footer": "tdesign-miniprogram/footer/footer"
+  }
+}

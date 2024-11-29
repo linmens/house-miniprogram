@@ -10,16 +10,9 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/result-bank/result-bank",
-          "pathName": "pages/result-bank/result-bank",
-          "query": "timestamp=1722846476316",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "pages/result-bank/result-bank",
-          "pathName": "pages/result-bank/result-bank",
-          "query": "timestamp=1722830506975",
+          "name": "pages/result-seller/result-seller",
+          "pathName": "pages/result-seller/result-seller",
+          "query": "timestamp=1732846622608",
           "launchMode": "default",
           "scene": null
         }

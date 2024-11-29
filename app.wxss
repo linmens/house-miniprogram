@@ -93,7 +93,12 @@ page,
     --td-guide-popover-border: 0.5px solid var(--color-line-l3);
   }
 }
-
+/* .l-scroll-x {
+  position: relative;
+  overflow-x: scroll;
+  white-space: nowrap;
+  width: 100%;
+} */
 .t-tag--light.t-tag--default {
   border-color: transparent;
 }
@@ -105,6 +110,12 @@ page,
     --td-navbar-bg-color,
     var(--td-bg-color-container, var(--td-font-white-1, #ffffff))
   );
+}
+.brand-color {
+  color: var(--td-brand-color);
+}
+.success-color {
+  color: var(--td-success-color);
 }
 .unit {
   font-size: 20rpx;

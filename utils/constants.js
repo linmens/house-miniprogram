@@ -7,7 +7,27 @@ export const buyTypes = [{
     label: '一手房'
   }
 ];
-
+export const gongnuanTypes = [{
+    value: 5.8,
+    label: '集中供暖'
+  },
+  {
+    value: 1.74,
+    label: '按最低30%'
+  },
+  {
+    value: 0,
+    label: '无供暖'
+  }
+];
+// 贷款结清状态
+export const loanStatusTypes = [{
+  value: 0,
+  label: '未结清'
+}, {
+  value: 1,
+  label: '已结清'
+}]
 export const chanquanTypes = [{
     value: 0,
     label: '家庭唯一'
